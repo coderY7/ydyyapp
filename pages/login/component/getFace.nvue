@@ -1,0 +1,312 @@
+<template>
+	<view class="box">
+		<view class="livefater" :style="[{width:allWidth,height:allHeight,backgroundColor:bgColor}]">
+			<uni-icons type="closeempty" size="30" @tap="BackPage"></uni-icons>
+			
+			<!-- <zwpRingTiming mode="chart" :value="ringVal" class="ring" :activeColor="activeColor" v-show="ringShow">
+			    <text style="text-align: center;">{{mess}}</text>
+			</zwpRingTiming> -->
+			<live-pusher id='livePusher' ref="livePusher" class="livePusher" url="" mode="SD" :muted="true"
+				:enable-camera="true" :auto-focus="true" :beauty="1" whiteness="1" aspect="3:2"
+				@statechange="statechange" @netstatus="netstatus" @error="error">
+			</live-pusher>
+			 <!-- :style="[{boxShadow:shadowColor}]" -->
+			
+			
+			<u-toast ref="uToast"></u-toast>
+			
+		</view>
+		
+	</view>
+</template>
+
+<script>
+	import zwpRingTiming from '@/components/zwp-ring-timing/zwp-ring-timing.vue'
+	export default {
+		components: {
+			zwpRingTiming
+		},
+		data() {
+			return {
+				imgList: [],
+				oldFace: uni.getStorageSync('oldFaceBase'),
+				times: 0,
+				mess:"识别中",
+				allWidth: "",
+				allHeight: "",
+				lefts:"",
+				tops:"",
+				bgColor:"#fff",
+				shadowColor:"0px 0px 5px 170px #fff",
+				imgSrc:"@/static/images/face.png",
+				bgColorList:["#ff0000","#FFA500","#FFFF00","#008000","#00FFFF","#0000FF","#800080"],
+				listIndex:0,
+				activeColor:"#42b983",
+				ringShow:false,
+				ringVal:0
+			}
+		},
+		onReady() {
+			this.context = uni.createLivePusherContext("livePusher", this);
+			uni.getSystemInfo({
+				success: function(res) {
+					this.lefts=(res.screenWidth-320)/2+"px"
+					this.tops=(res.screenHeight-324)/2+"px"
+					this.allWidth = res.screenWidth+"px"
+					this.allHeight = res.screenHeight+"px"
+				}.bind(this)
+			});
+			setTimeout(()=>{
+				this.startPreview()
+			}, 500)
+		},
+		methods: {
+			statechange(e) {
+				console.log("statechange:" + JSON.stringify(e));
+			},
+			netstatus(e) {
+				console.log("netstatus:" + JSON.stringify(e));
+			},
+			error(e) {
+				console.log("error:" + JSON.stringify(e));
+			},
+			start: function() {
+				this.context.start({
+					success: (a) => {
+						console.log("livePusher.start:" + JSON.stringify(a));
+					}
+				});
+			},
+			close: function() {
+				this.context.close({
+					success: (a) => {
+						console.log("livePusher.close:" + JSON.stringify(a));
+					}
+				});
+			},
+			//切换摄像头
+			switchCamera() {
+				this.context.switchCamera({
+					success: (e) => {
+						console.log("切换成功", e)
+					}
+				})
+			},
+			//停止推流
+			stop() {
+				let _this=this
+				if (uni.getStorageSync('quiteNum') > 0) {
+					uni.request({
+						url: 'https://aip.baidubce.com/rest/2.0/face/v3/match?access_token=' + uni.getStorageSync('baiduToken'),
+						data: _this.imgList,
+						method: 'POST',
+						header: {
+							'Content-Type': 'application/json'
+						},
+						success: (res) => {
+							console.log("res", res)
+							if (res.data.error_code == 0) {
+								if (res.data.result.score >= 80) {
+									_this.context.stop({
+										success: (e) => {
+											_this.$refs.uToast.show({
+												type:"success",
+												message: "人脸解锁成功"
+											})
+											_this.mess="人脸解锁成功"
+											uni.setStorageSync('quiteNum', 3);
+											setTimeout(function() {
+												uni.redirectTo({
+													url: "/pages/index/indexCheck"
+												});
+											}, 1900)
+										}
+									})
+								} else {
+									_this.mess="人脸匹配度较低"
+									// uni.$u.toast('人脸匹配度较低')
+									_this.errStopFunc()
+								}
+							} else {
+								_this.mess="没有检测到人脸"
+								// uni.$u.toast('没有检测到人脸')
+								_this.errStopFunc()
+							}
+						},
+						fail: (err) => {
+							console.log("接口调用失败 err", err)
+						}
+					})
+				}
+			},
+			errStopFunc() {
+				uni.setStorageSync('quiteNum', uni.getStorageSync('quiteNum') - 1)
+				this.activeColor="red"
+				if (uni.getStorageSync('quiteNum') == 0) {
+					_this.$refs.uToast.show({
+						type:"error",
+						message: "人脸解锁次数已用完,请重新登录"
+					})
+					setTimeout(function() {
+						uni.redirectTo({
+							url: "/pages/login/login?ifCheckAll=true"
+						});
+					}, 1800)
+					return
+				}else{
+					uni.showModal({
+						content: '人脸解锁失败，还剩' + uni.getStorageSync("quiteNum") + '次机会,是否继续',
+						confirmText: "继续",
+						success: function(res) {
+							if (res.confirm) {
+								uni.redirectTo({
+									url: "./getFace"
+								})
+							} else if (res.cancel) {
+								uni.redirectTo({
+									url: "/pages/login/login?ifCheckAll=true"
+								});
+							}
+						}
+					});
+				}
+			},
+			// 拍照事件
+			snapshot: function() {
+				var _this = this
+				this.context.snapshot({
+					success: (e) => {
+						console.log("snapshot", JSON.stringify(e));
+						_this.getMinImage(e.message.tempImagePath)
+					}
+				});
+			},
+			// 开启摄像头
+			startPreview() {
+				var _this = this
+				this.context.startPreview({
+					success: (a) => {
+						console.log("livePusher.startPreview:" + JSON.stringify(a));
+						_this.ringShow=true
+						_this.Timer = setInterval(()=> {
+							if (_this.times < 3) {//3
+								_this.snapshot()
+							} else {
+								_this.stop()
+								clearInterval(_this.Timer)
+								clearInterval(xx)
+								// _this.bgColor="#fff"
+								// _this.shadowColor=`0px 0px 5px 70px #fff`
+							}
+							_this.times += 1
+						}, 1000)
+						var xx=setInterval(()=> {
+							// _this.shadowColor=`0px 0px 5px 70px ${_this.bgColorList[_this.listIndex]}`
+							// _this.bgColor=_this.bgColorList[_this.listIndex]
+							
+							// console.log("_this.imgSrc",_this.imgSrc)
+							if(_this.listIndex>=7){
+								_this.listIndex=0
+							}else{
+								_this.listIndex+=1
+							}
+						}, 800)
+						var ringTime=setInterval(()=> {
+							_this.ringVal+=1
+							if(_this.ringVal>=100){
+								clearInterval(ringTime)
+							}
+						}, 51)
+					}
+				});
+			},
+			// 使用plus.zip.compressImage压缩图片并转换成base64
+			getMinImage(imgPath) {
+				var _this=this
+				// #ifdef APP-PLUS
+				plus.zip.compressImage({
+						src: imgPath,
+						dst: imgPath,
+						overwrite: true,
+						quality: 40
+					},
+					zipRes => {
+						// setTimeout(() => {
+						var reader = new plus.io.FileReader();
+						reader.onloadend = res => {
+							var speech = res.target.result; //base64图片
+							_this.imgList = []
+							_this.imgList.push({
+								"image": speech.slice(23),
+								"image_type": "BASE64",
+							}, {
+								"image": _this.oldFace,
+								"image_type": "BASE64",
+							});
+							
+						};
+						//一定要使用plus.io.convertLocalFileSystemURL将target地址转换为本地文件地址，否则readAsDataURL会找不到文件
+						reader.readAsDataURL(plus.io.convertLocalFileSystemURL(zipRes.target));
+
+						// }, 1000);
+					},
+					function(error) {
+						console.log('Compress error!', error);
+					}
+				);
+				// #endif
+			},
+			BackPage() {
+				uni.navigateBack({
+					delta: 1
+				});
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.box {
+		background-color: #fff;
+		overflow: hidden;
+	}
+	
+	.livefater {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		position: fixed;
+		top: 0;
+		left: 0;
+	}
+	.uni-icons{
+		position: fixed;
+		top: 50px;
+		left: 20px;
+	}
+	.livePusher {
+		width: 400px;
+		height: 1000px;
+		border-radius: 320px;
+		/* position: absolute; */
+	}
+	.ring{
+		margin-bottom: 14px;
+		/* position: absolute; */
+	}
+	
+	.posi {
+		width: 320px;
+		height: 320px;
+		position: absolute;
+		
+	}
+	.cir{
+		width: 320px;
+		height: 320px;
+		position: absolute;
+		border-radius: 320px;
+		background-color: transparent;
+	}
+</style>

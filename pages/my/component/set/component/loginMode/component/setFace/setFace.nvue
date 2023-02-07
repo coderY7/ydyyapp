@@ -1,0 +1,256 @@
+<template>
+	<view class="box">
+		<view class="livefater" :style="[{width:allWidth,height:allHeight,backgroundColor:bgColor}]">
+			<uni-icons type="closeempty" size="30" @tap="BackPage"></uni-icons>
+			
+			 <!-- v-show="ringShow" -->
+			<!-- <zwpRingTiming mode="chart" :value="ringVal" class="ring" :activeColor="activeColor">
+			    <text style="text-align: center;">{{mess}}</text>
+			</zwpRingTiming> -->
+			<live-pusher id='livePusher' ref="livePusher" class="livePusher" url="" mode="SD" :muted="true"
+				:enable-camera="true" :auto-focus="true" :beauty="1" whiteness="1" aspect="3:2"
+				@statechange="statechange" @netstatus="netstatus" @error="error">
+				<!-- :style="[{boxShadow:shadowColor}]" -->
+			</live-pusher>
+			
+			<u-toast ref="uToast"></u-toast>
+			
+		</view>
+		
+	</view>
+</template>
+
+<script>
+	import zwpRingTiming from '@/components/zwp-ring-timing/zwp-ring-timing.vue'
+	export default {
+		components: {
+			zwpRingTiming
+		},
+		data() {
+			return {
+				imgList: [],
+				allWidth: "",
+				allHeight: "",
+				show: true,
+				mess:"识别中",
+				allWidth: "",
+				allHeight: "",
+				lefts:"",
+				tops:"",
+				bgColor:"#fff",
+				shadowColor:"0px 0px 5px 170px #fff",
+				imgSrc:"@/static/images/face.png",
+				bgColorList:["#ff0000","#FFA500","#FFFF00","#008000","#00FFFF","#0000FF","#800080"],
+				listIndex:0,
+				activeColor:"#42b983",
+				ringShow:false,
+				ringVal:0
+			}
+		},
+		onReady() {
+			this.context = uni.createLivePusherContext("livePusher", this);
+			var that = this
+			uni.getSystemInfo({
+				success: function(res) { 
+					that.allWidth = res.screenWidth + 'px'
+					console.log("screenHeight",res) 
+					that.allHeight = res.screenHeight + 'px'
+					// console.log("screenHeight",res.screenHeight)
+					// console.log("windowHeight",res.windowHeight)
+					// console.log("statusBarHeight",res.statusBarHeight)
+				}
+			});
+
+			setTimeout(() => {
+				this.startPreview()
+			}, 1000)
+			
+		},
+		methods: {
+			statechange(e) {
+				console.log("statechange:" + JSON.stringify(e));
+			},
+			netstatus(e) {
+				console.log("netstatus:" + JSON.stringify(e));
+			},
+			error(e) {
+				console.log("error:" + JSON.stringify(e));
+			},
+			//停止推流
+			stop() {
+				let _this=this
+				this.context.stop({
+					success: (e) => {
+						uni.request({
+							url: 'https://aip.baidubce.com/rest/2.0/face/v3/faceverify?access_token='+uni.getStorageSync('baiduToken'),
+							data: this.imgList,
+							method: 'POST',
+							header: {
+								'Content-Type': 'application/json'
+							},
+							success: (res) => {
+								console.log("视频识别RES", res)
+								if (res.data.error_code == 0) {
+									for (var i in res.data.result.face_list) {
+										if (res.data.result.face_list[i].face_probability >= 0.8&&res.data.result.face_list[i].liveness.livemapscore >= 0.8) {
+											uni.setStorageSync('oldFaceBase', this.imgList[i].image);
+											uni.$u.toast('人脸设置成功', 1500)
+											// _this.mess="人脸设置成功"
+											uni.setStorageSync('isBindFace', true);
+											setTimeout(function() {
+												uni.navigateBack({
+													delta: 1
+												});
+											}, 1500)
+											return
+										}else{
+											if(i==res.data.result.face_list.length-1){
+												// _this.mess="人脸匹配度较低"
+												uni.$u.toast('人脸匹配度较低', 1500)
+												_this.activeColor="red"
+												setTimeout(function() {
+													uni.navigateBack({
+														delta: 1
+													});
+												}, 1500)
+											}
+										}
+									}
+								} else {
+									// _this.mess="人脸活体检测失败"
+									_this.activeColor="red"
+									uni.$u.toast('人脸活体检测失败')
+									setTimeout(function() {
+										uni.navigateBack({
+											delta: 1
+										});
+									}, 1500)
+								}
+							},
+							fail:(err)=>{
+								console.log("接口调用失败 err",err)
+							}
+						})
+					}
+				})
+			},
+			// 拍照事件
+			snapshot: function() {
+				var that = this
+				this.context.snapshot({
+					success: (e) => {
+						that.getMinImage(e.message.tempImagePath)
+					}
+				});
+			},
+			// 开启摄像头
+			startPreview() {
+				var that = this
+				this.context.startPreview({
+					success: (a) => {
+						console.log("livePusher.startPreview:" + JSON.stringify(a));
+						that.ringShow=true
+						var Timer = setInterval(function() {
+							if (that.imgList.length <= 3) {
+								that.snapshot()
+							} else {
+								that.stop()
+								clearInterval(Timer)
+								clearInterval(xx)
+								// that.bgColor="#fff"
+								// that.shadowColor=`0px 0px 5px 70px #fff`
+							}
+						}, 1000)
+						
+						var xx=setInterval(()=> {
+							// that.shadowColor=`0px 0px 5px 70px ${that.bgColorList[that.listIndex]}`
+							// that.bgColor=that.bgColorList[that.listIndex]
+							
+							// console.log("that.imgSrc",that.imgSrc)
+							if(that.listIndex>=7){
+								that.listIndex=0
+							}else{
+								that.listIndex+=1
+							}
+						}, 800)
+						var ringTime=setInterval(()=> {
+							that.ringVal+=1
+							if(that.ringVal>=100){
+								clearInterval(ringTime)
+							}
+						}, 51)
+					}
+				});
+			},
+			// 使用plus.zip.compressImage压缩图片并转换成base64
+			getMinImage(imgPath) {
+				// #ifdef APP-PLUS
+				plus.zip.compressImage({
+						src: imgPath,
+						dst: imgPath,
+						overwrite: true,
+						quality: 40
+					},
+					zipRes => {
+						var reader = new plus.io.FileReader();
+						reader.onloadend = res => {
+							var speech = res.target.result; //base64图片
+							this.imgList.push({
+								"image": speech.slice(23),
+								"image_type": "BASE64",
+							});
+						};
+						//一定要使用plus.io.convertLocalFileSystemURL将target地址转换为本地文件地址，否则readAsDataURL会找不到文件
+						reader.readAsDataURL(plus.io.convertLocalFileSystemURL(zipRes.target));
+
+					},
+					function(error) {
+						console.log('Compress error!', error);
+					}
+				);
+				// #endif
+			},
+			BackPage() {
+				uni.navigateBack({
+					delta: 1
+				});
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.box {
+		background-color: #fff;
+		overflow: hidden;
+	}
+	.livefater {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		position: fixed;
+		top: 0;
+		left: 0;
+	}
+	.uni-icons{
+		position: fixed;
+		top: 50px;
+		left: 20px;
+	}
+	.livePusher {
+		width: 400px;
+		height: 1000px;
+		border-radius: 320px;
+		/* position: absolute; */
+	}
+	.ring{
+		margin-bottom: 14px;
+		/* position: absolute; */
+	}
+	// .posi {
+	// 	width: 320px;
+	// 	height: 320px;
+	// 	background-color: red;
+	// }
+</style>
