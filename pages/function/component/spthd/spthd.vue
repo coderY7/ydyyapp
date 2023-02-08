@@ -196,6 +196,7 @@
 			// #ifdef APP-PLUS
 			plus.navigator.setStatusBarStyle("light");
 			// #endif
+      this.getlist()
 		},
 		methods: {
 			//拉取查询条件
