@@ -890,6 +890,15 @@
             }
             
         }
+	,{
+			"path" : "pages/function/component/spbsd/bsxd",
+			"style" :
+			{
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}
     ],
 	"globalStyle": {
 		// "navigationBarBackgroundColor": "#000000",

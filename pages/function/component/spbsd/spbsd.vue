@@ -8,7 +8,7 @@
         </navigator>
       </view>
       <view class="center">
-        <text>商品退货单</text>
+        <text>商品报销单</text>
       </view>
       <view class="right">
         <u-button class="icon-button guideJS1" text="" throttleTime="2000" @tap="newOrder">
@@ -81,36 +81,26 @@
       <view class="foldGroup">
         <view class="fold-title" v-for="(v,i) in tableData" @tap="tolook(v)">
           <view class="fold-title-t fold-title-flex-start">
-            <text>{{v.退货单号}}</text>
+            <text>{{v.报损单编号}}</text>
           </view>
           <view class="fold-title-flex-start fold-title-con show-dots">
-            <text class="left-con">退货商家:</text>
-            <text class="right-con">{{v.退货商家}}</text>
+            <text class="left-con">单据状态:</text>
+            <text class="right-con">{{v.单据状态}}</text>
           </view>
           <view class="multiples">
             <view class="multiple-con">
-              <text class="left-con">退货分店:</text>
-              <text class="right-con">{{v.退货分店}}</text>
+              <text class="left-con">报损分店:</text>
+              <text class="right-con">{{v.报损分店}}</text>
             </view>
             <view class="multiple-con">
-              <text class="left-con">退货仓库:</text>
-              <text class="right-con">{{v.退货仓库}}</text>
-            </view>
-          </view>
-          <view class="multiples">
-            <view class="multiple-con">
-              <text class="left-con">退换类型:</text>
-              <text class="right-con">{{v.退换类型}}</text>
-            </view>
-            <view class="multiple-con">
-              <text class="left-con">退货数量:</text>
-              <text class="right-con">{{v.退货数量}}</text>
+              <text class="left-con">报损仓库:</text>
+              <text class="right-con">{{v.报损仓库}}</text>
             </view>
           </view>
           <view class="multiples">
             <view class="multiple-con">
-              <text class="left-con">退货金额:</text>
-              <text class="right-con">{{v.退货金额}}</text>
+              <text class="left-con">报损类型:</text>
+              <text class="right-con">{{v.报损类型}}</text>
             </view>
             <view class="multiple-con">
               <text class="left-con">零售金额:</text>
@@ -119,14 +109,15 @@
           </view>
           <view class="multiples">
             <view class="multiple-con">
-              <text class="left-con">税额:</text>
-              <text class="right-con">{{v.税额}}</text>
+              <text class="left-con">报损数量:</text>
+              <text class="right-con">{{v.报损数量}}</text>
             </view>
-            <view class="multiple-con">
-              <text class="left-con">单据状态:</text>
-              <text class="right-con">{{v.单据状态}}</text>
-            </view>
+<!--            <view class="multiple-con">-->
+<!--              <text class="left-con">零售金额:</text>-->
+<!--              <text class="right-con">{{v.零售金额}}</text>-->
+<!--            </view>-->
           </view>
+
         </view>
       </view>
 
@@ -202,7 +193,7 @@ export default {
     condition(){
       let dataes={
         "access_token": uni.getStorageSync("access_token"),
-        "cxbh": "SPTHD_F",
+        "cxbh": "SPBSD_F",
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),
         "username": uni.getStorageSync("dlmc"),
@@ -317,7 +308,7 @@ export default {
     newOrder(){
       let dataes={
         "access_token": uni.getStorageSync("access_token"),
-        "djtype": "SPTHD",
+        "djtype": "SPBSD",
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),
       }
@@ -340,19 +331,19 @@ export default {
     // 编辑单
     tolook(item){
       let states=""
-      if(item.状态标志=="未审核"){
+      if(item.单据状态=="未审核"){
         states="edit"
       }else{
         states="look"
       }
       uni.navigateTo({
-        url: `/pages/function/component/spthd/thxd?state=${states}&djbh=${item.采购单号}&cgzt=${item.采购状态}&cgfd=${item.采购分店}&service=${item.采购员}&sjbh=${item.建议商家}&jcsl=${item.建采数量}&jcje=${item.建采金额}&scsl=${item.实采数量}&scje=${item.实采金额}&dhrq=${item.应到货日}&sjdhrq=${item.实到货日}&cgdhl=${item.采购到货率}`
+        url: `/pages/function/component/spbsd/bsxd?state=${states}&djbh=${item.报损单编号}&bsfd=${item.报损分店}&bssl=${item.报损数量}&nsje=${item.零售金额}&bsck=${item.报损仓库}&bslx=${item.报损类型}`
       });
     },
 
     // 获取所有单号上传数据。。。。。。。。。。。。。。。。。。。。。。。。。
     getlist(){
-      let str="'SPTHD',"
+      let str="'SPBSD',"
       for(var i in this.queryData){
         if(this.queryData[i].type=="查询下拉框"||this.queryData[i].type=="下拉框"){
           str+="'"+this.queryData[i].value.split("-")[0]+"'"
@@ -373,7 +364,7 @@ export default {
       }
       let dataes={
         "access_token": uni.getStorageSync("access_token"),
-        "djtype": "SPTHD",
+        "djtype": "SPBSD",
         "exeStr": str,
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),

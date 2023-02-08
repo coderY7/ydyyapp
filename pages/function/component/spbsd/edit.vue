@@ -62,34 +62,6 @@
         <view class="fold-title-t fold-title-flex-start">
           <text>{{title.djbh}}</text>
         </view>
-        <view class="fold-title-flex-start fold-title-con show-dots">
-          <text class="left-con">建议商家:</text>
-          <text class="right-con">{{title.sjbh}}</text>
-        </view>
-        <view class="multiples">
-          <view class="multiple-con">
-            <text class="left-con">实采数量:</text>
-            <text class="right-con">{{title.scsl}}</text>
-          </view>
-          <view class="multiple-con">
-            <text class="left-con">实采金额:</text>
-            <text class="right-con">{{title.scje}}</text>
-          </view>
-        </view>
-        <view class="multiples">
-          <view class="multiple-con">
-            <text class="left-con">采购分店:</text>
-            <text class="right-con">{{title.cgfd}}</text>
-          </view>
-          <view class="multiple-con">
-            <text class="left-con">采购状态:</text>
-            <text class="right-con">{{title.cgzt}}</text>
-          </view>
-        </view>
-        <view class="fold-title-flex-start fold-title-con">
-          <text class="left-con">应到货日:</text>
-          <text class="right-con">{{title.dhrq}}</text>
-        </view>
       </view>
       <view class="fold-content" v-for="(item,index) in tableData">
         <view class="card-flex-wrap">

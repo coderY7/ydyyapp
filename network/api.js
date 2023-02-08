@@ -55,6 +55,12 @@ export const ThdDelete = (params, config = {}) => http.post("/mzsale/web/thd/del
 export const ThdDosave = (params, config = {}) => http.post("/mzsale/web/thd/dosave", params, config)
 export const ThdDelLine = (params, config = {}) => http.post("/mzsale/web/thd/delete/line", params, config)
 
+//报损单
+export const BsdCheck = (params, config = {}) => http.post("/mzsale/web/bsd/check", params, config)
+export const BsdDelete = (params, config = {}) => http.post("/mzsale/web/bsd/delete", params, config)
+export const BsdDosave = (params, config = {}) => http.post("/mzsale/web/bsd/dosave", params, config)
+export const BsdDelLine = (params, config = {}) => http.post("/mzsale/web/bsd/delete/line", params, config)
+
 
 //刷新token
 export const refreshtoken = (params, config = {}) => http.post("/mzsale/web/token", params, config)

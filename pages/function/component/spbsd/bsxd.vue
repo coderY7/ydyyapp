@@ -10,7 +10,7 @@
           <uni-icons type="back" size="30" color="#fff"></uni-icons>
         </view>
       </view>
-      <view class="center" v-show="ifpage">采购新单</view>
+      <view class="center" v-show="ifpage">报损新单</view>
       <view class="center" v-show="!ifpage">商品明细</view>
       <view class="right" v-show="ifpage">
         <u-button class="icon-button" text="" throttleTime="2000" :disabled="state=='add'" @tap="newOrder">
@@ -48,9 +48,9 @@
                        v-model="uFormTitle.sjbh">
               </u-input>
             </u-form-item>
-            <u-form-item label="退货仓库" :labelWidth="76" prop="ckbh"
+            <u-form-item label="报损仓库" :labelWidth="76" prop="ckbh"
                          @tap="queryMore(false,'','CKINFO','ckbh')">
-              <u-input placeholder="请选择退货仓库" disabled
+              <u-input placeholder="请选择报损仓库" disabled
                        :disabledColor="state=='pladd'||state=='edit'||state=='look'||state=='check'?'#F5F7FA':'#fff'"
                        v-model="uFormTitle.ckbh">
               </u-input>
@@ -129,8 +129,8 @@
                        :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
-          <u-form-item label="退货数量" :labelWidth="74" prop="thsl" v-show="doingindex>=2">
-            <u-input placeholder="请输入退货数量" type="number" v-model="uFormModel.thsl"
+          <u-form-item label="报损数量" :labelWidth="74" prop="bssl" v-show="doingindex>=2">
+            <u-input placeholder="请输入报损数量" type="number" v-model="uFormModel.bssl"
                      :focus="focusObj.numFocus">
             </u-input>
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
@@ -138,8 +138,8 @@
                        @tap="clickYuyin('num',false)"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
-          <u-form-item label="退货价格" :labelWidth="74" prop="thjg" v-show="doingindex>=3">
-            <u-input placeholder="请输入退货价格" type="number" v-model="uFormModel.thjg"
+          <u-form-item label="报损价格" :labelWidth="74" prop="bsjg" v-show="doingindex>=3">
+            <u-input placeholder="请输入报损价格" type="number" v-model="uFormModel.bsjg"
                      :focus="focusObj.priceFocus">
             </u-input>
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
@@ -237,12 +237,12 @@ import dayjs from "dayjs";
 import {
   QueryHT,
   Basic,
-  ThdCheck,
-  ThdDelete,
+  BsdCheck,
+  BsdDelete,
   Search,
   Sppc,
   GetlistC,
-  ThdDosave,
+  BsdDosave,
   OrderNew
 } from "@/network/api.js";
 import xuanSwitch from "@/components/xuan-switch/xuan-switch.vue";
@@ -281,8 +281,8 @@ export default {
         gg: "",
         nsjg: "",
         kcph: "",
-        thsl: "",
-        thjg: "",
+        bssl: "",
+        bsjg: "",
       },
       uFormRules: {
         "spbm": {
@@ -294,10 +294,10 @@ export default {
             }
           }
         },
-        "thsl": [{
+        "bssl": [{
           type: "number",
           required: true,
-          message: "请填写退货数量",
+          message: "请填写报损数量",
           trigger: ["blur", "change"]
         },
           {
@@ -311,10 +311,10 @@ export default {
             }
           }
         ],
-        "thjg": [{
+        "bsjg": [{
           type: "number",
           required: true,
-          message: "请填写退货价格",
+          message: "请填写报损价格",
           trigger: ["blur", "change"]
         },
           {
@@ -416,6 +416,8 @@ export default {
       }.bind(this)
     });
     this.uFormTitle.djbh = option.djbh
+    this.uFormTitle.bsfd = option.bsfd
+
     this.state = option.state
     let sjVal = ""
     let ckVal = ""
@@ -686,7 +688,7 @@ export default {
 
               "username": uni.getStorageSync("dlmc"),
             }
-            ThdCheck(dataes).then((res) => {
+            BsdCheck(dataes).then((res) => {
               console.log("报审核 res", res)
               if (res.error_code == 0) {
                 this.$refs.uToast.show({
@@ -722,7 +724,7 @@ export default {
               "djbh": this.uFormTitle.djbh
             }
             console.log("删除单据 dataes", dataes)
-            ThdDelete(dataes).then((res) => {
+            BsdDelete(dataes).then((res) => {
               console.log("删除单据 res", res)
               if (res.error_code == 0) {
                 this.$refs.uToast.show({
@@ -819,8 +821,8 @@ export default {
       this.uFormModel.dw = data.dw
       this.uFormModel.gg = data.gg
       this.uFormModel.nsjg = data.nsjg
-      this.uFormModel.thsl = data.ndspsl
-      this.uFormModel.thjg = data.unsjg
+      this.uFormModel.bssl = data.ndspsl
+      this.uFormModel.bsjg = data.unsjg
       this.popupShow = false
       this.searchCode = 400
       this.isSpComplete = true
@@ -883,7 +885,7 @@ export default {
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),
         "djbh": this.uFormTitle.djbh,
-        "djtype": "SPTHD",
+        "djtype": "SPBSD",
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),
         "ztbz": "T"
@@ -926,8 +928,8 @@ export default {
       this.uFormModel.dw = ""
       this.uFormModel.gg = ""
       this.uFormModel.kcph = ""
-      this.uFormModel.thsl = ""
-      this.uFormModel.thjg = ""
+      this.uFormModel.bssl = ""
+      this.uFormModel.bsjg = ""
     },
     clearFocus() {
       this.focusObj.spbmFocus = false
@@ -952,7 +954,7 @@ export default {
       }
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),
-        "djtype": "SPTHD",
+        "djtype": "SPBSD",
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),
       }
@@ -995,9 +997,9 @@ export default {
           "spbm": this.uFormModel.spbm,
           "spmc": this.uFormModel.spmc,
           "sppc": this.uFormModel.kcph,
-          "spsl": this.uFormModel.thsl,
+          "spsl": this.uFormModel.bssl,
           "spsmm": this.uFormModel.spsmm,
-          "thjg": this.uFormModel.thjg
+          "bsjg": this.uFormModel.bsjg
         })
         this.doSave("CHK")
       }).catch(errors => {
@@ -1005,21 +1007,21 @@ export default {
       })
     },
     doSave(state) {
+      console.log(this.uFormTitle)
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),
         "djbh": this.uFormTitle.djbh,
-        "sjbh": this.uFormTitle.sjbh.split("-")[0],
-        "ckid": this.uFormTitle.ckbh.split("-")[0],
-        "thlx": this.uFormTitle.tklx.split("-")[0],
-        "ysdh": this.uFormTitle.ysdh,
+        "bsck": this.uFormTitle.ckbh.split("-")[0],
+        "bslx": this.uFormTitle.tklx.split("-")[0],
+        "bsfd":this.uFormTitle.bsfd,
         "fdbh": uni.getStorageSync("fdbh"),
         "remark": this.uFormTitle.remarks,
         "userid": uni.getStorageSync("userid"),
         "vtype": state,
-        "list": this.uploadarr
+        "list": this.uploadarr,
       }
       console.log("state==" + state + "; 保存商品 dosave dataes", dataes)
-      ThdDosave(dataes).then((res) => {
+      BsdDosave(dataes).then((res) => {
         console.log("state==" + state + "; 保存商品 dosave res", res)
         if (state == "EDIT") {
           if (res.error_code == 0) {
