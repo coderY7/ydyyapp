@@ -27,12 +27,12 @@
 						</view>
 					</view>
 				</view>
-				<u-form-item label="采购数量" :labelWidth="74" prop="jycgsl">
-					<u-input placeholder="请输入采购数量" type="number" v-model="editForm.jycgsl">
+				<u-form-item label="退货数量" :labelWidth="74" prop="thsl">
+					<u-input placeholder="请输入退货数量" type="number" v-model="editForm.thsl">
 					</u-input>
 				</u-form-item>
-				<u-form-item label="供货价格" :labelWidth="74" prop="jycgjg">
-					<u-input placeholder="请输入供货价格" type="number" v-model="editForm.jycgjg">
+				<u-form-item label="退货价格" :labelWidth="74" prop="thjg">
+					<u-input placeholder="请输入退货价格" type="number" v-model="editForm.thjg">
 					</u-input>
 				</u-form-item>
 				<u-form-item label="是否赠品" :labelWidth="74" prop="splx">
@@ -62,34 +62,7 @@
 				<view class="fold-title-t fold-title-flex-start">
 					<text>{{title.djbh}}</text>
 				</view>
-				<view class="fold-title-flex-start fold-title-con show-dots">
-					<text class="left-con">建议商家:</text>
-					<text class="right-con">{{title.sjbh}}</text>
-				</view>
-				<view class="multiples">
-					<view class="multiple-con">
-						<text class="left-con">实采数量:</text>
-						<text class="right-con">{{title.scsl}}</text>
-					</view>
-					<view class="multiple-con">
-						<text class="left-con">实采金额:</text>
-						<text class="right-con">{{title.scje}}</text>
-					</view>
-				</view>
-				<view class="multiples">
-					<view class="multiple-con">
-						<text class="left-con">采购分店:</text>
-						<text class="right-con">{{title.cgfd}}</text>
-					</view>
-					<view class="multiple-con">
-						<text class="left-con">采购状态:</text>
-						<text class="right-con">{{title.cgzt}}</text>
-					</view>
-				</view>
-				<view class="fold-title-flex-start fold-title-con">
-					<text class="left-con">应到货日:</text>
-					<text class="right-con">{{title.dhrq}}</text>
-				</view>
+
 			</view>
 			<view class="fold-content" v-for="(item,index) in tableData">
 				<view class="card-flex-wrap">
@@ -109,24 +82,24 @@
 						<text class="right-con">{{item.spsmm}}</text>
 					</view>
 				</view>
+<!--				<view class="multiples">-->
+<!--					<view class="multiple-con view-flex">-->
+<!--						<text class="left-con">特供:</text>-->
+<!--						<text class="right-con">{{item.jgcxbz}}</text>-->
+<!--					</view>-->
+<!--					<view class="multiple-con view-flex">-->
+<!--						<text class="left-con">赠品:</text>-->
+<!--						<text class="right-con">{{item.splx}}</text>-->
+<!--					</view>-->
+<!--				</view>-->
 				<view class="multiples">
 					<view class="multiple-con view-flex">
-						<text class="left-con">特供:</text>
-						<text class="right-con">{{item.jgcxbz}}</text>
+						<text class="left-con">退货数量:</text>
+						<text class="right-con">{{item.thsl}}</text>
 					</view>
 					<view class="multiple-con view-flex">
-						<text class="left-con">赠品:</text>
-						<text class="right-con">{{item.splx}}</text>
-					</view>
-				</view>
-				<view class="multiples">
-					<view class="multiple-con view-flex">
-						<text class="left-con">数量:</text>
-						<text class="right-con">{{item.jycgsl}}</text>
-					</view>
-					<view class="multiple-con view-flex">
-						<text class="left-con">价格:</text>
-						<text class="right-con">￥{{item.jycgjg}}</text>
+						<text class="left-con">退货价格:</text>
+						<text class="right-con">￥{{item.thjg}}</text>
 					</view>
 				</view>
 			</view>
@@ -181,16 +154,16 @@
 					spmc: "",
 					dw: "",
 					gg: "",
-					jycgsl: "",
-					jycgjg: "",
+					thsl: "",
+					thjg: "",
 					splx: false,//赠送商品
 					jgcxbz: "",//供价类型
 				},
 				editRules:{
-					"jycgsl": [{
+					"thsl": [{
 							type: "number",
 							required: true,
-							message: "请填写采购数量",
+							message: "请填写退货数量",
 							trigger: ["blur", "change"]
 						},
 						{
@@ -204,10 +177,10 @@
 							}
 						}
 					],
-					"jycgjg": [{
+					"thjg": [{
 							type: "number",
 							required: true,
-							message: "请填写供货价格",
+							message: "请填写退货价格",
 							trigger: ["blur", "change"]
 						},
 						{
@@ -273,9 +246,18 @@
 				this.serchGoods(row.spbm)
 				// this.editForm.jgcxbz = row.jgcxbz
 				this.editForm.splx = row.splx=="T"?true:false
-				this.editForm.jycgsl = row.jycgsl
-				this.editForm.jycgjg = row.jycgjg
-				this.formMore(row.jgcxbz,false)
+				this.editForm.thsl = row.thsl
+				this.editForm.thjg = row.thjg
+        this.editForm.spmc = row.spmc
+        this.editForm.spsmm = row.spsmm
+        this.editForm.spbm = row.spbm
+        this.editForm.rq = row.rq
+        this.editForm.ztrq = row.ztrq
+        this.editForm.giid = row.guid
+        this.editForm.thjglx = row.thjglx
+
+
+        this.formMore(row.jgcxbz,false)
 				// this.$set(this.tableData[index], "splx", [this.tableData[index].splx])
 				this.stateDetail = true
 				this.tableIndex = index
@@ -289,8 +271,8 @@
 				this.editForm.gg= ""
 				this.editForm.jgcxbz= ""//供价类型
 				this.editForm.splx= false//赠送商品
-				this.editForm.jycgsl= ""
-				this.editForm.jycgjg= ""
+				this.editForm.thsl= ""
+				this.editForm.thjg= ""
 				this.stateDetail = false
 				this.tableIndex = -1
 			},
@@ -305,15 +287,17 @@
 					let xx = Number(this.tableData[this.tableIndex].rq.split("T")[0].split("-")[2]) + this.serchGoodsData.bzqts
 					this.uploadarr.push({
 						"bzjzrq": dayjs().date(xx).format("YYYY-MM-DD"),
-						"cgjg": this.editForm.jycgjg,
-						"cgsl": this.editForm.jycgsl,
+						"thjg": this.editForm.thjg,
+						"thsl": this.editForm.thsl,
 						"cxtype": this.editForm.jgcxbz,
 						"guid": this.tableData[this.tableIndex].guid,
 						"scrq": this.tableData[this.tableIndex].rq,
 						"spbm": this.tableData[this.tableIndex].spbm,
 						"splx": this.editForm.splx?"T":"F",
 						"spsl": this.serchGoodsData.sl,
-						"spsmm": this.tableData[this.tableIndex].spsmm
+						"spsmm": this.tableData[this.tableIndex].spsmm,
+            "spmc":this.tableData[this.tableIndex].spmc,
+            "nsjg":this.tableData[this.tableIndex].nsjg
 					})
 					// console.log("保存商品 editDetailSave this.uploadarr",this.uploadarr)
 					this.$emit("editSave",this.uploadarr)
@@ -324,13 +308,14 @@
 			
 			// 删除商品
 			delGoods(row, index) {
+console.log('chanchu1',row)
 				uni.showModal({
 					content: "是否确认删除商品",
 					success: (resm)=> {
 						if (resm.confirm) {
 							let dataes={
 								"access_token": uni.getStorageSync("access_token"),
-								"djbh": row.cgdbh,
+								"djbh": row.thdbh,
 								"fdbh": uni.getStorageSync("fdbh"),
 								"userid": uni.getStorageSync("userid"),
 								"username": uni.getStorageSync("dlmc"),
@@ -344,8 +329,10 @@
 							console.log("删除商品 dataes",dataes)
 							ThdDelLine(dataes).then((res) => {
 								if (res.error_code == 0) {
-									this.$parent.getList()
-									this.$refs.uToast.show({
+									//this.$parent.getList()
+                  this.$emit("delgoods")
+
+                  this.$refs.uToast.show({
 										type: "success",
 										message: "删除成功"
 									})
@@ -382,7 +369,8 @@
 						this.editForm.spmc=res.data[0].spmc
 						this.editForm.dw=res.data[0].dw
 						this.editForm.gg=res.data[0].gg
-					}
+
+          }
 				}).catch((err) => {
 					console.log(err)
 				})

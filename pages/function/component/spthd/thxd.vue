@@ -10,7 +10,7 @@
 					<uni-icons type="back" size="30" color="#fff"></uni-icons>
 				</view>
 			</view>
-			<view class="center" v-show="ifpage">采购新单</view>
+			<view class="center" v-show="ifpage">退货新单</view>
 			<view class="center" v-show="!ifpage">商品明细</view>
 			<view class="right" v-show="ifpage">
 				<u-button class="icon-button" text="" throttleTime="2000" :disabled="state=='add'" @tap="newOrder">
@@ -25,7 +25,7 @@
 					<view class="fold-title">
 						<view class="fold-title-t fold-title-flex">
 							<text>单号:{{uFormTitle.djbh}}</text>
-							<text class="dhliang" @tap.stop="ifpage=false">明细:{{tableData.length}}</text>
+							<text class="dhliang" @tap.stop="ifpage=false" v-if="tableData.length!='0'">明细:{{tableData.length}}</text>
 						</view>
 						<view style="display:flex;justify-content:center;align-items:center;padding:8px;">
 							<text v-if="myCollShow">收起</text>
@@ -152,12 +152,13 @@
 
 			</view>
 		</view>
+
 		<u-button type="primary" class="my-primary-button sticky-bottom" text="保存" throttleTime="2000"
 			v-show="ifpage&&contentShow" @tap="save">
 		</u-button>
 
 		<view class="box-content" v-show="!ifpage">
-			<edit :title="editTitleObj" :tableData="tableData" :state="state" @editSave="editSave" ref="editDetail">
+			<edit :title="editTitleObj" :tableData="tableData" :state="state" @editSave="editSave" ref="editDetail" @delgoods="delgoods">
 			</edit>
 		</view>
 
@@ -893,6 +894,10 @@
 					if (res.error_code == 0) {
 						this.tableData = []
 						this.tableData = res.data
+            if(JSON.stringify(res.data)=='[]'){
+              console.log(this.ifpage)
+              this.ifpage = true
+            }
 					} else {
 						this.$refs.uToast.show({
 							type: "error",
@@ -941,6 +946,10 @@
 				this.uploadarr = arr
 				this.doSave("EDIT")
 			},
+      delgoods(){
+        console.log('11111111')
+        this.getList()
+      },
 			toback() {
 				this.ifpage = true
 				this.getList()

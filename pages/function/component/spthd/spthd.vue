@@ -340,13 +340,13 @@
 			// 编辑单
 			tolook(item){
 				let states=""
-				if(item.状态标志=="未审核"){
+				if(item.单据状态==null){
 					states="edit"
 				}else{
 					states="look"
 				}
 				uni.navigateTo({
-					url: `/pages/function/component/goshoping/cgxd?state=${states}&djbh=${item.采购单号}&cgzt=${item.采购状态}&cgfd=${item.采购分店}&service=${item.采购员}&sjbh=${item.建议商家}&jcsl=${item.建采数量}&jcje=${item.建采金额}&scsl=${item.实采数量}&scje=${item.实采金额}&dhrq=${item.应到货日}&sjdhrq=${item.实到货日}&cgdhl=${item.采购到货率}`
+					url: `/pages/function/component/spthd/thxd?state=${states}&djbh=${item.退货单号}&tklx=${item.退换类型}&thfd=${item.退货分店}&thsl=${item.退货数量}&thsj=${item.退货商家}&thje=${item.退货金额}&nsje=${item.零售金额}`
 				});
 			},
 			
@@ -384,6 +384,7 @@
 					if(res.error_code==0){
 						this.foldMoreShow=false
 						this.tableData=res.data
+            console.log(this.tableData)
 					}else{
 						this.$refs.uToast.show({
 							type:"error",

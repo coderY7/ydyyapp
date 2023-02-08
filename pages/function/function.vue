@@ -126,6 +126,11 @@
 								<image class="" src="@/static/images/spcg.png" mode="heightFix"></image>
 								<view class="zi">商品退货单</view>
 							</view>
+              <view class="functionView" @tap="wherego('spbsd')"
+                    :style="{backgroundColor: getColor('spbsd')}">
+                <image class="" src="@/static/images/spcg.png" mode="heightFix"></image>
+                <view class="zi">商品报损单</view>
+              </view>
 
 						</view>
 					</scroll-view>
@@ -253,7 +258,9 @@
 					urls = "/pages/function/component/pddsh/pddsh"
 				} else if (name == "spthd") {
 					urls = "/pages/function/component/spthd/spthd"
-				}
+				}else if (name == "spbsd") {
+          urls = "/pages/function/component/spbsd/spbsd"
+        }
 				return urls
 			},
 			lct() {

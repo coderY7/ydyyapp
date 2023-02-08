@@ -881,7 +881,16 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/function/component/spbsd/spbsd",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		// "navigationBarBackgroundColor": "#000000",
 		"navigationBarTextStyle": "black",
