@@ -157,7 +157,7 @@
     </u-button>
 
     <view class="box-content" v-show="!ifpage">
-      <edit :title="editTitleObj" :tableData="tableData" :state="state" @editSave="editSave" ref="editDetail">
+      <edit :title="editTitleObj" :tableData="tableData" :state="state" @editSave="editSave" ref="editDetail" @delgoods="delgoods">
       </edit>
     </view>
 
@@ -450,6 +450,10 @@ export default {
     },
     ocrBack() {
       this.ocrShow = false
+    },
+    delgoods(){
+      console.log('11111111')
+      this.getList()
     },
     changeDh() {
       if (this.aiDhShow) {
@@ -888,7 +892,7 @@ export default {
         "djtype": "SPBSD",
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),
-        "ztbz": "T"
+        "ztbz": "F"
       }
       GetlistC(dataes).then((res) => {
         console.log("获取该单号已上传的商品 res", res)
@@ -993,11 +997,9 @@ export default {
         this.uploadarr = []
         this.uploadarr.push({
           "guid": "",
-          "nsjg": this.uFormModel.nsjg,
           "spbm": this.uFormModel.spbm,
           "spmc": this.uFormModel.spmc,
-          "sppc": this.uFormModel.kcph,
-          "spsl": this.uFormModel.bssl,
+          "bssl": this.uFormModel.bssl,
           "spsmm": this.uFormModel.spsmm,
           "bsjg": this.uFormModel.bsjg
         })

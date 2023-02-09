@@ -275,16 +275,13 @@ export default {
       this.$refs.uForm.validate().then(resf => {
         this.uploadarr = []
         let xx = Number(this.tableData[this.tableIndex].rq.split("T")[0].split("-")[2]) + this.serchGoodsData.bzqts
+        console.log('2121',this.editForm,this.tableData[this.tableIndex])
         this.uploadarr.push({
-          "bzjzrq": dayjs().date(xx).format("YYYY-MM-DD"),
-          "cgjg": this.editForm.jycgjg,
-          "cgsl": this.editForm.jycgsl,
-          "cxtype": this.editForm.jgcxbz,
-          "guid": this.tableData[this.tableIndex].guid,
-          "scrq": this.tableData[this.tableIndex].rq,
+          "bsjg":this.tableData[this.tableIndex].nsjg,
+          "bssl":this.tableData[this.tableIndex].bssl,
+          "spmc":this.tableData[this.tableIndex].spmc,
+          "guid": this.tableData[this.tableIndex].recordid,
           "spbm": this.tableData[this.tableIndex].spbm,
-          "splx": this.editForm.splx?"T":"F",
-          "spsl": this.serchGoodsData.sl,
           "spsmm": this.tableData[this.tableIndex].spsmm
         })
         // console.log("保存商品 editDetailSave this.uploadarr",this.uploadarr)
@@ -307,7 +304,7 @@ export default {
               "userid": uni.getStorageSync("userid"),
               "username": uni.getStorageSync("dlmc"),
               "list": [{
-                "guid": row.guid,
+                "guid": row.recordid,
                 "spbm": row.spbm,
                 "spmc": row.spmc,
                 "spsmm": row.spsmm
@@ -316,7 +313,8 @@ export default {
             console.log("删除商品 dataes",dataes)
             ThdDelLine(dataes).then((res) => {
               if (res.error_code == 0) {
-                this.$parent.getList()
+                // this.$parent.getList()
+                this.$emit("delgoods")
                 this.$refs.uToast.show({
                   type: "success",
                   message: "删除成功"
