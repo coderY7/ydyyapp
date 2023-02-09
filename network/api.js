@@ -67,6 +67,11 @@ export const BydDelete = (params, config = {}) => http.post("/mzsale/web/byd/del
 export const BydDosave = (params, config = {}) => http.post("/mzsale/web/byd/dosave", params, config)
 export const BydDelLine = (params, config = {}) => http.post("/mzsale/web/byd/delete/line", params, config)
 
+//调价单
+export const BjdCheck = (params, config = {}) => http.post("/mzsale/web/bjd/check", params, config)
+export const BjdDelete = (params, config = {}) => http.post("/mzsale/web/bjd/delete", params, config)
+export const BjdDosave = (params, config = {}) => http.post("/mzsale/web/bjd/dosave", params, config)
+export const BjdDelLine = (params, config = {}) => http.post("/mzsale/web/bjd/delete/line", params, config)
 
 //刷新token
 export const refreshtoken = (params, config = {}) => http.post("/mzsale/web/token", params, config)
