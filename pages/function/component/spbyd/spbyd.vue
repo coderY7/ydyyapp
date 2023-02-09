@@ -8,7 +8,7 @@
         </navigator>
       </view>
       <view class="center">
-        <text>商品报销单</text>
+        <text>商品报溢单</text>
       </view>
       <view class="right">
         <u-button class="icon-button guideJS1" text="" throttleTime="2000" @tap="newOrder">
@@ -89,18 +89,18 @@
           </view>
           <view class="multiples">
             <view class="multiple-con">
-              <text class="left-con">报损分店:</text>
-              <text class="right-con">{{v.报损分店}}</text>
+              <text class="left-con">报溢分店:</text>
+              <text class="right-con">{{v.报溢分店}}</text>
             </view>
             <view class="multiple-con">
-              <text class="left-con">报损仓库:</text>
-              <text class="right-con">{{v.报损仓库}}</text>
+              <text class="left-con">报溢仓库:</text>
+              <text class="right-con">{{v.报溢仓库}}</text>
             </view>
           </view>
           <view class="multiples">
             <view class="multiple-con">
-              <text class="left-con">报损类型:</text>
-              <text class="right-con">{{v.报损类型}}</text>
+              <text class="left-con">报溢数量:</text>
+              <text class="right-con">{{v.报溢数量}}</text>
             </view>
             <view class="multiple-con">
               <text class="left-con">零售金额:</text>
@@ -108,10 +108,7 @@
             </view>
           </view>
           <view class="multiples">
-            <view class="multiple-con">
-              <text class="left-con">报损数量:</text>
-              <text class="right-con">{{v.报损数量}}</text>
-            </view>
+
 <!--            <view class="multiple-con">-->
 <!--              <text class="left-con">零售金额:</text>-->
 <!--              <text class="right-con">{{v.零售金额}}</text>-->
@@ -193,7 +190,7 @@ export default {
     condition(){
       let dataes={
         "access_token": uni.getStorageSync("access_token"),
-        "cxbh": "SPBSD_F",
+        "cxbh": "SPBYD_F",
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),
         "username": uni.getStorageSync("dlmc"),
@@ -308,7 +305,7 @@ export default {
     newOrder(){
       let dataes={
         "access_token": uni.getStorageSync("access_token"),
-        "djtype": "SPBSD",
+        "djtype": "SPBYD",
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),
       }
@@ -316,7 +313,7 @@ export default {
         // console.log("orderNew res",res)
         if(res.error_code==0){
           uni.navigateTo({
-            url: `/pages/function/component/spbsd/bsxd?djbh=${res.djbh}&state=add`
+            url: `/pages/function/component/spbyd/byxd?djbh=${res.djbh}&state=add`
           });
         }else{
           this.$refs.uToast.show({
@@ -337,13 +334,13 @@ export default {
         states="look"
       }
       uni.navigateTo({
-        url: `/pages/function/component/spbsd/bsxd?state=${states}&djbh=${item.报损单编号}&bsfd=${item.报损分店}&bssl=${item.报损数量}&nsje=${item.零售金额}&bsck=${item.报损仓库}&bslx=${item.报损类型}`
+        url: `/pages/function/component/spbyd/byxd?state=${states}&djbh=${item.报溢单编号}&byfd=${item.报溢分店}&bysl=${item.报溢数量}&nsje=${item.零售金额}&byck=${item.报溢仓库}&djzt=${item.单据状态}`
       });
     },
 
     // 获取所有单号上传数据。。。。。。。。。。。。。。。。。。。。。。。。。
     getlist(){
-      let str="'SPBSD',"
+      let str="'SPBYD',"
       for(var i in this.queryData){
         if(this.queryData[i].type=="查询下拉框"||this.queryData[i].type=="下拉框"){
           str+="'"+this.queryData[i].value.split("-")[0]+"'"
@@ -364,7 +361,7 @@ export default {
       }
       let dataes={
         "access_token": uni.getStorageSync("access_token"),
-        "djtype": "SPBSD",
+        "djtype": "SPBYD",
         "exeStr": str,
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),

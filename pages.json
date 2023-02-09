@@ -666,6 +666,23 @@
 				}
 			}
 		},
+		//商品报溢单
+		{
+			"path": "pages/function/component/spbyd/spbyd",
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "all"
+				}
+			}
+		},
+		{
+			"path": "pages/function/component/spbyd/byxd",
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "all"
+				}
+			}
+		},
 
 
 		//analysis.....分析....................
@@ -899,6 +916,15 @@
 			}
 
 		}
+        ,{
+            "path" : "pages/function/component/spbyd/spbyd/spbyd",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		// "navigationBarBackgroundColor": "#000000",
