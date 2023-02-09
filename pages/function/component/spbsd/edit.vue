@@ -162,7 +162,7 @@ export default {
         "bssl": [{
           type: "number",
           required: true,
-          message: "请填写采购数量",
+          message: "请填写报损数量",
           trigger: ["blur", "change"]
         },
           {
@@ -179,7 +179,7 @@ export default {
         "nsjg": [{
           type: "number",
           required: true,
-          message: "请填写供货价格",
+          message: "请填写报损价格",
           trigger: ["blur", "change"]
         },
           {
