@@ -27,12 +27,12 @@
             </view>
           </view>
         </view>
-        <u-form-item label="采购数量" :labelWidth="74" prop="jycgsl">
-          <u-input placeholder="请输入采购数量" type="number" v-model="editForm.jycgsl">
+        <u-form-item label="报损数量" :labelWidth="74" prop="bssl">
+          <u-input placeholder="请输入报损数量" type="number" v-model="editForm.bssl">
           </u-input>
         </u-form-item>
-        <u-form-item label="供货价格" :labelWidth="74" prop="jycgjg">
-          <u-input placeholder="请输入供货价格" type="number" v-model="editForm.jycgjg">
+        <u-form-item label="报损价格" :labelWidth="74" prop="nsjg">
+          <u-input placeholder="请输入报损价格" type="number" v-model="editForm.nsjg">
           </u-input>
         </u-form-item>
         <u-form-item label="是否赠品" :labelWidth="74" prop="splx">
@@ -83,22 +83,22 @@
         </view>
         <view class="multiples">
           <view class="multiple-con view-flex">
-            <text class="left-con">特供:</text>
-            <text class="right-con">{{item.jgcxbz}}</text>
+            <text class="left-con">仓库:</text>
+            <text class="right-con">{{item.ckmc}}</text>
           </view>
           <view class="multiple-con view-flex">
-            <text class="left-con">赠品:</text>
-            <text class="right-con">{{item.splx}}</text>
+            <text class="left-con">分店:</text>
+            <text class="right-con">{{item.fdmc}}</text>
           </view>
         </view>
         <view class="multiples">
           <view class="multiple-con view-flex">
             <text class="left-con">数量:</text>
-            <text class="right-con">{{item.jycgsl}}</text>
+            <text class="right-con">{{item.bssl}}</text>
           </view>
           <view class="multiple-con view-flex">
             <text class="left-con">价格:</text>
-            <text class="right-con">￥{{item.jycgjg}}</text>
+            <text class="right-con">￥{{item.nsjg}}</text>
           </view>
         </view>
       </view>
@@ -117,7 +117,7 @@ import dayjs from "dayjs";
 import {
   Basic,
   Search,
-  ThdDelLine
+  BsdDelLine
 } from "@/network/api.js";
 import xuanSwitch from "@/components/xuan-switch/xuan-switch.vue";
 export default {
@@ -153,13 +153,13 @@ export default {
         spmc: "",
         dw: "",
         gg: "",
-        jycgsl: "",
-        jycgjg: "",
+        bssl: "",
+        nsjg: "",
         splx: false,//赠送商品
         jgcxbz: "",//供价类型
       },
       editRules:{
-        "jycgsl": [{
+        "bssl": [{
           type: "number",
           required: true,
           message: "请填写采购数量",
@@ -176,7 +176,7 @@ export default {
             }
           }
         ],
-        "jycgjg": [{
+        "nsjg": [{
           type: "number",
           required: true,
           message: "请填写供货价格",
@@ -245,8 +245,8 @@ export default {
       this.serchGoods(row.spbm)
       // this.editForm.jgcxbz = row.jgcxbz
       this.editForm.splx = row.splx=="T"?true:false
-      this.editForm.jycgsl = row.jycgsl
-      this.editForm.jycgjg = row.jycgjg
+      this.editForm.bssl = row.bssl
+      this.editForm.nsjg = row.nsjg
       this.formMore(row.jgcxbz,false)
       // this.$set(this.tableData[index], "splx", [this.tableData[index].splx])
       this.stateDetail = true
@@ -261,8 +261,8 @@ export default {
       this.editForm.gg= ""
       this.editForm.jgcxbz= ""//供价类型
       this.editForm.splx= false//赠送商品
-      this.editForm.jycgsl= ""
-      this.editForm.jycgjg= ""
+      this.editForm.bssl= ""
+      this.editForm.nsjg= ""
       this.stateDetail = false
       this.tableIndex = -1
     },
@@ -299,7 +299,7 @@ export default {
           if (resm.confirm) {
             let dataes={
               "access_token": uni.getStorageSync("access_token"),
-              "djbh": row.cgdbh,
+              "djbh": row.bsdbh,
               "fdbh": uni.getStorageSync("fdbh"),
               "userid": uni.getStorageSync("userid"),
               "username": uni.getStorageSync("dlmc"),
@@ -311,7 +311,7 @@ export default {
               }]
             }
             console.log("删除商品 dataes",dataes)
-            ThdDelLine(dataes).then((res) => {
+            BsdDelLine(dataes).then((res) => {
               if (res.error_code == 0) {
                 // this.$parent.getList()
                 this.$emit("delgoods")
