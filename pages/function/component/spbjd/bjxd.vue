@@ -129,8 +129,8 @@
                        :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
-          <u-form-item label="报溢数量" :labelWidth="74" prop="bssl" v-show="doingindex>=2">
-            <u-input placeholder="请输入报溢数量" type="number" v-model="uFormModel.bssl"
+          <u-form-item label="变后价格" :labelWidth="74" prop="bhjg" v-show="doingindex>=2">
+            <u-input placeholder="请输入价格" type="number" v-model="uFormModel.bhjg"
                      :focus="focusObj.numFocus">
             </u-input>
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
@@ -138,8 +138,17 @@
                        @tap="clickYuyin('num',false)"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
-          <u-form-item label="报溢价格" :labelWidth="74" prop="bsjg" v-show="doingindex>=3">
-            <u-input placeholder="请输入报溢价格" type="number" v-model="uFormModel.bsjg"
+          <u-form-item label="生效时间" :labelWidth="74" prop="sxsj" v-show="doingindex>=3">
+            <u-input placeholder="" type="number" v-model="uFormModel.sxsj"
+                     :focus="focusObj.priceFocus">
+            </u-input>
+            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+                       :color="doingId=='price'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"
+                       @tap="clickYuyin('price',false)"></uni-icons>
+            <text class="inp-right-text" v-else></text>
+          </u-form-item>
+          <u-form-item label="分摊商家" :labelWidth="74" prop="sjbh" v-show="doingindex>=3">
+            <u-input placeholder="" type="number" v-model="uFormModel.sjbh"
                      :focus="focusObj.priceFocus">
             </u-input>
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
@@ -282,7 +291,7 @@ export default {
         nsjg: "",
         kcph: "",
         bssl: "",
-        bsjg: "",
+        bhjg: "",
       },
       uFormRules: {
         "spbm": {
@@ -294,10 +303,10 @@ export default {
             }
           }
         },
-        "bssl": [{
+        "sxsj": [{
           type: "number",
           required: true,
-          message: "请填写报溢数量",
+          message: "请填写生效时间",
           trigger: ["blur", "change"]
         },
           {
@@ -311,10 +320,10 @@ export default {
             }
           }
         ],
-        "bsjg": [{
+        "bhjg": [{
           type: "number",
           required: true,
-          message: "请填写报溢价格",
+          message: "请填写变后价格",
           trigger: ["blur", "change"]
         },
           {
@@ -818,6 +827,7 @@ export default {
       })
     },
     setForm(data, isauto) {
+      console.log('选择的商品',data)
       this.serchGoodsData = data
       this.uFormModel.spbm = data.spbm
       this.uFormModel.spsmm = data.spsmm
@@ -826,8 +836,14 @@ export default {
       this.uFormModel.gg = data.gg
       this.uFormModel.nsjg = data.nsjg
       this.uFormModel.bysl = data.ndspsl
-      this.uFormModel.byjg = data.unsjg
+     
       this.uFormModel.sjbh = data.sjbh
+      this.uFormModel.sxsj = data.YJRQ
+      this.uFormModel.fdssbl = data.wastebl
+      this.uFormModel.spfixlx = data.spfixlx
+      this.uFormModel.spremark = data.spremark
+      this.uFormModel.bhjg = ''
+
 
       this.popupShow = false
       this.searchCode = 400
@@ -891,7 +907,7 @@ export default {
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),
         "djbh": this.uFormTitle.djbh,
-        "djtype": "SPBYD",
+        "djtype": "SPBJD",
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),
         "ztbz": "F"
@@ -935,7 +951,7 @@ export default {
       this.uFormModel.gg = ""
       this.uFormModel.kcph = ""
       this.uFormModel.bssl = ""
-      this.uFormModel.bsjg = ""
+      this.uFormModel.bhjg = ""
     },
     clearFocus() {
       this.focusObj.spbmFocus = false
@@ -960,7 +976,7 @@ export default {
       }
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),
-        "djtype": "SPBYD",
+        "djtype": "SPBJD",
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),
       }
@@ -999,14 +1015,22 @@ export default {
         console.log(this.uFormModel)
         this.uploadarr = []
         this.uploadarr.push({
-          "guid": "",
-          "spbm": this.uFormModel.spbm,
-          "spmc": this.uFormModel.spmc,
-          "bysl": this.uFormModel.bysl,
-          "spsmm": this.uFormModel.spsmm,
-          "bysj":this.uFormModel.sjbh,
-          "sppc":'',
+
           "nsjg": this.uFormModel.nsjg,
+
+          bhjg:'',
+          bqjg:'',
+          fdssbl:'',
+          guid:'',
+          sibh:'',
+          spbm:'',
+          spfixlx:'',
+          spmc:'',
+          sppc:'',
+          spremark:'',
+          spsmm:'',
+          sxsj:''
+
         })
         this.doSave("CHK")
       }).catch(errors => {
