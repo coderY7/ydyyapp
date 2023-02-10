@@ -683,6 +683,23 @@
 				}
 			}
 		},
+		//商品调价单
+		{
+			"path": "pages/function/component/spbjd/spbjd",
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "all"
+				}
+			}
+		},
+		{
+			"path": "pages/function/component/spbjd/bjxd",
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "all"
+				}
+			}
+		},
 
 
 		//analysis.....分析....................

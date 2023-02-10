@@ -136,7 +136,11 @@
                 <image class="" src="@/static/images/spcg.png" mode="heightFix"></image>
                 <view class="zi">商品报溢单</view>
               </view>
-
+              <view class="functionView" @tap="wherego('spbjd')"
+                    :style="{backgroundColor: getColor('spbjd')}">
+                <image class="" src="@/static/images/spcg.png" mode="heightFix"></image>
+                <view class="zi">商品调价单</view>
+              </view>
 						</view>
 					</scroll-view>
 				</swiper-item>
@@ -267,6 +271,9 @@
           urls = "/pages/function/component/spbsd/spbsd"
         }else if (name == "spbyd") {
           urls = "/pages/function/component/spbyd/spbyd"
+        }
+        else if (name == "spbjd") {
+          urls = "/pages/function/component/spbjd/spbjd"
         }
 				return urls
 			},
