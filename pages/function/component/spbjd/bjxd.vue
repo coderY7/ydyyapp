@@ -48,24 +48,19 @@
                        v-model="uFormTitle.sjbh">
               </u-input>
             </u-form-item>
-            <u-form-item label="报溢仓库" :labelWidth="76" prop="ckbh"
-                         @tap="queryMore(false,'','CKINFO','ckbh')">
-              <u-input placeholder="请选择报溢仓库" disabled
-                       :disabledColor="state=='pladd'||state=='edit'||state=='look'||state=='check'?'#F5F7FA':'#fff'"
-                       v-model="uFormTitle.ckbh">
-              </u-input>
+
+
+
+
+<!--           分店下拉多选-->
+            <u-form-item label="选择分店" :labelWidth="76" prop="remarks">
+              <select-lay :value="tval" :zindex="1000" :options="data2" @selectitem="selectitem" @change="change"></select-lay>
             </u-form-item>
-            <u-form-item label="退换类型" :labelWidth="76" prop="tklx" @tap="queryMore(false,'','TKLX','tklx')">
-              <u-input placeholder="请选择退换类型" disabled
-                       :disabledColor="state=='pladd'||state=='edit'||state=='look'||state=='check'?'#F5F7FA':'#fff'"
-                       v-model="uFormTitle.tklx">
-              </u-input>
-            </u-form-item>
-            <u-form-item label="原始单号" :labelWidth="76" prop="ysdh">
-              <u-input placeholder="请输入原始单号" v-model="uFormTitle.ysdh"
-                       :disabled="state=='look'||state=='check'">
-              </u-input>
-            </u-form-item>
+
+
+
+
+
             <u-form-item label="备注说明" :labelWidth="76" prop="remarks">
               <u-input placeholder="请输入备注说明" v-model="uFormTitle.remarks"
                        :disabled="state=='look'||state=='check'">
@@ -127,6 +122,15 @@
             </u-input>
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
                        :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
+            <text class="inp-right-text" v-else></text>
+          </u-form-item>
+          <u-form-item label="变前价格" :labelWidth="74" prop="bhjg" v-show="doingindex>=2">
+            <u-input placeholder="" type="number" v-model="uFormModel.nsjg" :disabled=true
+                     :focus="focusObj.numFocus">
+            </u-input>
+            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+                       :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"
+                       @tap="clickYuyin('num',false)"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
           <u-form-item label="变后价格" :labelWidth="74" prop="bhjg" v-show="doingindex>=2">
@@ -414,7 +418,21 @@ export default {
       ],
       // OCR
       ocrShow: false,
-      aiDhShow: false
+      aiDhShow: false,
+      data2:[
+        {id: 1, value: '选项1'},
+        {id: 2, value: '选项2'},
+        {id: 3, value: '选项3'},
+        {id: 4, value: '选项4'},
+        {id: 5, value: '选项5'},
+        {id: 6, value: '这是6'},
+        {id: 7, value: '这是7'},
+        {id: 8, value: '这是8'},
+        {id: 9, value: '这是9'},
+        {id: 10, value: '这是10'},
+      ],//fdlist
+      fdlist:[],
+      tval:[],
     }
   },
   onLoad(option) {
@@ -442,6 +460,8 @@ export default {
     this.querySj(true, sjVal, "sjbh")
     this.queryMore(true, ckVal, "CKINFO", "ckbh")
     this.queryMore(true, tkVal, "TKLX", "tklx")
+    this.queryMore(true, tkVal, "FDINFO", "fdinfo")
+
   },
   onReady() {
     // 设置状态栏文字颜色为 白色
@@ -451,8 +471,17 @@ export default {
   },
   onShow() {
 
+
   },
   methods: {
+    change(item,value) {
+      console.log(item,value);
+      this.tval = value;
+    },
+
+    selectitem:function(e){
+      console.log('选择中的分店',e)
+    },
     // OCR表格识别............................................................
     toOcr() {
       this.ocrShow = true
@@ -634,6 +663,23 @@ export default {
       }
       Basic(dataes).then((res) => {
         console.log(type + " 基本信息basic res", res)
+
+
+        if (type == "FDINFO") {
+          this.fdlist = []
+          res.data.forEach((item,i)=>{
+            this.fdlist.push({
+              "label": res.data[i].fdbh,
+              "value": res.data[i].fdmc
+            })
+          })
+
+
+
+            this.data2=this.fdlist
+
+          console.log(this.data2)
+        }
         if (res.error_code == 0) {
           if (value) {
             for (var i in res.data) {
@@ -657,9 +703,11 @@ export default {
             } else {
               this.selectId = fixid
               this.selectData = []
+
               this.popupShow = true
               this.ifDrawer = "title"
               for (var i in res.data) {
+
                 if (type == "CKINFO") {
                   this.selectData.push({
                     "id": res.data[i].ckbmid,
@@ -842,7 +890,9 @@ export default {
       this.uFormModel.fdssbl = data.wastebl
       this.uFormModel.spfixlx = data.spfixlx
       this.uFormModel.spremark = data.spremark
+
       this.uFormModel.bhjg = ''
+
 
 
       this.popupShow = false
@@ -1019,17 +1069,17 @@ export default {
           "nsjg": this.uFormModel.nsjg,
 
           bhjg:'',
-          bqjg:'',
-          fdssbl:'',
+          bqjg:this.uFormModel.nsjg,
+          fdssbl:'',//分摊比率
           guid:'',
-          sibh:'',
-          spbm:'',
-          spfixlx:'',
-          spmc:'',
-          sppc:'',
-          spremark:'',
-          spsmm:'',
-          sxsj:''
+          sjbh:this.uFormModel.sjbh,//分摊商家
+          spbm:this.uFormModel.spbm,
+          spfixlx:this.uFormModel.spbm,
+          spmc:this.uFormModel.spmc,
+          sppc:'',//商品批次
+          spremark:this.uFormModel.spremark,
+          spsmm:this.uFormModel.spsmm,
+          sxsj:''//生效时间
 
         })
         this.doSave("CHK")
@@ -1042,9 +1092,9 @@ export default {
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),
         "djbh": this.uFormTitle.djbh,
-        "byck": this.uFormTitle.ckbh.split("-")[0],
-        "byfd":this.uFormTitle.byfd,
+        "jqlx":'',
         "fdbh": uni.getStorageSync("fdbh"),
+        "fdlist":uni.getStorageSync("fdbh"),
         "remark": this.uFormTitle.remarks,
         "userid": uni.getStorageSync("userid"),
         "vtype": state,
