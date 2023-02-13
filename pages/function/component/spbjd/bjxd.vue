@@ -54,7 +54,7 @@
 
 <!--           分店下拉多选-->
             <u-form-item label="选择分店" :labelWidth="76" prop="remarks">
-              <select-lay :value="tval" :zindex="1000" :options="data2" @selectitem="selectitem" @change="change"></select-lay>
+              <rudon-multiSelector welcome="请选择" :is_using_slot="false" :is_using_icon="true" :localdata="data2" @change="whenChanged"></rudon-multiSelector>
             </u-form-item>
 
 
@@ -419,18 +419,7 @@ export default {
       // OCR
       ocrShow: false,
       aiDhShow: false,
-      data2:[
-        {id: 1, value: '选项1'},
-        {id: 2, value: '选项2'},
-        {id: 3, value: '选项3'},
-        {id: 4, value: '选项4'},
-        {id: 5, value: '选项5'},
-        {id: 6, value: '这是6'},
-        {id: 7, value: '这是7'},
-        {id: 8, value: '这是8'},
-        {id: 9, value: '这是9'},
-        {id: 10, value: '这是10'},
-      ],//fdlist
+      data2:[],//fdlist
       fdlist:[],
       tval:[],
     }
@@ -474,13 +463,16 @@ export default {
 
   },
   methods: {
-    change(item,value) {
-      console.log(item,value);
-      this.tval = value;
-    },
+    whenChanged(e) {
+      let fdlist=[]
+e.forEach((item,i)=>{
+  if(item.is_selected){
+    fdlist.push(item.value)
+  }
+})
 
-    selectitem:function(e){
-      console.log('选择中的分店',e)
+      this.fdlist=fdlist
+      this.data2 = e
     },
     // OCR表格识别............................................................
     toOcr() {
@@ -669,8 +661,9 @@ export default {
           this.fdlist = []
           res.data.forEach((item,i)=>{
             this.fdlist.push({
-              "label": res.data[i].fdbh,
-              "value": res.data[i].fdmc
+              "value": res.data[i].fdbh,
+              "text": res.data[i].fdmc,
+              "is_selected":false
             })
           })
 
@@ -1094,7 +1087,7 @@ export default {
         "djbh": this.uFormTitle.djbh,
         "jqlx":'',
         "fdbh": uni.getStorageSync("fdbh"),
-        "fdlist":uni.getStorageSync("fdbh"),
+        "fdlist":this.fdlist,
         "remark": this.uFormTitle.remarks,
         "userid": uni.getStorageSync("userid"),
         "vtype": state,
