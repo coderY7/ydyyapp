@@ -737,7 +737,7 @@ e.forEach((item,i)=>{
               "access_token": uni.getStorageSync("access_token"),
               "conname": "",
               "djbh": this.uFormTitle.djbh,
-              "isyxcheck": "F",
+              "fdbh":uni.getStorageSync("fdbh"),
               "remark": this.uFormTitle.remarks,
 
               "username": uni.getStorageSync("dlmc"),
