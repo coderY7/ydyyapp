@@ -73,6 +73,73 @@ export const BjdDelete = (params, config = {}) => http.post("/mzsale/web/bjd/del
 export const BjdDosave = (params, config = {}) => http.post("/mzsale/web/bjd/dosave", params, config)
 export const BjdDelLine = (params, config = {}) => http.post("/mzsale/web/bjd/delete/line", params, config)
 
+//促销单
+
+
+//批发单
+//查询客户地区信息
+export const PfdQuery = (params, config = {}) => http.post("/mzsale/web/pfd/dqxx/query", params, config)
+//查询客户地区TreeView
+export const Pfdtreeview = (params, config = {}) => http.post("/mzsale/web/pfd/dqxx/treeview", params, config)
+//增加地区信息
+export const Pfdadd = (params, config = {}) => http.post("/mzsale/web/pfd/dqxx/add", params, config)
+//修改地区信息
+export const Pfdupdate = (params, config = {}) => http.post("/mzsale/web/pfd/dqxx/update", params, config)
+//删除地区信息
+export const Pfddelete = (params, config = {}) => http.post("/mzsale/web/pfd/dqxx/delete", params, config)
+//获取销售出库单待转入销售订单
+export const Pfckdquery = (params, config = {}) => http.post("/mzsale/web/pfckd/import/query", params, config)
+//采购到货验收批量转入库
+export const Pfckddo = (params, config = {}) => http.post("/mzsale/web/pfckd/import/do", params, config)
+//获取销售出库单要复制的单据明细
+export const Pfckdcopy = (params, config = {}) => http.post("/mzsale/web/pfckd/copy/query", params, config)
+//复制销售单转批发
+export const Pfckdcopydo = (params, config = {}) => http.post("/mzsale/web/pfckd/copy/do", params, config)
+//查询批发商客户
+export const Pfdcustquery = (params, config = {}) => http.post("/mzsale/web/pfd/cust/query", params, config)
+//增加批发商客户
+export const Pfdcustadd = (params, config = {}) => http.post("/mzsale/web/pfd/cust/add", params, config)
+//修改批发商客户
+export const Pfdcustupdate = (params, config = {}) => http.post("/mzsale/web/pfd/cust/update", params, config)
+//删除恢复批发商客户
+export const Pfdcustopen = (params, config = {}) => http.post("/mzsale/web/pfd/cust/open", params, config)
+//查询业务员信息
+export const Pfdywyquery = (params, config = {}) => http.post("/mzsale/web/pfd/ywy/query", params, config)
+//增加业务员信息
+export const Pfdywyadd = (params, config = {}) => http.post("/mzsale/web/pfd/ywy/add", params, config)
+//修改
+export const Pfdywyupdate = (params, config = {}) => http.post("/mzsale/web/pfd/ywy/update", params, config)
+//删除业务员信息
+export const Pfdywydelete = (params, config = {}) => http.post("/mzsale/web/pfd/ywy/delete", params, config)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //刷新token
 export const refreshtoken = (params, config = {}) => http.post("/mzsale/web/token", params, config)
 
