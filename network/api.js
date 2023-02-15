@@ -111,6 +111,39 @@ export const Pfdywyadd = (params, config = {}) => http.post("/mzsale/web/pfd/ywy
 export const Pfdywyupdate = (params, config = {}) => http.post("/mzsale/web/pfd/ywy/update", params, config)
 //删除业务员信息
 export const Pfdywydelete = (params, config = {}) => http.post("/mzsale/web/pfd/ywy/delete", params, config)
+//查询客户预付款信息
+export const Pfdyfkquery = (params, config = {}) => http.post("/mzsale/web/pfd/cust/yfk/query", params, config)
+//新增客户预付款信息
+export const Pfdyfkadd = (params, config = {}) => http.post("/mzsale/web/pfd/cust/yfk/add", params, config)
+//客户应收款确认处理
+export const Pfdyfkdosave = (params, config = {}) => http.post("/mzsale/web/pfd/cust/ysk/dosave", params, config)
+//查询客户催款单
+export const Pfdckdquery = (params, config = {}) => http.post("/mzsale/web/pfd/cust/ckd/query", params, config)
+//查询客户应收款信息
+export const Pfdcyskquery= (params, config = {}) => http.post("/mzsale/web/pfd/cust/ysk/query", params, config)
+//查询批发商特约商品信息
+export const Pfdtyspquery= (params, config = {}) => http.post("/mzsale/web/pfd/tysp/query", params, config)
+//新增批发商特约商品信息
+export const Pfdtyspadd= (params, config = {}) => http.post("/mzsale/web/pfd/tysp/add", params, config)
+//修改批发商特约商品信息
+export const Pfdtyspupdate= (params, config = {}) => http.post("/mzsale/web/pfd/tysp/update", params, config)
+//删除批发商特约商品信息
+export const Pfdtyspdelete= (params, config = {}) => http.post("/mzsale/web/pfd/tysp/delete", params, config)
+//销售出库单商品保存编辑
+export const Pfckddosave= (params, config = {}) => http.post("/mzsale/web/pfckd/dosave", params, config)
+//销售出库单审核上账
+export const Pfckdcheck= (params, config = {}) => http.post("/mzsale/web/pfckd/check", params, config)
+//销售出库单整单删除
+export const Pfckddalete= (params, config = {}) => http.post("/mzsale/web/pfckd/delete", params, config)
+//删除销售出库单选中明细
+export const Pfckddaleteline= (params, config = {}) => http.post("/mzsale/web/pfckd/delete/line", params, config)
+
+
+
+
+
+
+
 
 
 
