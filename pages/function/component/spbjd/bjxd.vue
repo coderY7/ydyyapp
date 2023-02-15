@@ -877,17 +877,12 @@ e.forEach((item,i)=>{
       this.uFormModel.gg = data.gg
       this.uFormModel.nsjg = data.nsjg
       this.uFormModel.bysl = data.ndspsl
-     
       this.uFormModel.sjbh = data.sjbh
       this.uFormModel.sxsj = data.YJRQ
       this.uFormModel.fdssbl = data.wastebl
       this.uFormModel.spfixlx = data.spfixlx
       this.uFormModel.spremark = data.spremark
-
       this.uFormModel.bhjg = ''
-
-
-
       this.popupShow = false
       this.searchCode = 400
       this.isSpComplete = true
