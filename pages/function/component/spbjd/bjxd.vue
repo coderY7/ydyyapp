@@ -133,7 +133,7 @@
                        @tap="clickYuyin('num',false)"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
-          <u-form-item label="变后价格" :labelWidth="74" prop="bhjg" v-show="doingindex>=2">
+          <u-form-item label="变后价格" :labelWidth="74" prop="bhjg" v-show="doingindex>=3">
             <u-input placeholder="请输入价格" type="number" v-model="uFormModel.bhjg"
                      :focus="focusObj.numFocus">
             </u-input>
@@ -144,7 +144,7 @@
           </u-form-item>
 
 <!--          生效时间-->
-          <u-form-item label="生效时间" :labelWidth="74" prop="sxsj" v-show="doingindex>=3">
+          <u-form-item label="生效时间" :labelWidth="74" prop="sxsj" v-show="doingindex>=4">
 <!--            <u-input placeholder="" type="number" v-model="uFormModel.sxsj"-->
 <!--                     :focus="focusObj.priceFocus">-->
 <!--            </u-input>-->
@@ -163,8 +163,18 @@
 
 
 
-          <u-form-item label="分摊商家" :labelWidth="74" prop="sjbh" v-show="doingindex>=3">
+          <u-form-item label="分摊商家" :labelWidth="74" prop="sjbh" v-show="doingindex>=5">
             <u-input placeholder="" type="number" v-model="uFormModel.sjbh"
+                     :focus="focusObj.priceFocus">
+            </u-input>
+            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+                       :color="doingId=='price'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"
+                       @tap="clickYuyin('price',false)"></uni-icons>
+            <text class="inp-right-text" v-else></text>
+          </u-form-item>
+
+          <u-form-item label="分摊比率" :labelWidth="74" prop="sjbh" v-show="doingindex>=6">
+            <u-input placeholder="" type="number" v-model="uFormModel.fdssbl"
                      :focus="focusObj.priceFocus">
             </u-input>
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
@@ -1072,9 +1082,9 @@ e.forEach((item,i)=>{
 
           "nsjg": this.uFormModel.nsjg,
 
-          bhjg:'',
+          bhjg:this.uFormModel.bhjg,
           bqjg:this.uFormModel.nsjg,
-          fdssbl:'',//分摊比率
+          fdssbl:this.uFormModel.fdssbl,//分摊比率
           guid:'',
           sjbh:this.uFormModel.sjbh,//分摊商家
           spbm:this.uFormModel.spbm,
@@ -1083,7 +1093,7 @@ e.forEach((item,i)=>{
           sppc:'',//商品批次
           spremark:this.uFormModel.spremark,
           spsmm:this.uFormModel.spsmm,
-          sxsj:''//生效时间
+          sxsj:this.uFormModel.sxsj,//生效时间
 
         })
         this.doSave("CHK")
