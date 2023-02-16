@@ -593,4 +593,7 @@ export default {
 page {
   background-color: #f8f8f8;
 }
+.box .u-radio-group--row .u-radio{
+  margin-right: 8px;
+}
 </style>
