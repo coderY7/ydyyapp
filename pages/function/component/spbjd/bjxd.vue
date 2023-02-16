@@ -54,7 +54,7 @@
 
 <!--           分店下拉多选-->
             <u-form-item label="选择分店" :labelWidth="76" prop="remarks">
-              <rudon-multiSelector welcome="请选择" :is_using_slot="false" :is_using_icon="true" :localdata="data2" @change="whenChanged"></rudon-multiSelector>
+              <rudon-multiSelector :welcome="data2[0].text" :is_using_slot="false" :is_using_icon="true" :localdata="data2" @change="whenChanged"></rudon-multiSelector>
             </u-form-item>
 
 
@@ -116,15 +116,16 @@
               </view>
             </view>
           </view>
-          <u-form-item label="库存批号" :labelWidth="74" prop="kcph" v-show="doingindex>=1">
-            <u-input placeholder="请选择库存批号" type="text" readonly v-model="uFormModel.kcph"
-                     :focus="focusObj.kcphFocus" @tap="serchKcph">
+          <u-form-item label="调价类型" :labelWidth="74" prop="jxlxid" v-show="doingindex>=1">
+            <u-input placeholder="" type="number" v-model="uFormModel.jxlxid" :disabled=true
+                     :focus="focusObj.numFocus">
             </u-input>
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
-                       :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
+                       :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"
+                       @tap="clickYuyin('num',false)"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
-          <u-form-item label="变前价格" :labelWidth="74" prop="bhjg" v-show="doingindex>=2">
+          <u-form-item label="变前价格" :labelWidth="74" prop="nsjg" v-show="doingindex>=2">
             <u-input placeholder="" type="number" v-model="uFormModel.nsjg" :disabled=true
                      :focus="focusObj.numFocus">
             </u-input>
@@ -330,7 +331,7 @@ export default {
           }
         },
         "sxsj": [{
-          type: "number",
+          type: "string",
           required: true,
           message: "请填写生效时间",
           trigger: ["blur", "change"]
@@ -341,7 +342,8 @@ export default {
               if (reg.test(value)) {
                 callback();
               } else {
-                callback(new Error('请输入非负数'));
+                callback();
+                //callback(new Error('请输入非负数'));
               }
             }
           }
@@ -481,7 +483,7 @@ export default {
     // #endif
   },
   onShow() {
-
+this.fdlist=uni.getStorageSync("fdbh")
 
   },
   methods: {
@@ -896,6 +898,7 @@ e.forEach((item,i)=>{
     setForm(data, isauto) {
       console.log('选择的商品',data)
       this.serchGoodsData = data
+      this.uFormModel.jxlxid=data.jxlxid
       this.uFormModel.spbm = data.spbm
       this.uFormModel.spsmm = data.spsmm
       this.uFormModel.spmc = data.spmc
@@ -904,7 +907,7 @@ e.forEach((item,i)=>{
       this.uFormModel.nsjg = data.nsjg
       this.uFormModel.bysl = data.ndspsl
       this.uFormModel.sjbh = data.sjbh
-      this.uFormModel.sxsj = data.YJRQ
+      //this.uFormModel.sxsj = data.YJRQ
       this.uFormModel.fdssbl = data.wastebl
       this.uFormModel.spfixlx = data.spfixlx
       this.uFormModel.spremark = data.spremark
@@ -1079,16 +1082,13 @@ e.forEach((item,i)=>{
         console.log(this.uFormModel)
         this.uploadarr = []
         this.uploadarr.push({
-
-          "nsjg": this.uFormModel.nsjg,
-
           bhjg:this.uFormModel.bhjg,
           bqjg:this.uFormModel.nsjg,
           fdssbl:this.uFormModel.fdssbl,//分摊比率
           guid:'',
           sjbh:this.uFormModel.sjbh,//分摊商家
           spbm:this.uFormModel.spbm,
-          spfixlx:this.uFormModel.spbm,
+          spfixlx:this.uFormModel.spfixlx,
           spmc:this.uFormModel.spmc,
           sppc:'',//商品批次
           spremark:this.uFormModel.spremark,
@@ -1096,7 +1096,7 @@ e.forEach((item,i)=>{
           sxsj:this.uFormModel.sxsj,//生效时间
 
         })
-        this.doSave("CHK")
+        this.doSave("ADD")
       }).catch(errors => {
 
       })
