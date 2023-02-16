@@ -142,15 +142,27 @@
                        @tap="clickYuyin('num',false)"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
+
+<!--          生效时间-->
           <u-form-item label="生效时间" :labelWidth="74" prop="sxsj" v-show="doingindex>=3">
-            <u-input placeholder="" type="number" v-model="uFormModel.sxsj"
-                     :focus="focusObj.priceFocus">
-            </u-input>
+<!--            <u-input placeholder="" type="number" v-model="uFormModel.sxsj"-->
+<!--                     :focus="focusObj.priceFocus">-->
+<!--            </u-input>-->
+
+            <uni-datetime-picker
+                type="datetime"
+                v-model="uFormModel.sxsj"
+                @change="changeLog"
+            />
+
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
                        :color="doingId=='price'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"
                        @tap="clickYuyin('price',false)"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
+
+
+
           <u-form-item label="分摊商家" :labelWidth="74" prop="sjbh" v-show="doingindex>=3">
             <u-input placeholder="" type="number" v-model="uFormModel.sjbh"
                      :focus="focusObj.priceFocus">
@@ -463,6 +475,10 @@ export default {
 
   },
   methods: {
+    changeLog(e) {
+      console.log("-change事件:", e,this);
+    },
+
     whenChanged(e) {
       let fdlist=[]
 e.forEach((item,i)=>{

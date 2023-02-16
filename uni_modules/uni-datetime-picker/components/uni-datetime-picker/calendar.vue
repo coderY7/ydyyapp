@@ -1,7 +1,7 @@
 <template>
 	<view class="uni-calendar" @mouseleave="leaveCale">
 		<view v-if="!insert&&show" class="uni-calendar__mask" :class="{'uni-calendar--mask-show':aniMaskShow}"
-			@click="clean"></view>
+			@click="clean();maskClick()"></view>
 		<view v-if="insert || show" class="uni-calendar__content"
 			:class="{'uni-calendar--fixed':!insert,'uni-calendar--ani-show':aniMaskShow, 'uni-calendar__content-mobile': aniMaskShow}">
 			<view class="uni-calendar__header" :class="{'uni-calendar__header-mobile' :!insert}">
@@ -10,7 +10,7 @@
 				</view>
 				<picker mode="date" :value="date" fields="month" @change="bindDateChange">
 					<text
-						class="uni-calendar__header-text">{{ (nowDate.year||'') + ' 年 ' + ( nowDate.month||'') +' 月'}}</text>
+						class="uni-calendar__header-text">{{ (nowDate.year||'') + yearText + ( nowDate.month||'') + monthText}}</text>
 				</picker>
 				<view v-if="right" class="uni-calendar__header-btn-box" @click.stop="next">
 					<view class="uni-calendar__header-btn uni-calendar--right"></view>
@@ -19,8 +19,6 @@
 					<view class="dialog-close-plus" data-id="close"></view>
 					<view class="dialog-close-plus dialog-close-rotate" data-id="close"></view>
 				</view>
-
-				<!-- <text class="uni-calendar__backtoday" @click="backtoday">回到今天</text> -->
 			</view>
 			<view class="uni-calendar__box">
 				<view v-if="showMonth" class="uni-calendar__box-bg">
@@ -31,7 +29,7 @@
 						<text class="uni-calendar__weeks-day-text">{{SUNText}}</text>
 					</view>
 					<view class="uni-calendar__weeks-day">
-						<text class="uni-calendar__weeks-day-text">{{monText}}</text>
+						<text class="uni-calendar__weeks-day-text">{{MONText}}</text>
 					</view>
 					<view class="uni-calendar__weeks-day">
 						<text class="uni-calendar__weeks-day-text">{{TUEText}}</text>
@@ -74,7 +72,9 @@
 						:hide-second="hideSecond" :disabled="!tempRange.before" class="time-picker-style">
 					</time-picker>
 				</view>
-				<uni-icons type="arrowthinright" color="#999" style="line-height: 50px;"></uni-icons>
+				<view style="line-height: 50px;">
+					<uni-icons type="arrowthinright" color="#999"></uni-icons>
+				</view>
 				<view class="uni-date-changed--time-end">
 					<view class="uni-date-changed--time-date">{{tempRange.after ? tempRange.after : endDateText}}</view>
 					<time-picker type="time" :end="reactEndTime" v-model="timeRange.endTime" :border="false"
@@ -83,10 +83,7 @@
 				</view>
 			</view>
 			<view v-if="!insert" class="uni-date-changed uni-date-btn--ok">
-				<!-- <view class="uni-calendar__header-btn-box">
-					<text class="uni-calendar__button-text uni-calendar--fixed-width">{{okText}}</text>
-				</view> -->
-				<view class="uni-datetime-picker--btn" @click="confirm">确认</view>
+				<view class="uni-datetime-picker--btn" @click="confirm">{{confirmText}}</view>
 			</view>
 		</view>
 	</view>
@@ -96,13 +93,11 @@
 	import Calendar from './util.js';
 	import calendarItem from './calendar-item.vue'
 	import timePicker from './time-picker.vue'
-	import {
-		initVueI18n
-	} from '@dcloudio/uni-i18n'
-	import messages from './i18n/index.js'
-	const {
-		t
-	} = initVueI18n(messages)
+
+	import { initVueI18n } from '@dcloudio/uni-i18n'
+	import i18nMessages from './i18n/index.js'
+	const { t } = initVueI18n(i18nMessages)
+
 	/**
 	 * Calendar 日历
 	 * @description 日历组件可以查看日期，选择任意范围内的日期，打点操作。常用场景如：酒店日期预订、火车机票选择购买日期、上下班打卡等
@@ -158,6 +153,14 @@
 				default: ''
 			},
 			endDate: {
+				type: String,
+				default: ''
+			},
+      startPlaceholder: {
+        type: String,
+				default: ''
+			},
+			endPlaceholder: {
 				type: String,
 				default: ''
 			},
@@ -232,7 +235,7 @@
 		watch: {
 			date: {
 				immediate: true,
-				handler(newVal, oldVal) {
+				handler(newVal) {
 					if (!this.range) {
 						this.tempSingleDate = newVal
 						setTimeout(() => {
@@ -243,33 +246,44 @@
 			},
 			defTime: {
 				immediate: true,
-				handler(newVal, oldVal) {
+				handler(newVal) {
 					if (!this.range) {
 						this.time = newVal
 					} else {
-						// console.log('-----', newVal);
 						this.timeRange.startTime = newVal.start
 						this.timeRange.endTime = newVal.end
 					}
 				}
 			},
 			startDate(val) {
+				// 字节小程序 watch 早于 created
+				if(!this.cale){
+					return
+				}
 				this.cale.resetSatrtDate(val)
 				this.cale.setDate(this.nowDate.fullDate)
 				this.weeks = this.cale.weeks
 			},
 			endDate(val) {
+				// 字节小程序 watch 早于 created
+				if(!this.cale){
+					return
+				}
 				this.cale.resetEndDate(val)
 				this.cale.setDate(this.nowDate.fullDate)
 				this.weeks = this.cale.weeks
 			},
 			selected(newVal) {
+				// 字节小程序 watch 早于 created
+				if(!this.cale){
+					return
+				}
 				this.cale.setSelectInfo(this.nowDate.fullDate, newVal)
 				this.weeks = this.cale.weeks
 			},
 			pleStatus: {
 				immediate: true,
-				handler(newVal, oldVal) {
+				handler(newVal) {
 					const {
 						before,
 						after,
@@ -292,6 +306,11 @@
 								this.cale.lastHover = false
 							}
 						} else {
+              // 字节小程序 watch 早于 created
+              if(!this.cale){
+                return
+              }
+
 							this.cale.setDefaultMultiple(before, after)
 							if (which === 'left') {
 								this.setDate(before)
@@ -332,7 +351,13 @@
 			okText() {
 				return t("uni-datetime-picker.ok")
 			},
-			monText() {
+			yearText() {
+				return t("uni-datetime-picker.year")
+			},
+			monthText() {
+				return t("uni-datetime-picker.month")
+			},
+			MONText() {
 				return t("uni-calender.MON")
 			},
 			TUEText() {
@@ -353,21 +378,20 @@
 			SUNText() {
 				return t("uni-calender.SUN")
 			},
+			confirmText() {
+				return t("uni-calender.confirm")
+			},
 		},
 		created() {
 			// 获取日历方法实例
 			this.cale = new Calendar({
-				// date: new Date(),
 				selected: this.selected,
 				startDate: this.startDate,
 				endDate: this.endDate,
 				range: this.range,
-				// multipleStatus: this.pleStatus
 			})
 			// 选中某一天
-			// this.cale.setDate(this.date)
 			this.init(this.date)
-			// this.setDay
 		},
 		methods: {
 			leaveCale() {
@@ -402,6 +426,11 @@
 				this.close()
 			},
 
+			// 蒙版点击事件
+			maskClick() {
+				this.$emit('maskClose')
+			},
+
 			clearCalender() {
 				if (this.range) {
 					this.timeRange.startTime = ''
@@ -433,17 +462,6 @@
 				this.weeks = this.cale.weeks
 				this.nowDate = this.calendar = this.cale.getInfo(date)
 			},
-			// choiceDate(weeks) {
-			// 	if (weeks.disable) return
-			// 	this.calendar = weeks
-			// 	// 设置多选
-			// 	this.cale.setMultiple(this.calendar.fullDate, true)
-			// 	this.weeks = this.cale.weeks
-			// 	this.tempSingleDate = this.calendar.fullDate
-			// 	this.tempRange.before = this.cale.multipleStatus.before
-			// 	this.tempRange.after = this.cale.multipleStatus.after
-			// 	this.change()
-			// },
 			/**
 			 * 打开日历弹窗
 			 */
@@ -537,8 +555,15 @@
 				this.cale.setMultiple(this.calendar.fullDate, true)
 				this.weeks = this.cale.weeks
 				this.tempSingleDate = this.calendar.fullDate
-				this.tempRange.before = this.cale.multipleStatus.before
-				this.tempRange.after = this.cale.multipleStatus.after
+				const beforeDate = new Date(this.cale.multipleStatus.before).getTime()
+				const afterDate = new Date(this.cale.multipleStatus.after).getTime()
+				if (beforeDate > afterDate && afterDate) {
+					this.tempRange.before = this.cale.multipleStatus.after
+					this.tempRange.after = this.cale.multipleStatus.before
+				} else {
+					this.tempRange.before = this.cale.multipleStatus.before
+					this.tempRange.after = this.cale.multipleStatus.after
+				}
 				this.change()
 			},
 			/**
@@ -595,6 +620,8 @@
 </script>
 
 <style lang="scss" >
+	$uni-primary: #007aff !default;
+
 	.uni-calendar {
 		/* #ifndef APP-NVUE */
 		display: flex;
@@ -705,7 +732,7 @@
 		text-align: center;
 		width: 100px;
 		font-size: 14px;
-		color: #007aff;
+		color: $uni-primary;
 		/* #ifndef APP-NVUE */
 		letter-spacing: 3px;
 		/* #endif */
@@ -884,10 +911,10 @@
 		border-radius: 100px;
 		height: 40px;
 		line-height: 40px;
-		background-color: #007aff;
+		background-color: $uni-primary;
 		color: #fff;
 		font-size: 16px;
-		letter-spacing: 5px;
+		letter-spacing: 2px;
 	}
 
 	/* #ifndef APP-NVUE */
