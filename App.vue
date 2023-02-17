@@ -343,6 +343,7 @@
 					})
 				}
 			});
+
 			
 			uni.setStorageSync("model", "Test");
 			

@@ -9,7 +9,8 @@
 
 <script>
 	import {
-		usercheck
+		usercheck,
+      Basic
 	} from "@/network/api.js";
 	export default {
 		data() {
@@ -19,6 +20,7 @@
 		},
 		onLoad: function(option) {
 			this.getAuth()
+      this.getbasic()
 			uni.redirectTo({
 				url: "/pages/home/home"
 			})
@@ -52,7 +54,19 @@
 				// }).catch((err) => {
 				// 	console.log(err)
 				// })
-			}
+			},
+      getbasic(){
+        //获取basic
+        let data={
+          access_token:uni.getStorageSync('access_token'),
+          dtype:'GetBufferAll',
+          companyid:uni.getStorageSync('companyid'),
+        }
+        Basic(data).then((res)=>{
+          console.log('basic',res)
+          uni.setStorageSync('basic',res.data)
+        })
+      }
 			
 
 		}

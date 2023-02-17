@@ -116,15 +116,25 @@
               </view>
             </view>
           </view>
-          <u-form-item label="调价类型" :labelWidth="74" prop="jxlxid" v-show="doingindex>=1">
-            <u-input placeholder="" type="number" v-model="uFormModel.jxlxid" :disabled=true
-                     :focus="focusObj.numFocus">
-            </u-input>
+
+
+
+          <u-form-item label="调价类型" :labelWidth="74" prop="jglx" v-show="doingindex>=1">
+<!--            <u-input placeholder="" type="number" v-model="uFormModel.jglx" :disabled=true-->
+<!--                     :focus="focusObj.numFocus">-->
+<!--            </u-input>-->
+
+            <rudon-multiSelector :welcome="jglxdata[0].text" :is_using_slot="false" :is_using_icon="true" :localdata="jglxdata" @change="jglxChanged"></rudon-multiSelector>
+
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
                        :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"
                        @tap="clickYuyin('num',false)"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
+
+
+
+
           <u-form-item label="变前价格" :labelWidth="74" prop="nsjg" v-show="doingindex>=2">
             <u-input placeholder="" type="number" v-model="uFormModel.nsjg" :disabled=true
                      :focus="focusObj.numFocus">
@@ -445,7 +455,8 @@ export default {
       aiDhShow: false,
       data2:[],//fdlist
       fdlist:[],
-      tval:[],
+     jglxdata:[],
+
     }
   },
   onLoad(option) {
@@ -474,6 +485,17 @@ export default {
     this.queryMore(true, ckVal, "CKINFO", "ckbh")
     this.queryMore(true, tkVal, "TKLX", "tklx")
     this.queryMore(true, tkVal, "FDINFO", "fdinfo")
+//价格类型
+    this.jglxdata=uni.getStorageSync('basic').SPJGMS
+    let jglist = []
+    this.jglxdata.forEach((item,i)=>{
+      jglist.push({
+        "value": this.jglxdata[i].jglxid,
+        "text": this.jglxdata[i].jglxmc,
+        "is_selected":false
+      })
+    })
+    this.jglxdata=jglist
 
   },
   onReady() {
@@ -483,7 +505,7 @@ export default {
     // #endif
   },
   onShow() {
-this.fdlist=uni.getStorageSync("fdbh")
+//this.fdlist=uni.getStorageSync("fdbh")
 
   },
   methods: {
@@ -501,7 +523,22 @@ e.forEach((item,i)=>{
 
       this.fdlist=fdlist
       this.data2 = e
+      console.log(this.fdlist)
     },
+
+   jglxChanged(e) {
+      let jglxlist=[]
+      e.forEach((item,i)=>{
+        if(item.is_selected){
+          jglxlist.push(item.value)
+        }
+      })
+
+      this.uFormModel.jglx=jglxlist
+      this.jglxdata = e
+     console.log(this.uFormModel.jglx)
+    },
+
     // OCR表格识别............................................................
     toOcr() {
       this.ocrShow = true
@@ -688,18 +725,14 @@ e.forEach((item,i)=>{
         if (type == "FDINFO") {
           this.fdlist = []
           res.data.forEach((item,i)=>{
-            this.fdlist.push({
+            this.data2.push({
               "value": res.data[i].fdbh,
               "text": res.data[i].fdmc,
               "is_selected":false
             })
           })
 
-
-
-            this.data2=this.fdlist
-
-          console.log(this.data2)
+          console.log(this.data2,this.fdlist)
         }
         if (res.error_code == 0) {
           if (value) {
@@ -898,7 +931,7 @@ e.forEach((item,i)=>{
     setForm(data, isauto) {
       console.log('选择的商品',data)
       this.serchGoodsData = data
-      this.uFormModel.jxlxid=data.jxlxid
+      this.uFormModel.jglx=data.jxlxid
       this.uFormModel.spbm = data.spbm
       this.uFormModel.spsmm = data.spsmm
       this.uFormModel.spmc = data.spmc
@@ -915,6 +948,7 @@ e.forEach((item,i)=>{
       this.popupShow = false
       this.searchCode = 400
       this.isSpComplete = true
+      console.log(this.uFormModel)
       // console.log("this.serchGoodsData this.serchGoodsData", this.serchGoodsData)
       if (this.isVoiceMode) {
         let arrTemp = []
@@ -1102,13 +1136,19 @@ e.forEach((item,i)=>{
       })
     },
     doSave(state) {
+      if(this.fdlist.length=='1'){
+        this.fdlist=this.fdlist.toString()
+      }
+      if(this.uFormModel.jglx.length=='1'){
+        this.uFormModel.jglx=this.uFormModel.jglx.toString()
+      }
       console.log(this.uFormTitle)
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),
         "djbh": this.uFormTitle.djbh,
-        "jqlx":'',
+        "jglx":this.uFormModel.jglx,
         "fdbh": uni.getStorageSync("fdbh"),
-        "fdlist":this.fdlist,
+        "fdlist":this.fdlist.length=='0'?uni.getStorageSync("fdbh"):this.fdlist,
         "remark": this.uFormTitle.remarks,
         "userid": uni.getStorageSync("userid"),
         "vtype": state,
