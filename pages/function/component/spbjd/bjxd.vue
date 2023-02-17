@@ -54,7 +54,7 @@
 
 <!--           分店下拉多选-->
             <u-form-item label="选择分店" :labelWidth="76" prop="remarks">
-              <rudon-multiSelector :welcome="data2[0].text" :is_using_slot="false" :is_using_icon="true" :localdata="data2" @change="whenChanged"></rudon-multiSelector>
+              <rudon-multiSelector welcome="请选择分店" :is_using_slot="false" :is_using_icon="true" :localdata="data2" @change="whenChanged"></rudon-multiSelector>
             </u-form-item>
 
 
@@ -119,12 +119,12 @@
 
 
 
-          <u-form-item label="调价类型" :labelWidth="74" prop="jglx" v-show="doingindex>=1">
+          <u-form-item label="调价类型" :labelWidth="74" prop="jglx" v-show="doingindex>=1&&spcxcg">
 <!--            <u-input placeholder="" type="number" v-model="uFormModel.jglx" :disabled=true-->
 <!--                     :focus="focusObj.numFocus">-->
 <!--            </u-input>-->
 
-            <rudon-multiSelector :welcome="jglxdata[0].text" :is_using_slot="false" :is_using_icon="true" :localdata="jglxdata" @change="jglxChanged"></rudon-multiSelector>
+            <rudon-multiSelector welcome="请选择调价类型" :is_using_slot="false" :is_using_icon="true" :localdata="jglxdata" @change="jglxChanged"></rudon-multiSelector>
 
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
                        :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"
@@ -304,6 +304,7 @@ export default {
   },
   data() {
     return {
+      spcxcg:false,
       x: 400,
       y: 300,
       ifpage: true,
@@ -731,6 +732,13 @@ e.forEach((item,i)=>{
               "is_selected":false
             })
           })
+          if(uni.getStorage('fdbh')){
+            this.data2.forEach((item,i)=>{
+              if(item.value==uni.getStorageSync('fdbh')){
+                item.is_selected=true
+              }
+            })
+          }
 
           console.log(this.data2,this.fdlist)
         }
@@ -929,9 +937,11 @@ e.forEach((item,i)=>{
       })
     },
     setForm(data, isauto) {
+
       console.log('选择的商品',data)
+
       this.serchGoodsData = data
-      this.uFormModel.jglx=data.jxlxid
+      this.uFormModel.jglx= data.jxlxid
       this.uFormModel.spbm = data.spbm
       this.uFormModel.spsmm = data.spsmm
       this.uFormModel.spmc = data.spmc
@@ -940,7 +950,6 @@ e.forEach((item,i)=>{
       this.uFormModel.nsjg = data.nsjg
       this.uFormModel.bysl = data.ndspsl
       this.uFormModel.sjbh = data.sjbh
-      //this.uFormModel.sxsj = data.YJRQ
       this.uFormModel.fdssbl = data.wastebl
       this.uFormModel.spfixlx = data.spfixlx
       this.uFormModel.spremark = data.spremark
@@ -949,6 +958,14 @@ e.forEach((item,i)=>{
       this.searchCode = 400
       this.isSpComplete = true
       console.log(this.uFormModel)
+      this.spcxcg=true
+      if(this.uFormModel.jglx.length>0){
+          this.jglxdata.forEach((item,i)=>{
+            if(item.value==this.uFormModel.jglx){
+              item.is_selected=true
+            }
+          })
+      }
       // console.log("this.serchGoodsData this.serchGoodsData", this.serchGoodsData)
       if (this.isVoiceMode) {
         let arrTemp = []
