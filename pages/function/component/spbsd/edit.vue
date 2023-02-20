@@ -277,8 +277,8 @@ export default {
         let xx = Number(this.tableData[this.tableIndex].rq.split("T")[0].split("-")[2]) + this.serchGoodsData.bzqts
         console.log('2121',this.editForm,this.tableData[this.tableIndex])
         this.uploadarr.push({
-          "bsjg":this.tableData[this.tableIndex].nsjg,
-          "bssl":this.tableData[this.tableIndex].bssl,
+          "bsjg":this.editForm.nsjg,
+          "bssl":this.editForm.bssl,
           "spmc":this.tableData[this.tableIndex].spmc,
           "guid": this.tableData[this.tableIndex].recordid,
           "spbm": this.tableData[this.tableIndex].spbm,
