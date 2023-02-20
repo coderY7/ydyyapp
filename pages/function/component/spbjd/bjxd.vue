@@ -1083,6 +1083,8 @@ e.forEach((item,i)=>{
       this.uFormModel.kcph = ""
       this.uFormModel.bssl = ""
       this.uFormModel.bhjg = ""
+      this.uFormModel.jglx = ""
+
     },
     clearFocus() {
       this.focusObj.spbmFocus = false
