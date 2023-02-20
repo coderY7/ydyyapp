@@ -38,14 +38,23 @@
           </u-input>
         </u-form-item>
         <u-form-item label="调价类型" :labelWidth="74" prop="jglxid">
-          <u-input placeholder="请输入报溢价格" type="number" v-model="editForm.jglxid">
-          </u-input>
+<!--          <u-input placeholder="请输入报溢价格" type="number" v-model="editForm.jglxid">-->
+<!--          </u-input>-->
+          <rudon-multiSelector welcome="请选择调价类型" :is_using_slot="false" :is_using_icon="true" :localdata="jglxdata" @change="jglxChanged"></rudon-multiSelector>
         </u-form-item>
-        <u-form-item label="生效时间" :labelWidth="74" prop="sxsj">
-<!--          <xuanSwitch :switchList="switchList" :defaultSwitch="editForm.sxsj" @change="switChange"></xuanSwitch>-->
-        </u-form-item>
-        <u-form-item label="分摊比率" :labelWidth="74" prop="splx">
+<!--        <u-form-item label="生效时间" :labelWidth="74" prop="sxsj">-->
+<!--&lt;!&ndash;          <xuanSwitch :switchList="switchList" :defaultSwitch="editForm.sxsj" @change="switChange"></xuanSwitch>&ndash;&gt;-->
+<!--          <uni-datetime-picker-->
+<!--              :value="start"-->
+<!--              type="datetime"-->
+<!--              v-model="editForm.sxsj"-->
+<!--              @change="changeLog"-->
+<!--          />-->
+<!--        </u-form-item>-->
+        <u-form-item label="分摊比率" :labelWidth="74" prop="fdssbl">
 <!--          <xuanSwitch :switchList="switchList" :defaultSwitch="editForm.splx" @change="switChange"></xuanSwitch>-->
+          <u-input placeholder="请输入分摊比率" type="number" v-model="editForm.fdssbl">
+          </u-input>
         </u-form-item>
       </u-form>
 <!--      <view class="form-card">-->
@@ -155,6 +164,7 @@ export default {
   },
   data() {
     return {
+      start:'2021-3-20',
       switchList:["是","否"],
       editForm:{
         spbm: "",
@@ -170,7 +180,7 @@ export default {
         bqjg:'',
         bhjg:'',
         spremark:'',
-        jxlxid:'',
+        jglxid:'',
         jglx:'',
         sxsj:'',
         fdssbl:'',
@@ -215,15 +225,44 @@ export default {
       lxlist:[],
       stateDetail: false,
       tableIndex: -1,
-
+      jglxdata:[],
     }
   },
   mounted() {
     console.log("edit tableData",this.tableData)
     console.log("edit this.title",this.title)
     this.formMore("",true)
+    //价格类型
+    this.jglxdata=uni.getStorageSync('basic').SPJGMS
+    let jglist = []
+    this.jglxdata.forEach((item,i)=>{
+      jglist.push({
+        "value": this.jglxdata[i].jglxid,
+        "text": this.jglxdata[i].jglxmc,
+        "is_selected":false
+      })
+    })
+    this.jglxdata=jglist
   },
   methods: {
+    changeLog(e) {
+      console.log("-change事件:", e,this);
+    },
+    jglxChanged(e) {
+      let jglxlist=[]
+      e.forEach((item,i)=>{
+        if(item.is_selected){
+          jglxlist.push(item.value)
+        }
+      })
+
+      this.editForm.jglxid=jglxlist
+      this.jglxdata = e
+      console.log(this.editForm.jglxid)
+      if(this.editForm.jglxid.length=='1'){
+        this.editForm.jglxid=this.editForm.jglxid.toString()
+      }
+    },
     // 查询 特供（供价类型）
     formMore(lx,isAll) {
       let dataes={
@@ -259,10 +298,10 @@ export default {
 
     // 编辑商品
     toeditDetail(row, index) {
-      this.serchGoods(row.spbm)
+      this.serchGoods(row.spbm,this.editForm)
       // this.editForm.jgcxbz = row.jgcxbz
       this.editForm.splx = row.splx=="T"?true:false
-      this.editForm.sjbh = row.fdbh
+      this.editForm.sjbh = row.fdsjbh
       this.editForm.nsjg = row.nsjg
       this.editForm.bqjg=row.bqjg
       this.editForm.bhjg=row.bhjg
@@ -274,13 +313,20 @@ export default {
       this.editForm.userid=row.userid
       this.editForm.fdssbl=row.fdssbl
       this.editForm.fdsjbh=row.fdsjbh
-
-
+      this.editForm.sxsj=row.sxsj
 
       this.formMore(row.jgcxbz,false)
       // this.$set(this.tableData[index], "splx", [this.tableData[index].splx])
       this.stateDetail = true
       this.tableIndex = index
+      if(row.jglxid.length>0){
+        this.jglxdata.forEach((item,i)=>{
+          if(item.value==row.jglxid){
+            item.is_selected=true
+            this.editForm.jglxid=item.value
+          }
+        })
+      }
       console.log("编辑商品 row",row)
     },
     cancelDetail() {
@@ -302,35 +348,30 @@ export default {
     },
     // 保存商品
     editDetailSave() {
-      this.$refs.uForm.validate().then(resf => {
+      //this.$refs.uForm.validate().then(resf => {
         this.uploadarr = []
-        let xx = Number(this.tableData[this.tableIndex].rq.split("T")[0].split("-")[2]) + this.serchGoodsData.bzqts
+        // let xx = Number(this.tableData[this.tableIndex].rq.split("T")[0].split("-")[2]) + this.serchGoodsData.bzqts
         console.log('2121',this.editForm,this.tableData[this.tableIndex])
         this.uploadarr.push({
-
           "spmc":this.tableData[this.tableIndex].spmc,
           "guid": this.tableData[this.tableIndex].recordid,
           "spbm": this.tableData[this.tableIndex].spbm,
           "spsmm": this.tableData[this.tableIndex].spsmm,
-          "nsjg":this.editForm.nsjg,
           "sppc":'',
-
-
-          bhjg:this.editForm.bhjg,
-          bqjg:this.tableData[this.tableIndex].bqjg,
-          fdssbl:this.uFormModel.fdssbl,//分摊比率
-          lsh:'',
-          sjbh:this.editForm.sjbh,//分摊商家
-          spfixlx:this.editForm.spfixlx,
-          spremark:this.editForm.spremark,
-          sxsj:this.editForm.sxsj,//生效时间
-
+          "bhjg":this.editForm.bhjg,
+          "bqjg":this.tableData[this.tableIndex].bqjg,
+          "fdssbl":this.editForm.fdssbl,//分摊比率
+          "lsh":this.editForm.bjlsh,
+          "sjbh":this.editForm.sjbh,//分摊商家
+          "spfixlx":this.editForm.spfixlx,
+          "spremark":this.editForm.spremark,
+          "sxsj":this.tableData[this.tableIndex].sxsj,//生效时间
         })
         // console.log("保存商品 editDetailSave this.uploadarr",this.uploadarr)
-        this.$emit("editSave",this.uploadarr)
-      }).catch(errors => {
-
-      })
+        this.$emit("editSave",this.uploadarr,this.editForm)
+      // }).catch(errors => {
+      //
+      // })
     },
 
     // 删除商品

@@ -304,6 +304,7 @@ export default {
   },
   data() {
     return {
+      editobj:'',
       spcxcg:false,
       x: 400,
       y: 300,
@@ -525,6 +526,9 @@ e.forEach((item,i)=>{
       this.fdlist=fdlist
       this.data2 = e
       console.log(this.fdlist)
+      if(this.fdlist.length=='1'){
+        this.fdlist=this.fdlist.toString()
+      }
     },
 
    jglxChanged(e) {
@@ -536,8 +540,16 @@ e.forEach((item,i)=>{
       })
 
       this.uFormModel.jglx=jglxlist
-      this.jglxdata = e
+     this.uFormTitle.jglx=jglxlist
+
+     this.jglxdata = e
      console.log(this.uFormModel.jglx)
+     if(this.uFormModel.jglx.length=='1'){
+       this.uFormModel.jglx=this.uFormModel.jglx.toString()
+     }
+     if(this.uFormTitle.jglx.length=='1'){
+       this.uFormTitle.jglx=this.uFormTitle.jglx.toString()
+     }
     },
 
     // OCR表格识别............................................................
@@ -963,6 +975,7 @@ e.forEach((item,i)=>{
           this.jglxdata.forEach((item,i)=>{
             if(item.value==this.uFormModel.jglx){
               item.is_selected=true
+              this.uFormModel.jglx=item.value
             }
           })
       }
@@ -1079,8 +1092,10 @@ e.forEach((item,i)=>{
     },
 
     // 编辑商品 保存商品............................................................
-    editSave(arr) {
+    editSave(arr,edit) {
+      console.log(arr,edit)
       this.uploadarr = arr
+      this.editobj=edit
       this.doSave("EDIT")
     },
     toback() {
@@ -1153,17 +1168,13 @@ e.forEach((item,i)=>{
       })
     },
     doSave(state) {
-      if(this.fdlist.length=='1'){
-        this.fdlist=this.fdlist.toString()
-      }
-      if(this.uFormModel.jglx.length=='1'){
-        this.uFormModel.jglx=this.uFormModel.jglx.toString()
-      }
-      console.log(this.uFormTitle)
+      console.log(this.uFormModel)
+      console.log(this.uploadarr,this.editobj)
+
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),
         "djbh": this.uFormTitle.djbh,
-        "jglx":this.uFormModel.jglx,
+        "jglx":this.uFormModel.jglx==''?this.editobj.jglxid:this.uFormModel.jglx,
         "fdbh": uni.getStorageSync("fdbh"),
         "fdlist":this.fdlist.length=='0'?uni.getStorageSync("fdbh"):this.fdlist,
         "remark": this.uFormTitle.remarks,
