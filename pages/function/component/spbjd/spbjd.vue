@@ -81,7 +81,7 @@
       <view class="foldGroup">
         <view class="fold-title" v-for="(v,i) in tableData" @tap="tolook(v)">
           <view class="fold-title-t fold-title-flex-start">
-            <text>{{v.报损单编号}}</text>
+            <text>{{v.变价单号}}</text>
           </view>
           <view class="fold-title-flex-start fold-title-con show-dots">
             <text class="left-con">单据状态:</text>
@@ -89,30 +89,30 @@
           </view>
           <view class="multiples">
             <view class="multiple-con">
-              <text class="left-con">报溢分店:</text>
-              <text class="right-con">{{v.报溢分店}}</text>
+              <text class="left-con">变价损失额:</text>
+              <text class="right-con">{{v.变价损失额}}</text>
             </view>
             <view class="multiple-con">
-              <text class="left-con">报溢仓库:</text>
-              <text class="right-con">{{v.报溢仓库}}</text>
+              <text class="left-con">损失存量:</text>
+              <text class="right-con">{{v.损失存量}}</text>
             </view>
           </view>
           <view class="multiples">
             <view class="multiple-con">
-              <text class="left-con">报溢数量:</text>
-              <text class="right-con">{{v.报溢数量}}</text>
+              <text class="left-con">操作用户:</text>
+              <text class="right-con">{{v.操作用户}}</text>
             </view>
             <view class="multiple-con">
-              <text class="left-con">零售金额:</text>
-              <text class="right-con">{{v.零售金额}}</text>
+              <text class="left-con">记录数:</text>
+              <text class="right-con">{{v.记录数}}</text>
             </view>
           </view>
           <view class="multiples">
 
-<!--            <view class="multiple-con">-->
-<!--              <text class="left-con">零售金额:</text>-->
-<!--              <text class="right-con">{{v.零售金额}}</text>-->
-<!--            </view>-->
+            <view class="multiple-con">
+              <text class="left-con">调价日期:</text>
+              <text class="right-con">{{v.调价日期}}</text>
+            </view>
           </view>
 
         </view>
@@ -334,7 +334,7 @@ export default {
         states="look"
       }
       uni.navigateTo({
-        url: `/pages/function/component/spbjd/bjxd?state=${states}&djbh=${item.报溢单编号}&byfd=${item.报溢分店}&bysl=${item.报溢数量}&nsje=${item.零售金额}&byck=${item.报溢仓库}&djzt=${item.单据状态}`
+        url: `/pages/function/component/spbjd/bjxd?state=${states}&djbh=${item.变价单号}&djzt=${item.单据状态}`
       });
     },
 

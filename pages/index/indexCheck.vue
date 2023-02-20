@@ -64,7 +64,7 @@
         }
         Basic(data).then((res)=>{
           console.log('basic',res)
-          uni.setStorageSync('basic',res.data)
+          uni.setStorageSync('basic',res)
         })
       }
 			

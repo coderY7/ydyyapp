@@ -26,29 +26,38 @@
               <text>{{editForm.gg}}</text>
             </view>
           </view>
-        </view>
-        <u-form-item label="报溢数量" :labelWidth="74" prop="bysl">
-          <u-input placeholder="请输入报溢数量" type="number" v-model="editForm.bysl">
-          </u-input>
-        </u-form-item>
-        <u-form-item label="报溢价格" :labelWidth="74" prop="nsjg">
-          <u-input placeholder="请输入报溢价格" type="number" v-model="editForm.nsjg">
-          </u-input>
-        </u-form-item>
-        <u-form-item label="是否赠品" :labelWidth="74" prop="splx">
-          <xuanSwitch :switchList="switchList" :defaultSwitch="editForm.splx" @change="switChange"></xuanSwitch>
-        </u-form-item>
-      </u-form>
-      <view class="form-card">
-        <view style="display:flex;justify-content:space-between;">
-          <text>供价类型</text>
-        </view>
-        <view>
-          <view class="radio-view">
-            <view class="radio-text" v-for="(v, i) in lxlist" :class="{lxactive:editForm.jgcxbz==v.sjcxlxid}" @tap="formMoreChange(v.sjcxlxid)">{{v.lxmc}}</view>
+          <view class="shopTishi">
+            <view class="shopTishi-view-half" v-if="editForm.bqjg">
+              <text class="left-con">变前价格:</text>
+              <text>{{editForm.bqjg}}</text>
+            </view>
           </view>
         </view>
-      </view>
+        <u-form-item label="变后价格" :labelWidth="74" prop="bhjg">
+          <u-input placeholder="请输入变后价格" type="number" v-model="editForm.bhjg">
+          </u-input>
+        </u-form-item>
+        <u-form-item label="调价类型" :labelWidth="74" prop="jglxid">
+          <u-input placeholder="请输入报溢价格" type="number" v-model="editForm.jglxid">
+          </u-input>
+        </u-form-item>
+        <u-form-item label="生效时间" :labelWidth="74" prop="sxsj">
+<!--          <xuanSwitch :switchList="switchList" :defaultSwitch="editForm.sxsj" @change="switChange"></xuanSwitch>-->
+        </u-form-item>
+        <u-form-item label="分摊比率" :labelWidth="74" prop="splx">
+<!--          <xuanSwitch :switchList="switchList" :defaultSwitch="editForm.splx" @change="switChange"></xuanSwitch>-->
+        </u-form-item>
+      </u-form>
+<!--      <view class="form-card">-->
+<!--        <view style="display:flex;justify-content:space-between;">-->
+<!--          <text>供价类型</text>-->
+<!--        </view>-->
+<!--        <view>-->
+<!--          <view class="radio-view">-->
+<!--            <view class="radio-text" v-for="(v, i) in lxlist" :class="{lxactive:editForm.jgcxbz==v.sjcxlxid}" @tap="formMoreChange(v.sjcxlxid)">{{v.lxmc}}</view>-->
+<!--          </view>-->
+<!--        </view>-->
+<!--      </view>-->
       <view class="btns" v-if="stateDetail">
         <u-button type="primary" class="my-primary-button" :plain="true" text="取消" throttleTime="2000"
                   @tap="cancelDetail"></u-button>
@@ -83,22 +92,22 @@
         </view>
         <view class="multiples">
           <view class="multiple-con view-flex">
-            <text class="left-con">仓库:</text>
-            <text class="right-con">{{item.ckmc}}</text>
+            <text class="left-con">变前价格:</text>
+            <text class="right-con">{{item.bqjg}}</text>
           </view>
           <view class="multiple-con view-flex">
-            <text class="left-con">分店:</text>
-            <text class="right-con">{{item.fdmc}}</text>
+            <text class="left-con">变后价格:</text>
+            <text class="right-con">{{item.bhjg}}</text>
           </view>
         </view>
         <view class="multiples">
           <view class="multiple-con view-flex">
-            <text class="left-con">数量:</text>
-            <text class="right-con">{{item.bysl}}</text>
+            <text class="left-con">生效时间:</text>
+            <text class="right-con" style="font-size: 8px">{{item.sxsj}}</text>
           </view>
           <view class="multiple-con view-flex">
-            <text class="left-con">价格:</text>
-            <text class="right-con">￥{{item.nsjg}}</text>
+            <text class="left-con">商家名称:</text>
+            <text class="right-con" style="font-size: 8px">￥{{item.商家名称}}</text>
           </view>
         </view>
       </view>
@@ -117,7 +126,7 @@ import dayjs from "dayjs";
 import {
   Basic,
   Search,
-  BydDelLine
+  BjdDelLine
 } from "@/network/api.js";
 import xuanSwitch from "@/components/xuan-switch/xuan-switch.vue";
 export default {
@@ -157,12 +166,20 @@ export default {
         nsjg: "",
         splx: false,//赠送商品
         jgcxbz: "",//供价类型
+
+        bqjg:'',
+        bhjg:'',
+        spremark:'',
+        jxlxid:'',
+        jglx:'',
+        sxsj:'',
+        fdssbl:'',
       },
       editRules:{
-        "bysl": [{
+        "bqjg": [{
           type: "number",
           required: true,
-          message: "请填写报溢数量",
+          message: "请填写变前价格",
           trigger: ["blur", "change"]
         },
           {
@@ -176,10 +193,10 @@ export default {
             }
           }
         ],
-        "nsjg": [{
+        "bhjg": [{
           type: "number",
           required: true,
-          message: "请填写报溢价格",
+          message: "请填写变后价格",
           trigger: ["blur", "change"]
         },
           {
@@ -245,8 +262,21 @@ export default {
       this.serchGoods(row.spbm)
       // this.editForm.jgcxbz = row.jgcxbz
       this.editForm.splx = row.splx=="T"?true:false
-      this.editForm.bysl = row.bysl
+      this.editForm.sjbh = row.fdbh
       this.editForm.nsjg = row.nsjg
+      this.editForm.bqjg=row.bqjg
+      this.editForm.bhjg=row.bhjg
+      this.editForm.bjrq=row.bjrq
+      this.editForm.bjlsh=row.bjlsh
+      this.editForm.remark=row.remark
+      this.editForm.spmc=row.spmc
+      this.editForm.spbm=row.spbm
+      this.editForm.userid=row.userid
+      this.editForm.fdssbl=row.fdssbl
+      this.editForm.fdsjbh=row.fdsjbh
+
+
+
       this.formMore(row.jgcxbz,false)
       // this.$set(this.tableData[index], "splx", [this.tableData[index].splx])
       this.stateDetail = true
@@ -277,14 +307,24 @@ export default {
         let xx = Number(this.tableData[this.tableIndex].rq.split("T")[0].split("-")[2]) + this.serchGoodsData.bzqts
         console.log('2121',this.editForm,this.tableData[this.tableIndex])
         this.uploadarr.push({
-          "bysj":this.tableData[this.tableIndex].sjbh,
-          "bysl":this.tableData[this.tableIndex].bysl,
+
           "spmc":this.tableData[this.tableIndex].spmc,
           "guid": this.tableData[this.tableIndex].recordid,
           "spbm": this.tableData[this.tableIndex].spbm,
           "spsmm": this.tableData[this.tableIndex].spsmm,
           "nsjg":this.editForm.nsjg,
           "sppc":'',
+
+
+          bhjg:this.editForm.bhjg,
+          bqjg:this.tableData[this.tableIndex].bqjg,
+          fdssbl:this.uFormModel.fdssbl,//分摊比率
+          lsh:'',
+          sjbh:this.editForm.sjbh,//分摊商家
+          spfixlx:this.editForm.spfixlx,
+          spremark:this.editForm.spremark,
+          sxsj:this.editForm.sxsj,//生效时间
+
         })
         // console.log("保存商品 editDetailSave this.uploadarr",this.uploadarr)
         this.$emit("editSave",this.uploadarr)
@@ -313,7 +353,7 @@ export default {
               }]
             }
             console.log("删除商品 dataes",dataes)
-            BydDelLine(dataes).then((res) => {
+            BjdDelLine(dataes).then((res) => {
               if (res.error_code == 0) {
                 // this.$parent.getList()
                 this.$emit("delgoods")
@@ -354,6 +394,9 @@ export default {
           this.editForm.spmc=res.data[0].spmc
           this.editForm.dw=res.data[0].dw
           this.editForm.gg=res.data[0].gg
+          this.editForm.spremark=res.data[0].spremark
+          this.editForm.spfixlx=res.data[0].spfixlx
+
         }
       }).catch((err) => {
         console.log(err)
