@@ -331,6 +331,7 @@ export default {
         kcph: "",
         bssl: "",
         bhjg: "",
+        jglx:'',
       },
       uFormRules: {
         "spbm": {
@@ -1084,6 +1085,8 @@ e.forEach((item,i)=>{
       this.uFormModel.bssl = ""
       this.uFormModel.bhjg = ""
       this.uFormModel.jglx = ""
+      this.uFormModel.sjbh=''
+
 
     },
     clearFocus() {
@@ -1199,7 +1202,6 @@ e.forEach((item,i)=>{
           }
           return
         }
-
         if (res.error_code == 0) {
           this.$refs.uToast.show({
             type: "success",
