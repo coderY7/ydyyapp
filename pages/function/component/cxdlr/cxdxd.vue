@@ -1,8 +1,8 @@
 <template>
 <view>
 <!-- -->
-  <view>
-    <u-subsection :list="tablist" mode="subsection" :current="1"></u-subsection>
+  <view v-if="state=='add'">
+    <u-subsection :list="tablist" mode="subsection" :current="curNow" @change="sectionChange"></u-subsection>
   </view>
 </view>
 </template>
@@ -20,6 +20,7 @@ export default {
   },
   data() {
     return {
+      state:'add',
       tablist:['特价','折扣','买满','换购','档期'],
       curNow: 0,
       cxdadd: {
@@ -60,7 +61,9 @@ export default {
     }
   },
   onLoad(option) {
-
+if(option.state=='edit'){
+  this.state='edit'
+}
   },
   onReady() {
 

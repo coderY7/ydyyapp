@@ -20,14 +20,14 @@
       <!-- 查询表头 -->
       <view class="form-card">
         <view class="" v-for="(v,i) in queryData">
-          <view class="view-flex" v-if="v.type=='开始DATE'">
+          <view class="view-flex" v-if="v.type=='开始日期'">
             <text class="form-left-text">{{v.colname}}</text>
-            <uni-datetime-picker v-model="v.value" type="date" :clear-icon="false"/>
+            <uni-datetime-picker v-model="v.defval" type="date" :clear-icon="false"/>
             <text class="inp-right-text"></text>
           </view>
-          <view class="view-flex" v-if="v.type=='结束DATE'">
+          <view class="view-flex" v-if="v.type=='结束日期'">
             <text class="form-left-text">{{v.colname}}</text>
-            <uni-datetime-picker v-model="v.value" type="date" :clear-icon="false"/>
+            <uni-datetime-picker v-model="v.defval" type="date" :clear-icon="false"/>
             <text class="inp-right-text"></text>
           </view>
           <view v-show="foldMoreShow">
@@ -43,9 +43,11 @@
             </view>
             <view class="view-flex" v-else-if="v.type=='下拉框'">
               <text class="form-left-text">{{v.colname}}</text>
+
               <u-radio-group v-model="v.value" placement="row" v-if="v.codeid=='SK'">
                 <u-radio v-for="(item,index) in v.tabname" :key="item.id" :label="item.name" :name="item.id"></u-radio>
               </u-radio-group>
+
               <u-input :placeholder="'请选择'+v.colname" :disabled="v.readonly?true:false" :disabledColor="v.readonly==''?'#fff':'#F5F7FA'" v-model="v.value" v-else>
                 <template slot="suffix">
                   <view v-if="v.readonly==''&&v.value!=''" @tap.stop="clearAlone(v,i)">
@@ -55,6 +57,7 @@
               </u-input>
               <text class="inp-right-text"></text>
             </view>
+
             <view class="view-flex" v-else-if="v.type=='字符'">
               <text class="form-left-text">{{v.colname}}</text>
               <u-input :placeholder="'请输入'+v.colname" v-model="v.value">
@@ -81,7 +84,7 @@
       <view class="foldGroup">
         <view class="fold-title" v-for="(v,i) in tableData" @tap="tolook(v)">
           <view class="fold-title-t fold-title-flex-start">
-            <text>{{v.变价单号}}</text>
+            <text>{{v.促销单号}}</text>
           </view>
           <view class="fold-title-flex-start fold-title-con show-dots">
             <text class="left-con">单据状态:</text>
@@ -89,29 +92,29 @@
           </view>
           <view class="multiples">
             <view class="multiple-con">
-              <text class="left-con">变价损失额:</text>
-              <text class="right-con">{{v.变价损失额}}</text>
+              <text class="left-con">促销门店:</text>
+              <text class="right-con">{{v.促销门店}}</text>
             </view>
             <view class="multiple-con">
-              <text class="left-con">损失存量:</text>
-              <text class="right-con">{{v.损失存量}}</text>
+              <text class="left-con">品种数:</text>
+              <text class="right-con">{{v.品种数}}</text>
             </view>
           </view>
           <view class="multiples">
             <view class="multiple-con">
-              <text class="left-con">操作用户:</text>
-              <text class="right-con">{{v.操作用户}}</text>
+              <text class="left-con">开始日期:</text>
+              <text class="right-con">{{v.开始日期}}</text>
             </view>
             <view class="multiple-con">
-              <text class="left-con">记录数:</text>
-              <text class="right-con">{{v.记录数}}</text>
+              <text class="left-con">结束日期:</text>
+              <text class="right-con">{{v.结束日期}}</text>
             </view>
           </view>
           <view class="multiples">
 
             <view class="multiple-con">
-              <text class="left-con">调价日期:</text>
-              <text class="right-con">{{v.调价日期}}</text>
+              <text class="left-con">促销方式:</text>
+              <text class="right-con">{{v.促销方式}}</text>
             </view>
           </view>
 
@@ -313,7 +316,7 @@ export default {
         // console.log("orderNew res",res)
         if(res.error_code==0){
           uni.navigateTo({
-            url: `/pages/function/component/spbjd/bjxd?djbh=${res.djbh}&state=add`
+            url: `/pages/function/component/cxdlr/cxdxd?djbh=${res.djbh}&state=add`
           });
         }else{
           this.$refs.uToast.show({
@@ -334,7 +337,7 @@ export default {
         states="look"
       }
       uni.navigateTo({
-        url: `/pages/function/component/spbjd/bjxd?state=${states}&djbh=${item.变价单号}&djzt=${item.单据状态}`
+        url: `/pages/function/component/cxdlr/cxdxd?state=${states}&djbh=${item.促销单号}&djzt=${item.单据状态}&cxlx=${item.cxlxid}&cxfs=${item.促销方式}`
       });
     },
 
