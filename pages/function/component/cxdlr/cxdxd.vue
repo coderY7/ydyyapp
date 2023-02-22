@@ -1,8 +1,26 @@
 <template>
-<view>
+<view class="box" :style="skin">
+  <view class="status-bar"></view>
+  <view class="nav-bar">
+    <view class="left">
+      <navigator open-type="navigateBack">
+        <uni-icons type="back" size="30" color="#fff"></uni-icons>
+      </navigator>
+    </view>
+    <view class="center">
+      <text>商品促销</text>
+    </view>
+    <view class="right" v-show="ifpage">
+      <u-button class="icon-button" text="" throttleTime="2000" :disabled="state=='add'" @tap="newOrder">
+        <uni-icons type="plusempty" size="30" color="#fff"></uni-icons>
+      </u-button>
+    </view>
+  </view>
 <!-- -->
+  <view class="box-content">
   <view v-if="state=='add'">
     <u-subsection :list="tablist" mode="subsection" :current="curNow" @change="sectionChange"></u-subsection>
+  </view>
   </view>
 </view>
 </template>
@@ -76,7 +94,9 @@ if(option.state=='edit'){
 
   },
   computed: {
-
+    skin(){
+      return this.$store.state.skin;
+    }
   },
   watch: {
 
@@ -85,7 +105,18 @@ if(option.state=='edit'){
 </script>
 
 <style lang="scss" scoped>
-
+.box {
+  .status-bar {
+    background-image: linear-gradient(to right, var(--nav-left-color), var(--nav-center-color), var(--nav-right-color));
+  }
+  .nav-bar {
+    background-image: linear-gradient(to right, var(--nav-left-color), var(--nav-center-color), var(--nav-right-color));
+  }
+  .box-content {
+    padding-top: calc(var(--status-bar-height) + 52px);
+    padding-bottom: 40px;
+  }
+}
 </style>
 <style lang="scss">
 page {
