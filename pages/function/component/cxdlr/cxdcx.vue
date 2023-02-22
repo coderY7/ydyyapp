@@ -48,7 +48,17 @@
                 <u-radio v-for="(item,index) in v.tabname" :key="item.id" :label="item.name" :name="item.id"></u-radio>
               </u-radio-group>
 
-              <u-input :placeholder="'请选择'+v.colname" :disabled="v.readonly?true:false" :disabledColor="v.readonly==''?'#fff':'#F5F7FA'" v-model="v.value" v-else>
+
+                <uni-data-select v-if="v.colname=='促销方式'"
+                    v-model="v.value"
+                    :localdata="cxlist"
+                    @change="change"
+                    :clear="false"
+                ></uni-data-select>
+
+
+
+              <u-input :placeholder="'请选择'+v.colname" :disabled="v.readonly?true:false" :disabledColor="v.readonly==''?'#fff':'#F5F7FA'" v-model="v.value" v-if="v.colname=='分店编号'">
                 <template slot="suffix">
                   <view v-if="v.readonly==''&&v.value!=''" @tap.stop="clearAlone(v,i)">
                     <uni-icons type="clear" size="19" color="#e1e1e1"></uni-icons>
@@ -161,6 +171,11 @@ export default {
   },
   data() {
     return {
+      cxlist: [
+        { value: 0, text: "篮球" },
+        { value: 1, text: "足球" },
+        { value: 2, text: "游泳" },
+      ],
       queryData:[],
       foldMoreShow:true,
 
@@ -174,7 +189,15 @@ export default {
     }
   },
   onLoad() {
-
+    let cxlxdata=uni.getStorageSync('basic').CXLXINFO
+    let cxlist = []
+    cxlxdata.forEach((item,i)=>{
+      cxlist.push({
+        "value": cxlxdata[i].cxlxid,
+        "text": cxlxdata[i].cxlxmc,
+      })
+    })
+    this.cxlist=cxlist
   },
   onReady() {
     // 设置状态栏文字颜色为 白色
@@ -204,9 +227,9 @@ export default {
           this.queryData=res.data
           for(var i in this.queryData){
             let now=dayjs().format('YYYY-MM-DD')
-            if(this.queryData[i].type=='开始DATE'){
+            if(this.queryData[i].type=='开始日期'){
               this.queryData[i].value="2022-07-31"
-            }else if(this.queryData[i].type=='结束DATE'){
+            }else if(this.queryData[i].type=='结束日期'){
               this.queryData[i].value=now
             }else{
               this.queryData[i].value=""
@@ -598,5 +621,9 @@ page {
 }
 .box .u-radio-group--row .u-radio{
   margin-right: 8px;
+}
+.box .uni-stat__select {
+  width: 75%;
+  padding: 0;
 }
 </style>
