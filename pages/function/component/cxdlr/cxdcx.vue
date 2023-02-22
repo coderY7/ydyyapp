@@ -22,12 +22,12 @@
         <view class="" v-for="(v,i) in queryData">
           <view class="view-flex" v-if="v.type=='开始日期'">
             <text class="form-left-text">{{v.colname}}</text>
-            <uni-datetime-picker v-model="v.defval" type="date" :clear-icon="false"/>
+            <uni-datetime-picker v-model="v.value" type="date" :clear-icon="false"/>
             <text class="inp-right-text"></text>
           </view>
           <view class="view-flex" v-if="v.type=='结束日期'">
             <text class="form-left-text">{{v.colname}}</text>
-            <uni-datetime-picker v-model="v.defval" type="date" :clear-icon="false"/>
+            <uni-datetime-picker v-model="v.value" type="date" :clear-icon="false"/>
             <text class="inp-right-text"></text>
           </view>
           <view v-show="foldMoreShow">
