@@ -717,6 +717,23 @@
 				}
 			}
 		},
+		//促销单
+		{
+			"path": "pages/function/component/cxdlr/cxdcx",
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "all"
+				}
+			}
+		},
+		{
+			"path": "pages/function/component/cxdlr/cxdxd",
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "all"
+				}
+			}
+		},
 
 
 		//analysis.....分析....................
