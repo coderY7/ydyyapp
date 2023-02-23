@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "u-switch": "/node-modules/uview-ui/components/u-switch/u-switch",
+    "u-cell": "/node-modules/uview-ui/components/u-cell/u-cell",
+    "u-popup": "/node-modules/uview-ui/components/u-popup/u-popup",
+    "u-line-progress": "/node-modules/uview-ui/components/u-line-progress/u-line-progress",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast"
+  }
+}

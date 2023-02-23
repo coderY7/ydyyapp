@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "u-count-to": "/node-modules/uview-ui/components/u-count-to/u-count-to",
+    "u-subsection": "/node-modules/uview-ui/components/u-subsection/u-subsection",
+    "u-tabs": "/node-modules/uview-ui/components/u-tabs/u-tabs",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast"
+  }
+}

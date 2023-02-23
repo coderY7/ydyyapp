@@ -1,0 +1,35 @@
+
+.ring-timing.data-v-09b88f20 {
+
+	display: flex;
+
+	flex-direction: row;
+	position: relative;
+}
+.ring-timing-half.data-v-09b88f20 {
+	flex: 1;
+
+	transition-property: background-color, -webkit-transform;
+	transition-property: transform, background-color;
+	transition-property: transform, background-color, -webkit-transform;
+	transition-timing-function: linear;
+}
+.ring-timing-left.data-v-09b88f20 {
+	-webkit-transform-origin: right center;
+	        transform-origin: right center;
+}
+.ring-timing-right.data-v-09b88f20 {
+	-webkit-transform-origin: left center;
+	        transform-origin: left center;
+}
+.ring-timing-center.data-v-09b88f20 {
+
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	position: absolute;
+}
+
+

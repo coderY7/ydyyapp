@@ -121,9 +121,9 @@
 							</view>
 						</view>
 					</view>
-					<u-form-item label="库存批号" :labelWidth="74" prop="kcph" v-show="doingindex>=1">
-						<u-input placeholder="请选择库存批号" type="text" readonly v-model="uFormModel.kcph"
-							:focus="focusObj.kcphFocus" @tap="serchKcph">
+					<u-form-item label="库存批号" :labelWidth="74" prop="kcph" v-show="doingindex>=1" @tap="serchKcph">
+						<u-input placeholder="请选择库存批号" type="text"  v-model="uFormModel.kcph"
+							:focus="focusObj.kcphFocus" >
 						</u-input>
 						<uni-icons custom-prefix="iconfont" type="icon-yuyin"
 							:color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
@@ -165,7 +165,29 @@
 		<ocrText v-show="ocrShow" @ocrBack="ocrBack"></ocrText>
 
 		<!-- 弹窗。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。 -->
+    <u-popup :show="sppcpopup" mode="center"  @close="close" @open="open">
 
+      <view style="max-width: 80vw;" scroll-y="true">
+        <view v-if="sppcdata!=undefined&&sppcdata!=null">
+          <u-scroll-list>
+            <view v-for="(v, i) of sppcdata" :key="i" @tap="isSppc(v)">
+                <uni-card title="" extra="">
+                  <view v-for="(item,index) of v" style="display:flex">
+                    <view style="width: 60px">{{index}}:</view>
+                    <view>{{item}}</view>
+                </view>
+                </uni-card>
+              </view>
+
+          </u-scroll-list>
+
+
+
+        </view>
+
+
+      </view>
+    </u-popup>
 		<u-overlay :show="coverShow"></u-overlay>
 		<u-toast ref="uToast"></u-toast>
 		<u-popup :show="popupShow" mode="center" class="u-popup-center" zIndex="5000">
@@ -259,6 +281,10 @@
 		},
 		data() {
 			return {
+        sppcpopup:false,//库存批号显示
+        sppcdata:[{a: '12'},{b:'13'}],
+        sppcdatatab:[],
+        tab:['23','45','67','77','66','88'],
 				x: 400,
 				y: 300,
 				ifpage: true,
@@ -295,6 +321,23 @@
 							}
 						}
 					},
+          "kcph": [{
+            type: "string",
+            required: true,
+            message: "请选择库存批号",
+            trigger: ["blur", "change"]
+          },
+            {
+              asyncValidator: (rule, value, callback) => {
+                let reg = /^\d+(\.\d+)?$/
+                if (reg.test(value)) {
+                  callback();
+                } else {
+                  callback(new Error('请输入非负数'));
+                }
+              }
+            }
+          ],
 					"thsl": [{
 							type: "number",
 							required: true,
@@ -443,6 +486,21 @@
 
 		},
 		methods: {
+      isSppc(data){
+        console.log('点击sppc',data)
+        this.sppcpopup = false
+        this.uFormModel.kcph=data['批次编号']
+        this.uFormModel.thjg=data['当前成本']
+        this.uFormModel.thsl=data['当前库存']
+      },
+      open() {
+        this.sppcpopup = true
+        // console.log('open');
+      },
+      close() {
+        this.sppcpopup = false
+        // console.log('close');
+      },
 			// OCR表格识别............................................................
 			toOcr() {
 				this.ocrShow = true
@@ -865,14 +923,20 @@
 				}
 				Sppc(dataes).then((res) => {
 					console.log("查询库存批号 res", res)
-					if (res.error_code == 0) {
+          if (res.error_code == 0) {
+            this.sppcpopup=true
 
-					} else {
-						this.$refs.uToast.show({
-							type: "error",
-							message: res.message
-						})
-					}
+            this.sppcdata=res.data
+            console.log('批号',this.sppcdata)
+            this.sppcdatatab=Object.entries(this.sppcdata[0])
+            console.log(Object.entries(this.sppcdata[0]))
+
+          } else {
+            this.$refs.uToast.show({
+              type: "error",
+              message: res.message
+            })
+          }
 				}).catch((err) => {
 					console.log(err)
 				})
@@ -1495,4 +1559,8 @@
 	page {
 		background-color: #f8f8f8;
 	}
+  .u-popup__content{
+    width: 90%;
+  }
+
 </style>

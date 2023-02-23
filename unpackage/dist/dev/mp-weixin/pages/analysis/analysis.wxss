@@ -1,0 +1,169 @@
+@charset "UTF-8";
+/* uni.scss */
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.box.data-v-6208e3f4 {
+  background-image: linear-gradient(to bottom, var(--linear-bg) 0%, #fff 50%, #fff 100%);
+}
+.box .status-bar.data-v-6208e3f4 {
+  background-color: transparent;
+}
+.box .box-content.data-v-6208e3f4 .u-tabs__wrapper__nav__item__text {
+  font-weight: 600;
+}
+.box .box-content .play-btn.data-v-6208e3f4 {
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  border: 1px solid #3c9cff;
+  border-radius: 5px;
+  color: #3c9cff;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 8px;
+}
+.box .box-content .playBtnDisabled.data-v-6208e3f4 {
+  display: inline-block;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  border: 1px solid #e7e9eb;
+  border-radius: 5px;
+  color: #3c9cff;
+  background-color: #e7e9eb;
+}
+.box .box-content .playBtnDisabled .play-btn.data-v-6208e3f4 {
+  border: 1px solid #e7e9eb;
+}
+.box .box-content.data-v-6208e3f4 .uni-collapse {
+  background-color: transparent;
+}
+.box .box-content.data-v-6208e3f4 .uni-collapse .uni-collapse-item__title {
+  background-color: #fff;
+}
+.box .box-content.data-v-6208e3f4 .uni-collapse .uni-collapse-item__title .uni-collapse-item__title-box {
+  height: 44px;
+  line-height: 44px;
+  padding: 0 30px 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.box .box-content.data-v-6208e3f4 .uni-collapse .uni-collapse-item__title .uni-collapse-item__title-arrow .uni-icons {
+  color: #323232 !important;
+}
+.box .box-content.data-v-6208e3f4 .uni-collapse .uni-collapse-item__wrap {
+  width: 100%;
+  background-color: transparent;
+}
+.box .box-content.data-v-6208e3f4 .uni-collapse .uni-collapse-item__wrap .uni-collapse-item__wrap-content {
+  width: 100%;
+}
+.box .box-content.data-v-6208e3f4 .uni-collapse .uni-collapse-item__wrap .uni-collapse-item__wrap-content .uni-card {
+  box-sizing: border-box;
+}
+.box .box-content .mychart.data-v-6208e3f4 {
+  margin-top: 10px;
+  width: 100%;
+  min-height: 250px;
+  display: flex;
+  justify-content: center;
+}
+.box .box-content.data-v-6208e3f4 .bmjygk .uni-card__content {
+  padding: 0 !important;
+}
+.box .box-content .tabcon > uni-view.data-v-6208e3f4 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #EAEBEC;
+}
+.box .box-content.data-v-6208e3f4 .uni-drawer .uni-scroll-view-content {
+  box-sizing: border-box;
+  padding: 10px 0;
+}
+.box .box-content.data-v-6208e3f4 .uni-drawer .uni-scroll-view-content .list {
+  padding: 8px;
+  border-bottom: 1px solid #EAEBEC;
+}
+.box .box-content.data-v-6208e3f4 .uni-drawer .uni-scroll-view-content .list:nth-child(even) {
+  background-color: #FAFAFA;
+}
+.box .box-content.data-v-6208e3f4 .uni-card {
+  margin: 0 0 10px !important;
+}
+.box .box-content.data-v-6208e3f4 .ssxsfx .uni-card__content {
+  overflow: hidden;
+}
+.box .box-content.data-v-6208e3f4 .ssxsfx .uni-card__content .ssxsfx-view {
+  width: 50%;
+  float: left;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.box .box-content.data-v-6208e3f4 .ssxsfx .uni-card__content .ssxsfx-view .ssxsfx-color {
+  width: 44px;
+  height: 44px;
+  border-radius: 50px;
+  float: left;
+  margin-right: 10px;
+}
+.box .box-content.data-v-6208e3f4 .ssxsfx .uni-card__content .ssxsfx-view .ssxsfx-right {
+  float: left;
+}
+.box .box-content.data-v-6208e3f4 .ssxsfx .uni-card__content .ssxsfx-view .ssxsfx-right .ssxsfx-val {
+  font-size: 16px;
+}
+
+@charset "UTF-8";
+/* uni.scss */
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+

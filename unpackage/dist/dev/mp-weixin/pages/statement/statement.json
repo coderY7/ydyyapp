@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "u-cell": "/node-modules/uview-ui/components/u-cell/u-cell",
+    "tabbar": "/components/tabbar/tabbar",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast"
+  }
+}

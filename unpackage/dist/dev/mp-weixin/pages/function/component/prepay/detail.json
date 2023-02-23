@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast",
+    "shen-qing": "/pages/function/component/prepay/shenQing",
+    "shen-he": "/pages/function/component/prepay/shenHe",
+    "fu-kuan": "/pages/function/component/prepay/fuKuan",
+    "fu-he": "/pages/function/component/prepay/fuHe"
+  }
+}

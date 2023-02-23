@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "u-form": "/node-modules/uview-ui/components/u-form/u-form",
+    "u-form-item": "/node-modules/uview-ui/components/u-form-item/u-form-item",
+    "u-input": "/node-modules/uview-ui/components/u-input/u-input",
+    "uni-data-select": "/uni_modules/uni-data-select/components/uni-data-select/uni-data-select",
+    "u-button": "/node-modules/uview-ui/components/u-button/u-button",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast"
+  }
+}

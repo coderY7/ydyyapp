@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "v-sign": "/uni_modules/v-sign/components/v-sign/v-sign",
+    "u-button": "/node-modules/uview-ui/components/u-button/u-button"
+  }
+}

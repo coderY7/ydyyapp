@@ -1,0 +1,17 @@
+{
+  "usingComponents": {
+    "u-form": "/node-modules/uview-ui/components/u-form/u-form",
+    "u-form-item": "/node-modules/uview-ui/components/u-form-item/u-form-item",
+    "u-input": "/node-modules/uview-ui/components/u-input/u-input",
+    "uni-data-select": "/uni_modules/uni-data-select/components/uni-data-select/uni-data-select",
+    "veryfication-code": "/components/veryficationCode/veryficationCode",
+    "u-button": "/node-modules/uview-ui/components/u-button/u-button",
+    "u-divider": "/node-modules/uview-ui/components/u-divider/u-divider",
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "u-popup": "/node-modules/uview-ui/components/u-popup/u-popup",
+    "u-notify": "/node-modules/uview-ui/components/u-notify/u-notify",
+    "u-modal": "/node-modules/uview-ui/components/u-modal/u-modal",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast",
+    "get-phone": "/pages/login/component/getPhone"
+  }
+}

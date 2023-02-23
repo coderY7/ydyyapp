@@ -1,0 +1,15 @@
+{
+  "usingComponents": {
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "u-badge": "/node-modules/uview-ui/components/u-badge/u-badge",
+    "uni-card": "/uni_modules/uni-card/components/uni-card/uni-card",
+    "uni-swipe-action": "/uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action",
+    "uni-swipe-action-item": "/uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item",
+    "u-button": "/node-modules/uview-ui/components/u-button/u-button",
+    "u-cell": "/node-modules/uview-ui/components/u-cell/u-cell",
+    "tabbar": "/components/tabbar/tabbar",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast",
+    "functions": "/pages/function/function",
+    "toupdate": "/pages/home/component/toupdate/toupdate"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "usingComponents": {
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "u-input": "/node-modules/uview-ui/components/u-input/u-input",
+    "u-radio-group": "/node-modules/uview-ui/components/u-radio-group/u-radio-group",
+    "u-radio": "/node-modules/uview-ui/components/u-radio/u-radio",
+    "u-button": "/node-modules/uview-ui/components/u-button/u-button",
+    "file-upload": "/components/fileUpload/fileUpload",
+    "mk-upload": "/components/mk-upload/mk-upload",
+    "u-popup": "/node-modules/uview-ui/components/u-popup/u-popup",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast",
+    "mkupload": "/components/mk-upload/mk-upload"
+  }
+}

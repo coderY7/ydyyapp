@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "u-cell": "/node-modules/uview-ui/components/u-cell/u-cell",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast",
+    "toupdate": "/pages/home/component/toupdate/toupdate"
+  }
+}

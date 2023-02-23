@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "gesture-password": "/components/gesture-password/gesture-password",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast"
+  }
+}

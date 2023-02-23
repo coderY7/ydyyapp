@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "u-input": "/node-modules/uview-ui/components/u-input/u-input"
+  }
+}

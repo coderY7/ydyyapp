@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "wyb-table": "/components/wyb-table/wyb-table",
+    "u-button": "/node-modules/uview-ui/components/u-button/u-button",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast"
+  }
+}

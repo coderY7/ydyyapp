@@ -1,0 +1,14 @@
+{
+  "usingComponents": {
+    "uni-nav-bar": "/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar",
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "u-input": "/node-modules/uview-ui/components/u-input/u-input",
+    "uni-collapse": "/uni_modules/uni-collapse/components/uni-collapse/uni-collapse",
+    "uni-collapse-item": "/uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item",
+    "uni-swipe-action": "/uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action",
+    "uni-swipe-action-item": "/uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item",
+    "u-button": "/node-modules/uview-ui/components/u-button/u-button",
+    "uni-fab": "/uni_modules/uni-fab/components/uni-fab/uni-fab",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast"
+  }
+}

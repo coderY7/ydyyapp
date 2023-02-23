@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "u-input": "/node-modules/uview-ui/components/u-input/u-input",
+    "u-cell": "/node-modules/uview-ui/components/u-cell/u-cell",
+    "mk-upload": "/components/mk-upload/mk-upload",
+    "u-button": "/node-modules/uview-ui/components/u-button/u-button",
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast",
+    "mkupload": "/components/mk-upload/mk-upload"
+  }
+}
