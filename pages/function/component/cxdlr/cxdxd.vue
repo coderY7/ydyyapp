@@ -10,11 +10,6 @@
     <view class="center">
       <text>商品促销</text>
     </view>
-<!--    <view class="right" v-show="ifpage">-->
-<!--      <u-button class="icon-button" text="" throttleTime="2000" :disabled="state=='add'" @tap="newOrder">-->
-<!--        <uni-icons type="plusempty" size="30" color="#fff"></uni-icons>-->
-<!--      </u-button>-->
-<!--    </view>-->
   </view>
 <!-- -->
   <view class="box-content">
@@ -61,6 +56,7 @@ export default {
   data() {
     return {
       state:'add',
+      cxlxym:false,//促销类型页面
       tablist:['特价','折扣','买满','换购','会员','档期'],
       curNow: 0,
       typeData: [
@@ -118,7 +114,6 @@ if(option.state=='edit'){
 }
   },
   onReady() {
-
   },
   methods: {
     //切换tab
@@ -194,6 +189,9 @@ if(option.state=='edit'){
       }
       OrderNew(newdata).then((res)=>{
         console.log('cxd',res)
+        uni.redirectTo({
+          url: `/pages/function/component/cxdlr/cxd?djbh=${res.djbh}&cxlx=${data}`
+        });
       })
     }
 

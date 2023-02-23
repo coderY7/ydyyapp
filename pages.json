@@ -734,7 +734,14 @@
 				}
 			}
 		},
-
+		{
+			"path": "pages/function/component/cxdlr/cxd",
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "all"
+				}
+			}
+		},
 
 		//analysis.....分析....................
 		{

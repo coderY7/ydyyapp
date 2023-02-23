@@ -329,27 +329,34 @@ export default {
     },
     // 创建新单
     newOrder(){
-      let dataes={
-        "access_token": uni.getStorageSync("access_token"),
-        "djtype": "CXD",
-        "fdbh": uni.getStorageSync("fdbh"),
-        "userid": uni.getStorageSync("userid"),
-      }
-      OrderNew(dataes).then((res) => {
-        // console.log("orderNew res",res)
-        if(res.error_code==0){
-          uni.navigateTo({
-            url: `/pages/function/component/cxdlr/cxdxd?djbh=${res.djbh}&state=add`
-          });
-        }else{
-          this.$refs.uToast.show({
-            type:"error",
-            message: res.message
-          })
+      uni.navigateTo({
+        url: `/pages/function/component/cxdlr/cxdxd?state=add`
+      });
+
+      if(false){
+        let dataes={
+          "access_token": uni.getStorageSync("access_token"),
+          "djtype": "CXD",
+          "fdbh": uni.getStorageSync("fdbh"),
+          "userid": uni.getStorageSync("userid"),
         }
-      }).catch((err) => {
-        console.log(err)
-      })
+        OrderNew(dataes).then((res) => {
+          console.log("orderNew res",res)
+          if(res.error_code==0){
+            uni.navigateTo({
+              url: `/pages/function/component/cxdlr/cxdxd?djbh=${res.djbh}&state=add`
+            });
+          }else{
+            this.$refs.uToast.show({
+              type:"error",
+              message: res.message
+            })
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
+
     },
     // 编辑单
     tolook(item){

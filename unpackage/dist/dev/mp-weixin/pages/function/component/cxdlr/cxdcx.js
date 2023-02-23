@@ -527,27 +527,12 @@ var _default = { components: {}, data: function data() {return { cxlist: [{ valu
     },
     // 创建新单
     newOrder: function newOrder() {var _this4 = this;
-      var dataes = {
-        "access_token": uni.getStorageSync("access_token"),
-        "djtype": "CXD",
-        "fdbh": uni.getStorageSync("fdbh"),
-        "userid": uni.getStorageSync("userid") };
+      uni.navigateTo({
+        url: "/pages/function/component/cxdlr/cxdxd?state=add" });
 
-      (0, _api.OrderNew)(dataes).then(function (res) {
-        // console.log("orderNew res",res)
-        if (res.error_code == 0) {
-          uni.navigateTo({
-            url: "/pages/function/component/cxdlr/cxdxd?djbh=".concat(res.djbh, "&state=add") });
 
-        } else {
-          _this4.$refs.uToast.show({
-            type: "error",
-            message: res.message });
+      if (false) { var dataes; }
 
-        }
-      }).catch(function (err) {
-        console.log(err);
-      });
     },
     // 编辑单
     tolook: function tolook(item) {
