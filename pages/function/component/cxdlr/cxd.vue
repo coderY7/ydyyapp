@@ -38,10 +38,37 @@
         <view class="my-collapse-con" v-show="myCollShow">
           <view style="text-align:center;color:#F56C6C;" v-if="neworderShow">这是一个新单！！！</view>
           <u-form class="form-card" labelPosition="left" :model="uFormTitle">
-            <u-form-item label="单据编号" :labelWidth="76" prop="djbh">
-              <u-input placeholder="请输入单据编号" disabled v-model="uFormTitle.djbh">
+            <u-form-item label="促销方式" :labelWidth="76" prop="cxlx">
+              <u-input placeholder="请输入单据编号" disabled v-model="uFormTitle.cxlx">
               </u-input>
             </u-form-item>
+
+            <!--           分店下拉多选-->
+            <u-form-item label="选择分店" :labelWidth="76" prop="remarks">
+              <rudon-multiSelector welcome="请选择分店" :is_using_slot="false" :is_using_icon="true" :localdata="data2" @change="whenChanged"></rudon-multiSelector>
+            </u-form-item>
+
+            <!--          开始时间-->
+            <u-form-item label="开始时间" :labelWidth="74" prop="kssj" v-show="doingindex>=4">
+              <uni-datetime-picker
+                  type="datetime"
+                  v-model="uFormModel.start"
+                  @change="startdate"
+              />
+
+            </u-form-item>
+            <!--          结束时间-->
+            <u-form-item label="结束时间" :labelWidth="74" prop="jssj" v-show="doingindex>=4">
+
+              <uni-datetime-picker
+                  type="datetime"
+                  v-model="uFormModel.end"
+                  @change="enddate"
+              />
+
+            </u-form-item>
+
+
             <u-form-item label="商家编号" :labelWidth="76" prop="sjbh" @tap="querySj(false,'','sjbh')">
               <u-input placeholder="请选择商家编号" disabled
                        :disabledColor="state=='pladd'||state=='edit'||state=='look'||state=='check'?'#F5F7FA':'#fff'"
@@ -258,10 +285,14 @@ export default {
   },
   data() {
     return {
+      data2:[],//fdlist
+      fdlist:[],
       x: 400,
       y: 300,
       ifpage: true,
       uFormTitle: {
+        cxlx:'',
+
         djbh: "",
         sjbh: "",
         ckbh: "",
@@ -274,6 +305,8 @@ export default {
       // 表单内容data
       neworderShow: false,
       uFormModel: {
+        start:'',
+        end:'',
         spbm: "",
         spsmm: "",
         spmc: "",
@@ -285,7 +318,7 @@ export default {
         bsjg: "",
       },
       uFormRules: {
-        "spbm": {
+        "cxlx": {
           asyncValidator: (rule, value, callback) => {
             if (value.replace(/[^\x00-\xff]/g, "xx").length >= 4) {
               callback();
@@ -294,6 +327,42 @@ export default {
             }
           }
         },
+        "kssj": [{
+          type: "string",
+          required: true,
+          message: "请填写开始时间",
+          trigger: ["blur", "change"]
+        },
+          {
+            asyncValidator: (rule, value, callback) => {
+              let reg = /^\d+(\.\d+)?$/
+              if (reg.test(value)) {
+                callback();
+              } else {
+                callback();
+                //callback(new Error('请输入非负数'));
+              }
+            }
+          }
+        ],
+        "jssj": [{
+          type: "string",
+          required: true,
+          message: "请填写结束时间",
+          trigger: ["blur", "change"]
+        },
+          {
+            asyncValidator: (rule, value, callback) => {
+              let reg = /^\d+(\.\d+)?$/
+              if (reg.test(value)) {
+                callback();
+              } else {
+                callback();
+                //callback(new Error('请输入非负数'));
+              }
+            }
+          }
+        ],
         "bssl": [{
           type: "number",
           required: true,
@@ -416,7 +485,9 @@ export default {
       }.bind(this)
     });
     this.uFormTitle.djbh = option.djbh
-    this.uFormTitle.bsfd = option.bsfd
+    console.log(JSON.parse(option.cxlx))
+    let cxlxdata=JSON.parse(option.cxlx)
+    this.uFormTitle.cxlx=`${cxlxdata.id}-${cxlxdata.name}`
 
     this.state = option.state
     let sjVal = ""
@@ -433,6 +504,16 @@ export default {
     this.querySj(true, sjVal, "sjbh")
     this.queryMore(true, ckVal, "CKINFO", "ckbh")
     this.queryMore(true, tkVal, "TKLX", "tklx")
+
+
+    let fdinfo =uni.getStorageSync('basic').FDINFO
+    fdinfo.forEach((item,i)=>{
+      this.data2.push({
+        "value": fdinfo[i].fdbh,
+        "text": fdinfo[i].fdmc,
+        "is_selected":false
+      })
+    })
   },
   onReady() {
     // 设置状态栏文字颜色为 白色
@@ -444,6 +525,21 @@ export default {
 
   },
   methods: {
+    whenChanged(e) {
+      let fdlist=[]
+      e.forEach((item,i)=>{
+        if(item.is_selected){
+          fdlist.push(item.value)
+        }
+      })
+
+      this.fdlist=fdlist
+      this.data2 = e
+      console.log(this.fdlist)
+      if(this.fdlist.length=='1'){
+        this.fdlist=this.fdlist.toString()
+      }
+    },
     // OCR表格识别............................................................
     toOcr() {
       this.ocrShow = true

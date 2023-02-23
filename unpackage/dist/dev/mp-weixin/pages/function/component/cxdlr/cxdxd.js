@@ -355,7 +355,7 @@ var _default = { components: {}, data: function data() {return { state: 'add', c
       (0, _api.OrderNew)(newdata).then(function (res) {
         console.log('cxd', res);
         uni.redirectTo({
-          url: "/pages/function/component/cxdlr/cxd?djbh=".concat(res.djbh, "&cxlx=").concat(data) });
+          url: "/pages/function/component/cxdlr/cxd?djbh=".concat(res.djbh, "&cxlx=").concat(JSON.stringify(data)) });
 
       });
     } },

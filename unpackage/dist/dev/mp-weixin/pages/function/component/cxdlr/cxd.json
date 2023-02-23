@@ -5,6 +5,8 @@
     "u-form": "/node-modules/uview-ui/components/u-form/u-form",
     "u-form-item": "/node-modules/uview-ui/components/u-form-item/u-form-item",
     "u-input": "/node-modules/uview-ui/components/u-input/u-input",
+    "rudon-multi-selector": "/uni_modules/rudon-multiSelector/components/rudon-multiSelector/rudon-multiSelector",
+    "uni-datetime-picker": "/uni_modules/uni-datetime-picker/components/uni-datetime-picker/uni-datetime-picker",
     "u-overlay": "/node-modules/uview-ui/components/u-overlay/u-overlay",
     "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast",
     "u-popup": "/node-modules/uview-ui/components/u-popup/u-popup",
