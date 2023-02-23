@@ -10,23 +10,27 @@
     <view class="center">
       <text>商品促销</text>
     </view>
-    <view class="right" v-show="ifpage">
-      <u-button class="icon-button" text="" throttleTime="2000" :disabled="state=='add'" @tap="newOrder">
-        <uni-icons type="plusempty" size="30" color="#fff"></uni-icons>
-      </u-button>
-    </view>
+<!--    <view class="right" v-show="ifpage">-->
+<!--      <u-button class="icon-button" text="" throttleTime="2000" :disabled="state=='add'" @tap="newOrder">-->
+<!--        <uni-icons type="plusempty" size="30" color="#fff"></uni-icons>-->
+<!--      </u-button>-->
+<!--    </view>-->
   </view>
 <!-- -->
   <view class="box-content">
   <view v-if="state=='add'">
-    <view>
-      <u-subsection :list="tablist" mode="subsection" :current="curNow" @change="sectionChange"></u-subsection>
+    <view >
+      <view style="position: fixed;left: 20px;top:45px;
+    right: 20px;height: 30px;z-index: 99999999;background:#fff"  >
+        <u-subsection :list="tablist" mode="subsection" :current="curNow" @change="sectionChange"></u-subsection>
+      </view>
     </view>
 
+<view> </view>
 <!--    特价类型-->
-   <view>
+   <view class="unit1">
 <view v-for="(item,index) in typeData" :key="index" class="tjbox">
-  <uni-card :title="item.name" extra="创建 +" style="min-width: 318px">
+  <uni-card :title="item.name" extra="创建 +" style="min-width: 318px" @tap="Neworder(item)">
     <view>
       <view>{{item.remark}}</view>
     </view>
@@ -34,6 +38,7 @@
 
 </view>
    </view>
+
   </view>
   </view>
 </view>
@@ -42,7 +47,10 @@
 <script>
 import dayjs from "dayjs";
 import {
-
+  OrderNew,
+  CxdUpdate,
+  CxdDelete,
+  CxdCheck,
 } from "@/network/api.js";
 
 
@@ -53,7 +61,7 @@ export default {
   data() {
     return {
       state:'add',
-      tablist:['特价','折扣','买满','换购','档期'],
+      tablist:['特价','折扣','买满','换购','会员','档期'],
       curNow: 0,
       typeData: [
         { name: '日期段内特价', id: '02', page: 'detail02', remark: '在某一特定日期，指定的单品 做特价。如：XXX商品原价10元，1月1日到1月3日特价8元销售', dmdq: false },
@@ -176,7 +184,18 @@ if(option.state=='edit'){
         this.typeData = []
       }
     },
-
+//创建新类型促销单
+    Neworder(data){
+      console.log(data);
+      let newdata={
+        access_token:uni.getStorageSync('access_token'),
+        djtype:'CXD',
+        fdbh:uni.getStorageSync('fdbh'),
+      }
+      OrderNew(newdata).then((res)=>{
+        console.log('cxd',res)
+      })
+    }
 
   },
   computed: {
@@ -206,6 +225,9 @@ if(option.state=='edit'){
 .tjbox{
   display: inline-flex;
   flex-direction: column;
+}
+.unit1{
+  margin-top: 20px;
 }
 
 </style>

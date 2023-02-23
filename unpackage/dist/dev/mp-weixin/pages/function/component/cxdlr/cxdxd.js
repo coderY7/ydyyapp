@@ -102,9 +102,6 @@ try {
     uniIcons: function() {
       return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 1168))
     },
-    uButton: function() {
-      return Promise.all(/*! import() | node-modules/uview-ui/components/u-button/u-button */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/uview-ui/components/u-button/u-button")]).then(__webpack_require__.bind(null, /*! uview-ui/components/u-button/u-button.vue */ 1199))
-    },
     uSubsection: function() {
       return Promise.all(/*! import() | node-modules/uview-ui/components/u-subsection/u-subsection */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/uview-ui/components/u-subsection/u-subsection")]).then(__webpack_require__.bind(null, /*! uview-ui/components/u-subsection/u-subsection.vue */ 1617))
     },
@@ -166,7 +163,12 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
 
 
 
@@ -209,7 +211,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 var _dayjs = _interopRequireDefault(__webpack_require__(/*! dayjs */ 299));
-__webpack_require__(/*! @/network/api.js */ 151);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+var _api = __webpack_require__(/*! @/network/api.js */ 151);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
 //
@@ -250,12 +252,15 @@ __webpack_require__(/*! @/network/api.js */ 151);function _interopRequireDefault
 //
 //
 //
-var _default = { components: {}, data: function data() {return { state: 'add', tablist: ['特价', '折扣', '买满', '换购', '档期'], curNow: 0, typeData: [{ name: '日期段内特价', id: '02', page: 'detail02', remark: '在某一特定日期，指定的单品 做特价。如：XXX商品原价10元，1月1日到1月3日特价8元销售', dmdq: false }, { name: '日期段内按量特价', id: '04', page: 'detail04', remark: '在某一特定时期，指定的单品购买一定数量时按特价销售。如：XXX商品原价10元，1月1日到1月3日购买3件及以上数量时按7元特价销售。', dmdq: false }, { name: '时间段内特价', id: '07', page: 'detail07', remark: '在某一特定时间，指定的单品做特价。如：XXX商品原价10元，1月1日到1月3日特价8元销售', dmdq: false }, { name: '限量抢购特价', id: '08', page: 'detail08', remark: '在某一特定日期，指定的单品购买一定数量时按特价销售。如: XXX商品原价10元，1月1日到1月3日购买3件及以上数量时按7元特价销售。', dmdq: false }, { name: '第N件增量特价', id: '11', page: 'detail11', remark: '在某一特定日期，买指定的单品达到一定数量时打折。如: 1月1 日到1月3日XXX商品购买3件及以上打50元特卖。', dmdq: false }, // { name: '卡券日期段内特价' ,id:'28',page:'detail28',remark:'在某一特定日期，指定的单品做特价。如：XXX商品原价10元，1月1日到1月3日特价8元销售',dmdq:false},
+//
+//
+//
+//
+//
+var _default = { components: {}, data: function data() {return { state: 'add', tablist: ['特价', '折扣', '买满', '换购', '会员', '档期'], curNow: 0, typeData: [{ name: '日期段内特价', id: '02', page: 'detail02', remark: '在某一特定日期，指定的单品 做特价。如：XXX商品原价10元，1月1日到1月3日特价8元销售', dmdq: false }, { name: '日期段内按量特价', id: '04', page: 'detail04', remark: '在某一特定时期，指定的单品购买一定数量时按特价销售。如：XXX商品原价10元，1月1日到1月3日购买3件及以上数量时按7元特价销售。', dmdq: false }, { name: '时间段内特价', id: '07', page: 'detail07', remark: '在某一特定时间，指定的单品做特价。如：XXX商品原价10元，1月1日到1月3日特价8元销售', dmdq: false }, { name: '限量抢购特价', id: '08', page: 'detail08', remark: '在某一特定日期，指定的单品购买一定数量时按特价销售。如: XXX商品原价10元，1月1日到1月3日购买3件及以上数量时按7元特价销售。', dmdq: false }, { name: '第N件增量特价', id: '11', page: 'detail11', remark: '在某一特定日期，买指定的单品达到一定数量时打折。如: 1月1 日到1月3日XXX商品购买3件及以上打50元特卖。', dmdq: false }, // { name: '卡券日期段内特价' ,id:'28',page:'detail28',remark:'在某一特定日期，指定的单品做特价。如：XXX商品原价10元，1月1日到1月3日特价8元销售',dmdq:false},
       // { name: '卡券时间段内特价' ,id:'30',page:'detail30',remark:'在某一特定日期，指定的单品做特价。如：XXX商品原价10元，1月1日到1月3日特价8元销售',dmdq:false},
       { name: '卡券日期段内特价', id: '28', page: 'detail02', remark: '在某一特定日期，指定的单品做特价。如：XXX商品原价10元，1月1日到1月3日特价8元销售', dmdq: false }, { name: '卡券时间段内特价', id: '30', page: 'detail07', remark: '在某一特定日期，指定的单品做特价。如：XXX商品原价10元，1月1日到1月3日特价8元销售', dmdq: false }, { name: '自由捆绑特价', id: 'B1', page: 'detailB1', remark: '在某一特定时期内，不同的商品进行组合捆绑销售可以享受特价优惠。', dmdq: false }], //特价类型
-      cxdadd: { DmPlanID: '', EndRQ: '', StartRQ: '', access_token: '', cxlxid: '', djbh: '', fdbh: '', fdlist: '', list: [{ allsmm: '', bcbl: "", checkcbj: '', checkdm: '', cxjg: '', dmkdlxid: '', dmnewkdl: '', dmpjjj: '', dmsjbh: '',
-          nsjg: '',
-          saveStatus: '',
+      cxdadd: { DmPlanID: '', EndRQ: '', StartRQ: '', access_token: '', cxlxid: '', djbh: '', fdbh: '', fdlist: '', list: [{ allsmm: '', bcbl: "", checkcbj: '', checkdm: '', cxjg: '', dmkdlxid: '', dmnewkdl: '', dmpjjj: '', dmsjbh: '', nsjg: '', saveStatus: '',
           sjhtinfo: '',
           sjinfo: [{
             sjbh: '',
@@ -343,8 +348,19 @@ var _default = { components: {}, data: function data() {return { state: 'add', t
       } else if (name == '档期') {
         this.typeData = [];
       }
-    } },
+    },
+    //创建新类型促销单
+    Neworder: function Neworder(data) {
+      console.log(data);
+      var newdata = {
+        access_token: uni.getStorageSync('access_token'),
+        djtype: 'CXD',
+        fdbh: uni.getStorageSync('fdbh') };
 
+      (0, _api.OrderNew)(newdata).then(function (res) {
+        console.log('cxd', res);
+      });
+    } },
 
 
   computed: {
@@ -353,6 +369,7 @@ var _default = { components: {}, data: function data() {return { state: 'add', t
     } },
 
   watch: {} };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

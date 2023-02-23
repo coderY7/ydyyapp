@@ -74,6 +74,16 @@ export const BjdDosave = (params, config = {}) => http.post("/mzsale/web/bjd/dos
 export const BjdDelLine = (params, config = {}) => http.post("/mzsale/web/bjd/delete/line", params, config)
 
 //促销单
+//促销单录入
+export const CxdAdd = (params, config = {}) => http.post("/mzsale/web/cx/add", params, config)
+//促销单商品编辑
+export const CxdUpdate = (params, config = {}) => http.post("/mzsale/web/cx/update", params, config)
+//促销单整单删除
+export const CxdDelete = (params, config = {}) => http.post("/mzsale/web/cx/delete", params, config)
+//促销单删除明细
+export const CxdDelLine = (params, config = {}) => http.post("/mzsale/web/cx/delete/line", params, config)
+//促销单审核上账
+export const CxdCheck = (params, config = {}) => http.post("/mzsale/web/cx/check", params, config)
 
 
 //批发单
