@@ -329,7 +329,7 @@
           },
             {
               asyncValidator: (rule, value, callback) => {
-                let reg = /^\d+(\.\d+)?$/
+                let reg = /^[0-9a-zA-Z_]{1,}$/
                 if (reg.test(value)) {
                   callback();
                 } else {
