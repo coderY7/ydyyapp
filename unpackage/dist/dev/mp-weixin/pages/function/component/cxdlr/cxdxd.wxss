@@ -34,6 +34,10 @@
   padding-top: calc(25px + 52px);
   padding-bottom: 40px;
 }
+.tjbox.data-v-367b1131 {
+  display: inline-flex;
+  flex-direction: column;
+}
 
 @charset "UTF-8";
 /* uni.scss */
