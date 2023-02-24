@@ -81,25 +81,25 @@ export default {
         fdbh: '',
         fdlist: '',
         list: [{
-          allsmm: '',
-          bcbl: "",
-          checkcbj: '',
-          checkdm: '',
-          cxjg: '',
-          dmkdlxid: '',
-          dmnewkdl: '',
-          dmpjjj: '',
-          dmsjbh: '',
-          nsjg: '',
+          allsmm: '',//是否所有商品
+          bcbl: "",//补差比例
+          checkcbj: '',//是否库存补差
+          checkdm: '',//是否特供
+          cxjg: '',//促销价格
+          dmkdlxid: '',//促扣类型
+          dmnewkdl: '',//新促扣率
+          dmpjjj: '',//特供进价
+          dmsjbh: '',//特供商家编号
+          nsjg: '',//零售价格
           saveStatus: '',
           sjhtinfo: '',
           sjinfo: [{
             sjbh: '',
             sjmc: ''
           }],
-          spbm: '',
+          spbm: '',//商品编码
           spmc: '',
-          spsmm: '',
+          spsmm: '',//商品扫描码
           type: 'cxAdd',
 
 

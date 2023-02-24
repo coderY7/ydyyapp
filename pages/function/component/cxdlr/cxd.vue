@@ -12,11 +12,11 @@
       </view>
       <view class="center" v-show="ifpage">促销新单</view>
       <view class="center" v-show="!ifpage">商品明细</view>
-      <view class="right" v-show="ifpage">
-        <u-button class="icon-button" text="" throttleTime="2000" :disabled="state=='add'" @tap="newOrder">
-          <uni-icons type="plusempty" size="30" color="#fff"></uni-icons>
-        </u-button>
-      </view>
+<!--      <view class="right" v-show="ifpage">-->
+<!--        <u-button class="icon-button" text="" throttleTime="2000" :disabled="state=='add'" @tap="newOrder">-->
+<!--          <uni-icons type="plusempty" size="30" color="#fff"></uni-icons>-->
+<!--        </u-button>-->
+<!--      </view>-->
     </view>
     <view class="box-content" v-show="ifpage">
       <!-- 新增单据 表头 -->
@@ -146,11 +146,15 @@
                 <text class="left-con">规格:</text>
                 <text>{{uFormModel.gg}}</text>
               </view>
+              <view class="shopTishi-view-half" v-if="uFormModel.nsjg">
+                <text class="left-con">零售价格:</text>
+                <text style="color: red;font-size: 20px">{{uFormModel.nsjg}}</text>
+              </view>
             </view>
           </view>
-          <u-form-item label="库存批号" :labelWidth="74" prop="kcph" v-show="doingindex>=1">
-            <u-input placeholder="请选择库存批号" type="text" readonly v-model="uFormModel.kcph"
-                     :focus="focusObj.kcphFocus" @tap="serchKcph">
+          <u-form-item label="促销价格" :labelWidth="74" prop="cxjg" v-show="doingindex>=1">
+            <u-input placeholder="请输入促销价格" type="text" readonly v-model="uFormModel.cxjg"
+                     >
             </u-input>
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
                        :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
@@ -292,8 +296,14 @@ export default {
       ifpage: true,
       uFormTitle: {
         cxlx:'',
-
+        cxlxid:'',
+        EndRQ:'',
+        StartRQ:'',
         djbh: "",
+        fdbh:'',
+        fdlist:'',
+
+
         sjbh: "",
         ckbh: "",
         tklx: "",
@@ -305,6 +315,7 @@ export default {
       // 表单内容data
       neworderShow: false,
       uFormModel: {
+        cxjg:'',
         start:'',
         end:'',
         spbm: "",
@@ -488,6 +499,7 @@ export default {
     console.log(JSON.parse(option.cxlx))
     let cxlxdata=JSON.parse(option.cxlx)
     this.uFormTitle.cxlx=`${cxlxdata.id}-${cxlxdata.name}`
+    this.uFormTitle.cxlxid=`${cxlxdata.id}`
 
     this.state = option.state
     let sjVal = ""
@@ -525,6 +537,7 @@ export default {
 
   },
   methods: {
+//分店处理
     whenChanged(e) {
       let fdlist=[]
       e.forEach((item,i)=>{
@@ -540,6 +553,33 @@ export default {
         this.fdlist=this.fdlist.toString()
       }
     },
+    //开始时间
+    startdate(e){
+      if(e.length>11){
+        //日期
+        this.uFormTitle.StartRQ=e.split(' ')[0]
+        //时间
+        console.log(e.split(' ')[1]);
+      }else {
+        console.log('0000')
+        this.uFormTitle.StartRQ=e
+      }
+    },
+
+    //结束时间
+    enddate(e){
+      console.log(e)
+      if(e.length>11){
+        //日期
+        this.uFormTitle.EndRQ=e.split(' ')[0]
+        //时间
+        console.log(e.split(' ')[1]);
+      }else {
+        console.log('0000')
+        this.uFormTitle.EndRQ=e
+      }
+    },
+
     // OCR表格识别............................................................
     toOcr() {
       this.ocrShow = true
@@ -892,6 +932,7 @@ export default {
         uni.hideLoading()
         this.coverShow = false
         console.log("查找商品 res", res)
+        console.log('基本信息',this.uFormTitle);
         if (res.error_code == 0) {
           this.uploadarr = []
           if (res.data.length == 1) {

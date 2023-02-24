@@ -74,6 +74,8 @@ export const BjdDosave = (params, config = {}) => http.post("/mzsale/web/bjd/dos
 export const BjdDelLine = (params, config = {}) => http.post("/mzsale/web/bjd/delete/line", params, config)
 
 //促销单
+//促销单商家
+export const Cxdsjinfo = (params, config = {}) => http.post("/mzsale/web/cx/sjinfo", params, config)
 //促销单录入
 export const CxdAdd = (params, config = {}) => http.post("/mzsale/web/cx/add", params, config)
 //促销单商品编辑
