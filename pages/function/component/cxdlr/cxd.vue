@@ -205,8 +205,29 @@
             <text class="inp-right-text" v-else></text>
           </u-form-item>
 
-          <u-form-item label="报损价格" :labelWidth="74" prop="bsjg" v-show="doingindex>=3">
-            <u-input placeholder="请输入报损价格" type="number" v-model="uFormModel.bsjg"
+
+          <u-form-item label="新促扣率" :labelWidth="74" prop="dmnewkdl" v-show="doingindex>=6">
+            <u-input placeholder="请输入新促扣率" type="number" v-model="uFormModel.dmnewkdl"
+                     :focus="focusObj.priceFocus">
+            </u-input>
+            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+                       :color="doingId=='price'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"
+                       @tap="clickYuyin('price',false)"></uni-icons>
+            <text class="inp-right-text" v-else></text>
+          </u-form-item>
+
+          <u-form-item label="库存补差" :labelWidth="74" prop="checkcbj" v-show="doingindex>=7">
+            <view>
+              <switch  color="#FFCC33" style="transform:scale(0.7)" @change="ischeckcbj"/>
+            </view>
+            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+                       :color="doingId=='price'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"
+                       @tap="clickYuyin('price',false)"></uni-icons>
+            <text class="inp-right-text" v-else></text>
+          </u-form-item>
+
+          <u-form-item label="补差比率" :labelWidth="74" prop="bcbl" v-show="doingindex>=8">
+            <u-input placeholder="请输入补差比率" type="number" v-model="uFormModel.bcbl"
                      :focus="focusObj.priceFocus">
             </u-input>
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
@@ -588,6 +609,17 @@ export default {
         "is_selected":false
       })
     })
+
+
+    let dmkdlxidlist=uni.getStorageSync('basic').KDFSINFO
+    dmkdlxidlist.splice(0,0,{yjkdlxid:'NOT',yjkdlxm:'不设置新折扣'})
+    dmkdlxidlist.forEach((item,i)=>{
+      this.dmkdlxidlist.push({
+        "value": dmkdlxidlist[i].yjkdlxid,
+        "text": `${dmkdlxidlist[i].yjkdlxid}-${dmkdlxidlist[i].yjkdlxm}`,
+      })
+    })
+
   },
   onReady() {
     // 设置状态栏文字颜色为 白色
@@ -602,6 +634,10 @@ export default {
     //特供扣点
     ischeckdm(e){
       this.uFormModel.checkdm=e.detail.value
+    },
+    //库存补差
+    ischeckcbj(e){
+      this.uFormModel.checkcbj=e.detail.value
     },
     //商家合同
     SjhtChange(){
