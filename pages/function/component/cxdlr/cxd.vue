@@ -152,6 +152,7 @@
               </view>
             </view>
           </view>
+
           <u-form-item label="促销价格" :labelWidth="74" prop="cxjg" v-show="doingindex>=1">
             <u-input placeholder="请输入促销价格" type="text" readonly v-model="uFormModel.cxjg"
                      >
@@ -160,8 +161,31 @@
                        :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
-          <u-form-item label="报损数量" :labelWidth="74" prop="bssl" v-show="doingindex>=2">
-            <u-input placeholder="请输入报损数量" type="number" v-model="uFormModel.bssl"
+
+          <u-form-item label="特供扣点" :labelWidth="74" prop="checkdm" v-show="doingindex>=2">
+            <view>
+              <switch  color="#FFCC33" style="transform:scale(0.7)" @change="ischeckdm"/>
+            </view>
+            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+                       :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
+            <text class="inp-right-text" v-else></text>
+          </u-form-item>
+
+          <u-form-item label="商家合同" :labelWidth="74" prop="cxjg" v-show="doingindex>=3">
+            <uni-data-select
+                             v-model="uFormModel.sjbh"
+                             :localdata="sjlist"
+                             :clear="false"
+            ></uni-data-select>
+            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+                       :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
+            <text class="inp-right-text" v-else></text>
+          </u-form-item>
+
+
+
+          <u-form-item label="特供进价" :labelWidth="74" prop="dmpjjj" v-show="doingindex>=4">
+            <u-input placeholder="请输入特供进价" type="number" v-model="uFormModel.dmpjjj"
                      :focus="focusObj.numFocus">
             </u-input>
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
@@ -169,6 +193,18 @@
                        @tap="clickYuyin('num',false)"></uni-icons>
             <text class="inp-right-text" v-else></text>
           </u-form-item>
+
+          <u-form-item label="折扣类型" :labelWidth="74" prop="dmkdlxid" v-show="doingindex>=5">
+            <uni-data-select
+                v-model="uFormModel.dmkdlxid"
+                :localdata="dmkdlxidlist"
+                :clear="false"
+            ></uni-data-select>
+            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+                       :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
+            <text class="inp-right-text" v-else></text>
+          </u-form-item>
+
           <u-form-item label="报损价格" :labelWidth="74" prop="bsjg" v-show="doingindex>=3">
             <u-input placeholder="请输入报损价格" type="number" v-model="uFormModel.bsjg"
                      :focus="focusObj.priceFocus">
@@ -274,7 +310,13 @@ import {
   Sppc,
   GetlistC,
   BsdDosave,
-  OrderNew
+  OrderNew,
+  Cxdsjinfo,
+  CxdAdd,
+  CxdUpdate,
+  CxdDelete,
+  CxdDelLine,
+  CxdCheck,
 } from "@/network/api.js";
 import xuanSwitch from "@/components/xuan-switch/xuan-switch.vue";
 import goodsVoice from '@/components/goodsVoice/goodsVoice';
@@ -289,8 +331,10 @@ export default {
   },
   data() {
     return {
+      dmkdlxidlist:[],//折扣类型
       data2:[],//fdlist
       fdlist:[],
+      sjlist:[],//商家合同
       x: 400,
       y: 300,
       ifpage: true,
@@ -315,15 +359,33 @@ export default {
       // 表单内容data
       neworderShow: false,
       uFormModel: {
-        cxjg:'',
+        allsmm: '',//是否所有商品
+        bcbl: "",//补差比例
+        checkcbj: '',//是否库存补差
+        checkdm: '',//是否特供
+        cxjg: '',//促销价格
+        dmkdlxid: '',//促扣类型
+        dmnewkdl: '',//新促扣率
+        dmpjjj: '',//特供进价
+        dmsjbh: '',//特供商家编号
+        nsjg: '',//零售价格
+        saveStatus: '',
+        sjhtinfo: '',
+        sjinfo: [{
+          sjbh: '',
+          sjmc: ''
+        }],
+        spbm: '',//商品编码
+        spmc: '',
+        spsmm: '',//商品扫描码
+        type: 'cxAdd',
+
+
+
         start:'',
         end:'',
-        spbm: "",
-        spsmm: "",
-        spmc: "",
         dw: "",
         gg: "",
-        nsjg: "",
         kcph: "",
         bssl: "",
         bsjg: "",
@@ -537,6 +599,33 @@ export default {
 
   },
   methods: {
+    //特供扣点
+    ischeckdm(e){
+      this.uFormModel.checkdm=e.detail.value
+    },
+    //商家合同
+    SjhtChange(){
+      let data={
+        access_token:uni.getStorageSync('access_token'),
+        fdbh:uni.getStorageSync('fdbh'),
+        spbm:this.uFormModel.spbm,
+        userid:uni.getStorageSync('userid'),
+      }
+      Cxdsjinfo(data).then((res)=>{
+        if(res.error_code==0){
+          this.sjlist=res.data
+          let sjlist = []
+          this.sjlist.forEach((item,i)=>{
+            sjlist.push({
+              "value":  this.sjlist[i].sjbh,
+              "text":  this.sjlist[i].sjmc,
+            })
+          })
+          this.sjlist=sjlist
+        }
+          })
+      console.log(this.uFormModel)
+    },
 //分店处理
     whenChanged(e) {
       let fdlist=[]
@@ -967,6 +1056,8 @@ export default {
       this.popupShow = false
       this.searchCode = 400
       this.isSpComplete = true
+      //商家合同查询
+      this.SjhtChange()
       // console.log("this.serchGoodsData this.serchGoodsData", this.serchGoodsData)
       if (this.isVoiceMode) {
         let arrTemp = []
@@ -1133,12 +1224,26 @@ export default {
       this.$refs.uForm.validate().then(resf => {
         this.uploadarr = []
         this.uploadarr.push({
-          "guid": "",
+          allsmm: '',//是否所有商品
+          bcbl: "",//补差比例
+          checkcbj: '',//是否库存补差
+          checkdm: '',//是否特供
+          cxjg: '',//促销价格
+          dmkdlxid: '',//促扣类型
+          dmnewkdl: '',//新促扣率
+          dmpjjj: '',//特供进价
+          dmsjbh: '',//特供商家编号
+          nsjg: '',//零售价格
+          saveStatus: '',
+          sjhtinfo: '',
+          sjinfo: [{
+            sjbh: '',
+            sjmc: ''
+          }],
+          type: 'cxAdd',
           "spbm": this.uFormModel.spbm,
           "spmc": this.uFormModel.spmc,
-          "bssl": this.uFormModel.bssl,
           "spsmm": this.uFormModel.spsmm,
-          "bsjg": this.uFormModel.bsjg
         })
         this.doSave("CHK")
       }).catch(errors => {
@@ -1626,5 +1731,8 @@ export default {
 <style lang="scss">
 page {
   background-color: #f8f8f8;
+}
+.uni-stat__select{
+  padding: 0;
 }
 </style>

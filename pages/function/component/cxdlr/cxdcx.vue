@@ -633,4 +633,7 @@ page {
   width: 75%;
   padding: 0;
 }
+.uni-stat__select{
+  padding: 0;
+}
 </style>
