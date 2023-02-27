@@ -38,8 +38,8 @@
         <view class="my-collapse-con" v-show="myCollShow">
           <view style="text-align:center;color:#F56C6C;" v-if="neworderShow">这是一个新单！！！</view>
           <u-form class="form-card" labelPosition="left" :model="uFormTitle">
-            <u-form-item label="促销方式" :labelWidth="76" prop="cxlx">
-              <u-input placeholder="请输入单据编号" disabled v-model="uFormTitle.cxlx">
+            <u-form-item label="促销方式" :labelWidth="76" prop="cxfs">
+              <u-input placeholder="" disabled v-model="uFormTitle.cxfs">
               </u-input>
             </u-form-item>
 
@@ -360,6 +360,7 @@ export default {
       y: 300,
       ifpage: true,
       uFormTitle: {
+        cxfs:'',
         cxlx:'',
         cxlxid:'',
         EndRQ:'',
@@ -579,11 +580,9 @@ export default {
       }.bind(this)
     });
     this.uFormTitle.djbh = option.djbh
-    console.log(JSON.parse(option.cxlx))
-    let cxlxdata=JSON.parse(option.cxlx)
-    this.uFormTitle.cxlx=`${cxlxdata.id}-${cxlxdata.name}`
-    this.uFormTitle.cxlxid=`${cxlxdata.id}`
-
+    this.uFormTitle.cxfs=option.cxfs
+    this.uFormTitle.cxlxid=this.uFormTitle.cxfs.split(' ')[0]
+    console.log('单子信息',this.uFormTitle);
     this.state = option.state
     let sjVal = ""
     let ckVal = ""
@@ -1153,7 +1152,7 @@ export default {
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),
         "djbh": this.uFormTitle.djbh,
-        "djtype": "SPBSD",
+        "djtype": "CXD",
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),
         "ztbz": "F"

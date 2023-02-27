@@ -367,7 +367,7 @@ export default {
         states="look"
       }
       uni.navigateTo({
-        url: `/pages/function/component/cxdlr/cxdxd?state=${states}&djbh=${item.促销单号}&djzt=${item.单据状态}&cxlx=${item.cxlxid}&cxfs=${item.促销方式}`
+        url: `/pages/function/component/cxdlr/cxd?state=${states}&djbh=${item.促销单号}&djzt=${item.单据状态}&cxlx=${item.cxlxid}&cxfs=${item.促销方式}`
       });
     },
 
