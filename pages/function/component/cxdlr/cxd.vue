@@ -154,7 +154,7 @@
             <text class="inp-right-text" v-else></text>
           </u-form-item>
 
-          <u-form-item v-if="this.uFormModel.checkdm" label="商家合同" :labelWidth="74" prop="cxjg" v-show="doingindex>=3">
+          <u-form-item v-if="this.uFormModel.checkdm" label="商家合同" :labelWidth="74" prop="sjbh" v-show="doingindex>=3">
             <uni-data-select
                              v-model="uFormModel.sjinfo[0].sjbh"
                              :localdata="sjlist"
@@ -405,46 +405,10 @@ export default {
             }
           }
         },
-        "kssj": [{
-          type: "string",
-          required: true,
-          message: "请填写开始时间",
-          trigger: ["blur", "change"]
-        },
-          {
-            asyncValidator: (rule, value, callback) => {
-              let reg = /^\d+(\.\d+)?$/
-              if (reg.test(value)) {
-                callback();
-              } else {
-                callback();
-                //callback(new Error('请输入非负数'));
-              }
-            }
-          }
-        ],
-        "jssj": [{
-          type: "string",
-          required: true,
-          message: "请填写结束时间",
-          trigger: ["blur", "change"]
-        },
-          {
-            asyncValidator: (rule, value, callback) => {
-              let reg = /^\d+(\.\d+)?$/
-              if (reg.test(value)) {
-                callback();
-              } else {
-                callback();
-                //callback(new Error('请输入非负数'));
-              }
-            }
-          }
-        ],
-        "bssl": [{
+        "cxjg": [{
           type: "number",
           required: true,
-          message: "请填写报损数量",
+          message: "请填写促销价格",
           trigger: ["blur", "change"]
         },
           {
@@ -458,10 +422,10 @@ export default {
             }
           }
         ],
-        "bsjg": [{
+        "dmpjjj": [{
           type: "number",
           required: true,
-          message: "请填写报损价格",
+          message: "请填写特供价格",
           trigger: ["blur", "change"]
         },
           {
@@ -574,6 +538,7 @@ export default {
     let ckVal = ""
     let tkVal = ""
     if (option.state == "add") {
+      this.uFormTitle.djbh = option.djbh
       console.log(JSON.parse(option.cxlx))
       this.editTitleObj = option
       this.uFormTitle.cxfs=`${JSON.parse(option.cxlx).id}-${JSON.parse(option.cxlx).name}`
@@ -585,7 +550,7 @@ export default {
       this.getList()
       this.editTitleObj = option
     }
-    this.querySj(true, sjVal, "sjbh")
+    //this.querySj(true, sjVal, "sjbh")
     this.queryMore(true, ckVal, "CKINFO", "ckbh")
     this.queryMore(true, tkVal, "TKLX", "tklx")
 
@@ -661,6 +626,8 @@ export default {
           })
           this.sjlist=sjlist
           this.uFormModel.sjinfo[0].sjbh=this.sjlist[0].value
+          this.uFormModel.sjinfo[0].sjmc=this.sjlist[0].text
+
         }
           })
       console.log(this.uFormModel)
@@ -1090,6 +1057,8 @@ export default {
       this.uFormModel.dw = data.dw
       this.uFormModel.gg = data.gg
       this.uFormModel.nsjg = data.nsjg
+      this.uFormModel.cxjg = data.cxjg
+      this.uFormModel.sjbh = data.sjbh
 
 
 
@@ -1269,20 +1238,19 @@ export default {
         this.uploadarr = []
         this.uploadarr.push({
           allsmm: true,//是否所有商品
-          bcbl: "",//补差比例
-          checkcbj: '',//是否库存补差
-          checkdm: '',//是否特供
-          cxjg: '',//促销价格
-          dmkdlxid: '',//促扣类型
-          dmnewkdl: '',//新促扣率
-          dmpjjj: '',//特供进价
-          dmsjbh: '',//特供商家编号
-          nsjg: '',//零售价格
-          saveStatus: '',
-          sjhtinfo: '',
+          bcbl: "1",//补差比例
+          checkcbj: false,//是否库存补差
+          checkdm: this.uFormModel.checkdm,//是否特供
+          cxjg:this.uFormModel.cxjg,//促销价格
+          dmkdlxid:this.uFormModel.dmkdlxid,//促扣类型
+          dmnewkdl: '1',//新促扣率
+          dmpjjj: this.uFormModel.dmpjjj,//特供进价
+          dmsjbh:this.uFormModel.sjbh,//特供商家编号
+          nsjg: this.uFormModel.spbm,//零售价格
+          saveStatus: true,
           sjinfo: [{
-            sjbh: '',
-            sjmc: ''
+            sjbh: this.uFormModel.sjinfo[0].sjbh,
+            sjmc: this.uFormModel.sjinfo[0].sjmc
           }],
           type: 'cxAdd',
           "spbm": this.uFormModel.spbm,
@@ -1294,22 +1262,22 @@ export default {
 
       })
     },
-    CxdAdd(state) {
+    doSave(state) {
       console.log(this.uFormTitle)
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),
         "djbh": this.uFormTitle.djbh,
-        "bsck": this.uFormTitle.ckbh.split("-")[0],
-        "bslx": this.uFormTitle.tklx.split("-")[0],
-        "bsfd":this.uFormTitle.bsfd,
         "fdbh": uni.getStorageSync("fdbh"),
-        "remark": this.uFormTitle.remarks,
         "userid": uni.getStorageSync("userid"),
-        "vtype": state,
+        DmPlanID:'',
+        EndRQ:this.uFormTitle.EndRQ,
+        StartRQ:this.uFormTitle.StartRQ,
+        cxlxid: this.uFormTitle.cxlxid,
+        fdlist:this.fdlist,
         "list": this.uploadarr,
       }
       console.log("state==" + state + "; 保存商品 dosave dataes", dataes)
-      BsdDosave(dataes).then((res) => {
+      CxdAdd(dataes).then((res) => {
         console.log("state==" + state + "; 保存商品 dosave res", res)
         if (state == "EDIT") {
           if (res.error_code == 0) {
