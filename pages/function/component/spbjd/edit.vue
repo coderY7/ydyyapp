@@ -78,7 +78,7 @@
     <view class="foldGroup" v-show="!stateDetail">
       <view class="fold-title" v-if="title.state!='add'">
         <view class="fold-title-t fold-title-flex-start">
-          <text>{{title.djbh}}</text>
+          <text>单号: {{title.djbh}}</text>
         </view>
       </view>
       <view class="fold-content" v-for="(item,index) in tableData">
