@@ -27,21 +27,39 @@
             </view>
           </view>
           <view class="shopTishi">
-            <view class="shopTishi-view-half" v-if="editForm.bqjg">
-              <text class="left-con">变前价格:</text>
-              <text>{{editForm.bqjg}}</text>
+            <view class="shopTishi-view-half" v-if="editForm.nsjg">
+              <text class="left-con">零售价格:</text>
+              <text>{{editForm.nsjg}}</text>
             </view>
           </view>
         </view>
-        <u-form-item label="变后价格" :labelWidth="74" prop="bhjg">
-          <u-input placeholder="请输入变后价格" type="number" v-model="editForm.bhjg">
+        <u-form-item label="促销价格" :labelWidth="74" prop="cxjg">
+          <u-input placeholder="请输入促销价格" type="number" v-model="editForm.cxjg">
           </u-input>
         </u-form-item>
-        <u-form-item label="调价类型" :labelWidth="74" prop="jglxid">
+
+        <u-form-item label="特供扣点" :labelWidth="74" prop="checkdm" >
+          <view>
+            <switch  color="#FFCC33" style="transform:scale(0.7)" @change="ischeckdm"/>
+          </view>
+        </u-form-item>
+
+        <u-form-item label="折扣类型" :labelWidth="74" prop="dmkdlxid" >
+          <uni-data-select
+              v-model="editForm.dmkdlxid"
+              :localdata="dmkdlxidlist"
+              :clear="false"
+          ></uni-data-select>
+        </u-form-item>
+
+        <u-form-item label="商家合同" :labelWidth="74" prop="jglxid">
           <!--          <u-input placeholder="请输入报溢价格" type="number" v-model="editForm.jglxid">-->
           <!--          </u-input>-->
-          <rudon-multiSelector welcome="请选择调价类型" :is_using_slot="false" :is_using_icon="true" :localdata="jglxdata" @change="jglxChanged"></rudon-multiSelector>
+          <rudon-multiSelector welcome="请选择商家合同" :is_using_slot="false" :is_using_icon="true" :localdata="jglxdata" @change="jglxChanged"></rudon-multiSelector>
         </u-form-item>
+
+
+
         <!--        <u-form-item label="生效时间" :labelWidth="74" prop="sxsj">-->
         <!--&lt;!&ndash;          <xuanSwitch :switchList="switchList" :defaultSwitch="editForm.sxsj" @change="switChange"></xuanSwitch>&ndash;&gt;-->
         <!--          <uni-datetime-picker-->
@@ -116,7 +134,7 @@
           </view>
           <view class="multiple-con view-flex">
             <text class="left-con">商家编号:</text>
-            <text class="right-con" style="font-size: 8px">￥{{item.sjbh}}</text>
+            <text class="right-con" style="font-size: 8px">{{item.sjbh}}</text>
           </view>
         </view>
       </view>
@@ -135,7 +153,8 @@ import dayjs from "dayjs";
 import {
   Basic,
   Search,
-  CxdDelLine
+  CxdDelLine,
+  Cxdsjinfo
 } from "@/network/api.js";
 import xuanSwitch from "@/components/xuan-switch/xuan-switch.vue";
 export default {
@@ -166,24 +185,58 @@ export default {
     return {
       start:'2021-3-20',
       switchList:["是","否"],
+      dmkdlxidlist:[],
+      sjlist:[],
       editForm:{
-        spbm: "",
-        spsmm: "",
-        spmc: "",
         dw: "",
         gg: "",
         bysl: "",
-        nsjg: "",
         splx: false,//赠送商品
         jgcxbz: "",//供价类型
 
-        bqjg:'',
-        bhjg:'',
-        spremark:'',
-        jglxid:'',
-        jglx:'',
-        sxsj:'',
-        fdssbl:'',
+        allsmm: true,
+        bcbl: '',
+        checkcbj: false,
+        checkdm: true,
+        cxjg: '',
+        cxzk1: '',
+        cxzk2: '',
+        cxzk3: '',
+        cxzk4: '',
+        cxzk5: '',
+        cxzk6: '',
+        cxzk7: '',
+        cxzkl: '',
+        dmkdlxid: "",
+        dmnewkdl: '',
+        dmpjjj: "",
+        dmsjbh: "",
+        gwjid: "",
+        isbirth: false,
+        issum: false,
+        mmje: 0,
+        nsjg: '',
+        saveStatus: true,
+        sjinfo: [
+          {
+            sjbh: "",
+            sjmc: ""
+          }
+        ],
+        slsx: 0,
+        slxx: 0,
+        spbm: "",
+        spmc: "",
+        spsmm: "",
+        sxje: 0,
+        type: "cxUpdate",
+        xsps: [
+          "X"
+        ],
+        zssl: 0,
+        zsspbm: "X"
+
+
       },
       editRules:{
         "nsjg": [{
@@ -262,6 +315,21 @@ export default {
     this.jglxdata=jglist
   },
   methods: {
+    //折扣类型
+    zklx(){
+      let dmkdlxidlist=uni.getStorageSync('basic').KDFSINFO
+      dmkdlxidlist.splice(0,0,{yjkdlxid:'NOT',yjkdlxm:'不设置新折扣'})
+      dmkdlxidlist.forEach((item,i)=>{
+        this.dmkdlxidlist.push({
+          "value": dmkdlxidlist[i].yjkdlxid,
+          "text": `${dmkdlxidlist[i].yjkdlxid}-${dmkdlxidlist[i].yjkdlxm}`,
+        })
+      })
+    },
+    //特供扣点
+    ischeckdm(e){
+      this.editForm.checkdm=e.detail.value
+    },
     changeLog(e) {
       console.log("-change事件:", e,this);
     },
@@ -279,6 +347,29 @@ export default {
       if(this.editForm.jglxid.length=='1'){
         this.editForm.jglxid=this.editForm.jglxid.toString()
       }
+    },
+    //商家合同
+    SjhtChange(){
+      let data={
+        access_token:uni.getStorageSync('access_token'),
+        fdbh:uni.getStorageSync('fdbh'),
+        spbm:this.editForm.spbm,
+        userid:uni.getStorageSync('userid'),
+      }
+      Cxdsjinfo(data).then((res)=>{
+        if(res.error_code==0){
+          this.sjlist=res.data
+          let sjlist = []
+          this.sjlist.forEach((item,i)=>{
+            sjlist.push({
+              "value":  this.sjlist[i].sjbh,
+              "text":  this.sjlist[i].sjmc,
+            })
+          })
+          this.sjlist=sjlist
+        }
+      })
+      console.log(this.uFormModel)
     },
     // 查询 特供（供价类型）
     formMore(lx,isAll) {
@@ -336,15 +427,9 @@ export default {
       // this.$set(this.tableData[index], "splx", [this.tableData[index].splx])
       this.stateDetail = true
       this.tableIndex = index
-      if(row.jglxid.length>0){
-        this.jglxdata.forEach((item,i)=>{
-          if(item.value==row.jglxid){
-            item.is_selected=true
-            this.editForm.jglxid=item.value
-          }
-        })
-      }
+      this.SjhtChange()
       console.log("编辑商品 row",row)
+      this.zklx()
     },
     cancelDetail() {
       this.editForm.spbm= ""
