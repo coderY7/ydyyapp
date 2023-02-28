@@ -135,7 +135,7 @@ import dayjs from "dayjs";
 import {
   Basic,
   Search,
-  BjdDelLine
+  CxdDelLine
 } from "@/network/api.js";
 import xuanSwitch from "@/components/xuan-switch/xuan-switch.vue";
 export default {

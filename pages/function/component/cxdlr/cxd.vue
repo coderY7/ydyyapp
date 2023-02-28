@@ -1162,6 +1162,7 @@ export default {
         if (res.error_code == 0) {
           this.tableData = []
           this.tableData = res.data
+          console.log(this.tableData)
         } else {
           this.$refs.uToast.show({
             type: "error",
