@@ -190,7 +190,7 @@ if(option.state=='edit'){
       OrderNew(newdata).then((res)=>{
         console.log('cxd',res)
         uni.redirectTo({
-          url: `/pages/function/component/cxdlr/cxd?djbh=${res.djbh}&cxlx=${JSON.stringify(data)}`
+          url: `/pages/function/component/cxdlr/cxd?state=add&djbh=${res.djbh}&cxlx=${JSON.stringify(data)}`
         });
       })
     }

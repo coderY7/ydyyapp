@@ -75,24 +75,7 @@
                        v-model="uFormTitle.sjbh">
               </u-input>
             </u-form-item>
-            <u-form-item label="报损仓库" :labelWidth="76" prop="ckbh"
-                         @tap="queryMore(false,'','CKINFO','ckbh')">
-              <u-input placeholder="请选择报损仓库" disabled
-                       :disabledColor="state=='pladd'||state=='edit'||state=='look'||state=='check'?'#F5F7FA':'#fff'"
-                       v-model="uFormTitle.ckbh">
-              </u-input>
-            </u-form-item>
-            <u-form-item label="退换类型" :labelWidth="76" prop="tklx" @tap="queryMore(false,'','TKLX','tklx')">
-              <u-input placeholder="请选择退换类型" disabled
-                       :disabledColor="state=='pladd'||state=='edit'||state=='look'||state=='check'?'#F5F7FA':'#fff'"
-                       v-model="uFormTitle.tklx">
-              </u-input>
-            </u-form-item>
-            <u-form-item label="原始单号" :labelWidth="76" prop="ysdh">
-              <u-input placeholder="请输入原始单号" v-model="uFormTitle.ysdh"
-                       :disabled="state=='look'||state=='check'">
-              </u-input>
-            </u-form-item>
+
             <u-form-item label="备注说明" :labelWidth="76" prop="remarks">
               <u-input placeholder="请输入备注说明" v-model="uFormTitle.remarks"
                        :disabled="state=='look'||state=='check'">
@@ -154,7 +137,7 @@
           </view>
 
           <u-form-item label="促销价格" :labelWidth="74" prop="cxjg" v-show="doingindex>=1">
-            <u-input placeholder="请输入促销价格" type="text" readonly v-model="uFormModel.cxjg"
+            <u-input placeholder="请输入促销价格" type="text"  v-model="uFormModel.cxjg"
                      >
             </u-input>
             <uni-icons custom-prefix="iconfont" type="icon-yuyin"
@@ -171,9 +154,9 @@
             <text class="inp-right-text" v-else></text>
           </u-form-item>
 
-          <u-form-item label="商家合同" :labelWidth="74" prop="cxjg" v-show="doingindex>=3">
+          <u-form-item v-if="this.uFormModel.checkdm" label="商家合同" :labelWidth="74" prop="cxjg" v-show="doingindex>=3">
             <uni-data-select
-                             v-model="uFormModel.sjbh"
+                             v-model="uFormModel.sjinfo[0].sjbh"
                              :localdata="sjlist"
                              :clear="false"
             ></uni-data-select>
@@ -184,7 +167,7 @@
 
 
 
-          <u-form-item label="特供进价" :labelWidth="74" prop="dmpjjj" v-show="doingindex>=4">
+          <u-form-item v-if="this.uFormModel.checkdm" label="特供进价" :labelWidth="74" prop="dmpjjj" v-show="doingindex>=4">
             <u-input placeholder="请输入特供进价" type="number" v-model="uFormModel.dmpjjj"
                      :focus="focusObj.numFocus">
             </u-input>
@@ -194,7 +177,7 @@
             <text class="inp-right-text" v-else></text>
           </u-form-item>
 
-          <u-form-item label="折扣类型" :labelWidth="74" prop="dmkdlxid" v-show="doingindex>=5">
+          <u-form-item v-if="this.uFormModel.checkdm" label="折扣类型" :labelWidth="74" prop="dmkdlxid" v-show="doingindex>=5">
             <uni-data-select
                 v-model="uFormModel.dmkdlxid"
                 :localdata="dmkdlxidlist"
@@ -206,7 +189,7 @@
           </u-form-item>
 
 
-          <u-form-item label="新促扣率" :labelWidth="74" prop="dmnewkdl" v-show="doingindex>=6">
+          <u-form-item v-if="this.uFormModel.checkdm" label="新促扣率" :labelWidth="74" prop="dmnewkdl" v-show="doingindex>=6">
             <u-input placeholder="请输入新促扣率" type="number" v-model="uFormModel.dmnewkdl"
                      :focus="focusObj.priceFocus">
             </u-input>
@@ -216,7 +199,7 @@
             <text class="inp-right-text" v-else></text>
           </u-form-item>
 
-          <u-form-item label="库存补差" :labelWidth="74" prop="checkcbj" v-show="doingindex>=7">
+          <u-form-item v-if="this.uFormModel.checkdm" label="库存补差" :labelWidth="74" prop="checkcbj" v-show="doingindex>=7">
             <view>
               <switch  color="#FFCC33" style="transform:scale(0.7)" @change="ischeckcbj"/>
             </view>
@@ -226,7 +209,7 @@
             <text class="inp-right-text" v-else></text>
           </u-form-item>
 
-          <u-form-item label="补差比率" :labelWidth="74" prop="bcbl" v-show="doingindex>=8">
+          <u-form-item v-if="this.uFormModel.checkdm" label="补差比率" :labelWidth="74" prop="bcbl" v-show="doingindex>=8">
             <u-input placeholder="请输入补差比率" type="number" v-model="uFormModel.bcbl"
                      :focus="focusObj.priceFocus">
             </u-input>
@@ -381,13 +364,13 @@ export default {
       // 表单内容data
       neworderShow: false,
       uFormModel: {
-        allsmm: '',//是否所有商品
-        bcbl: "",//补差比例
-        checkcbj: '',//是否库存补差
-        checkdm: '',//是否特供
+        allsmm:true,//是否所有商品
+        bcbl: "1",//补差比例
+        checkcbj: false,//是否库存补差
+        checkdm: false,//是否特供
         cxjg: '',//促销价格
         dmkdlxid: '',//促扣类型
-        dmnewkdl: '',//新促扣率
+        dmnewkdl: '1',//新促扣率
         dmpjjj: '',//特供进价
         dmsjbh: '',//特供商家编号
         nsjg: '',//零售价格
@@ -579,16 +562,23 @@ export default {
         this.y = res.screenHeight - 140
       }.bind(this)
     });
-    this.uFormTitle.djbh = option.djbh
-    this.uFormTitle.cxfs=option.cxfs
-    this.uFormTitle.cxlxid=this.uFormTitle.cxfs.split(' ')[0]
-    console.log('单子信息',this.uFormTitle);
-    this.state = option.state
+    if(option.state=='edit'){
+      this.uFormTitle.djbh = option.djbh
+      this.uFormTitle.cxfs=option.cxfs
+      this.uFormTitle.cxlxid=this.uFormTitle.cxfs.split(' ')[0]
+      console.log('单子信息',this.uFormTitle);
+      this.state = option.state
+    }
+
     let sjVal = ""
     let ckVal = ""
     let tkVal = ""
     if (option.state == "add") {
+      console.log(JSON.parse(option.cxlx))
       this.editTitleObj = option
+      this.uFormTitle.cxfs=`${JSON.parse(option.cxlx).id}-${JSON.parse(option.cxlx).name}`
+      this.uFormTitle.cxlxid=this.uFormTitle.cxfs.split('-')[0]
+
     } else if (option.state == "edit" || option.state == "look") {
       this.ifpage = true
       sjVal = option.sjbh
@@ -608,6 +598,7 @@ export default {
         "is_selected":false
       })
     })
+    this.data2[0].is_selected=true
 
 
     let dmkdlxidlist=uni.getStorageSync('basic').KDFSINFO
@@ -630,6 +621,18 @@ export default {
 
   },
   methods: {
+    //折扣类型
+    zklx(){
+      let dmkdlxidlist=uni.getStorageSync('basic').KDFSINFO
+      dmkdlxidlist.splice(0,0,{yjkdlxid:'NOT',yjkdlxm:'不设置新折扣'})
+      dmkdlxidlist.forEach((item,i)=>{
+        this.dmkdlxidlist.push({
+          "value": dmkdlxidlist[i].yjkdlxid,
+          "text": `${dmkdlxidlist[i].yjkdlxid}-${dmkdlxidlist[i].yjkdlxm}`,
+        })
+      })
+      this.uFormModel.dmkdlxid=this.dmkdlxidlist[0].value
+    },
     //特供扣点
     ischeckdm(e){
       this.uFormModel.checkdm=e.detail.value
@@ -657,6 +660,7 @@ export default {
             })
           })
           this.sjlist=sjlist
+          this.uFormModel.sjinfo[0].sjbh=this.sjlist[0].value
         }
           })
       console.log(this.uFormModel)
@@ -1086,13 +1090,17 @@ export default {
       this.uFormModel.dw = data.dw
       this.uFormModel.gg = data.gg
       this.uFormModel.nsjg = data.nsjg
-      this.uFormModel.bssl = data.ndspsl
-      this.uFormModel.bsjg = data.unsjg
+
+
+
+
       this.popupShow = false
       this.searchCode = 400
       this.isSpComplete = true
       //商家合同查询
       this.SjhtChange()
+      //折扣类型
+      this.zklx()
       // console.log("this.serchGoodsData this.serchGoodsData", this.serchGoodsData)
       if (this.isVoiceMode) {
         let arrTemp = []
@@ -1222,7 +1230,7 @@ export default {
       }
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),
-        "djtype": "SPBSD",
+        "djtype": "CXD",
         "fdbh": uni.getStorageSync("fdbh"),
         "userid": uni.getStorageSync("userid"),
       }
@@ -1260,7 +1268,7 @@ export default {
       this.$refs.uForm.validate().then(resf => {
         this.uploadarr = []
         this.uploadarr.push({
-          allsmm: '',//是否所有商品
+          allsmm: true,//是否所有商品
           bcbl: "",//补差比例
           checkcbj: '',//是否库存补差
           checkdm: '',//是否特供
@@ -1286,7 +1294,7 @@ export default {
 
       })
     },
-    doSave(state) {
+    CxdAdd(state) {
       console.log(this.uFormTitle)
       let dataes = {
         "access_token": uni.getStorageSync("access_token"),

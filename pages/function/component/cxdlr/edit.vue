@@ -52,7 +52,7 @@
           ></uni-data-select>
         </u-form-item>
 
-        <u-form-item label="商家合同" :labelWidth="74" prop="jglxid">
+        <u-form-item label="商家合同" :labelWidth="74" prop="sjbh">
           <uni-data-select
               v-model="editForm.sjinfo[0].sjbh"
               :localdata="sjlist"
@@ -307,6 +307,7 @@ export default {
           "text": `${dmkdlxidlist[i].yjkdlxid}-${dmkdlxidlist[i].yjkdlxm}`,
         })
       })
+      this.editForm.dmkdlxid=this.dmkdlxidlist[0].value
     },
     //特供扣点
     ischeckdm(e){
@@ -340,6 +341,8 @@ export default {
       }
       Cxdsjinfo(data).then((res)=>{
         if(res.error_code==0){
+          //默认值
+          this.editForm.sjinfo[0].sjbh=res.data[0].sjbh
           this.sjlist=res.data
           let sjlist = []
           this.sjlist.forEach((item,i)=>{
