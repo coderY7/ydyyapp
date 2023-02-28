@@ -101,22 +101,22 @@
         </view>
         <view class="multiples">
           <view class="multiple-con view-flex">
-            <text class="left-con">变前价格:</text>
-            <text class="right-con">{{item.bqjg}}</text>
+            <text class="left-con">零售价格:</text>
+            <text class="right-con">{{item.nsjg}}</text>
           </view>
           <view class="multiple-con view-flex">
-            <text class="left-con">变后价格:</text>
-            <text class="right-con">{{item.bhjg}}</text>
+            <text class="left-con">促销价格:</text>
+            <text class="right-con">{{item.cxjg}}</text>
           </view>
         </view>
         <view class="multiples">
           <view class="multiple-con view-flex">
-            <text class="left-con">生效时间:</text>
-            <text class="right-con" style="font-size: 8px">{{item.sxsj}}</text>
+            <text class="left-con">特供进价:</text>
+            <text class="right-con" style="font-size: 8px">{{item.cxspjj}}</text>
           </view>
           <view class="multiple-con view-flex">
-            <text class="left-con">商家名称:</text>
-            <text class="right-con" style="font-size: 8px">￥{{item.商家名称}}</text>
+            <text class="left-con">商家编号:</text>
+            <text class="right-con" style="font-size: 8px">￥{{item.sjbh}}</text>
           </view>
         </view>
       </view>
@@ -186,10 +186,10 @@ export default {
         fdssbl:'',
       },
       editRules:{
-        "bqjg": [{
+        "nsjg": [{
           type: "number",
           required: true,
-          message: "请填写变前价格",
+          message: "请填写零售价格",
           trigger: ["blur", "change"]
         },
           {
@@ -203,10 +203,27 @@ export default {
             }
           }
         ],
-        "bhjg": [{
+        "cxjg": [{
           type: "number",
           required: true,
-          message: "请填写变后价格",
+          message: "请填写促销价格",
+          trigger: ["blur", "change"]
+        },
+          {
+            asyncValidator: (rule, value, callback) => {
+              let reg=/^\d+(\.\d+)?$/
+              if(reg.test(value)){
+                callback();
+              }else{
+                callback(new Error('请输入非负数'));
+              }
+            }
+          }
+        ],
+        "cxspjj": [{
+          type: "number",
+          required: true,
+          message: "请填写特供价格",
           trigger: ["blur", "change"]
         },
           {
