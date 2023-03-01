@@ -69,12 +69,12 @@
             </u-form-item>
 
 
-            <u-form-item label="商家编号" :labelWidth="76" prop="sjbh" @tap="querySj(false,'','sjbh')">
-              <u-input placeholder="请选择商家编号" disabled
-                       :disabledColor="state=='pladd'||state=='edit'||state=='look'||state=='check'?'#F5F7FA':'#fff'"
-                       v-model="uFormTitle.sjbh">
-              </u-input>
-            </u-form-item>
+<!--            <u-form-item label="商家编号" :labelWidth="76" prop="sjbh" @tap="querySj(false,'','sjbh')">-->
+<!--              <u-input placeholder="请选择商家编号" disabled-->
+<!--                       :disabledColor="state=='pladd'||state=='edit'||state=='look'||state=='check'?'#F5F7FA':'#fff'"-->
+<!--                       v-model="uFormTitle.sjbh">-->
+<!--              </u-input>-->
+<!--            </u-form-item>-->
 
             <u-form-item label="备注说明" :labelWidth="76" prop="remarks">
               <u-input placeholder="请输入备注说明" v-model="uFormTitle.remarks"
@@ -638,7 +638,6 @@ export default {
     }
     if(this.uFormTitle.cxlxid=='C1'){
       this.uFormModel.cxzkl=''
-
     }
     if(this.uFormTitle.cxlxid=='A1'){
       this.uFormModel.mmje=''
@@ -675,7 +674,7 @@ export default {
       this.uFormModel.slsx=''
     }
 
-
+console.log('当前商品需要的信息',this.uFormModel)
   },
   methods: {
     //折扣类型
@@ -1152,9 +1151,6 @@ export default {
       this.uFormModel.cxjg = data.cxjg
       this.uFormModel.sjbh = data.sjbh
 
-
-
-
       this.popupShow = false
       this.searchCode = 400
       this.isSpComplete = true
@@ -1329,6 +1325,27 @@ export default {
       this.$refs.uForm.validate().then(resf => {
         this.uploadarr = []
         this.uploadarr.push({
+          mmje:this.uFormModel.mmje,
+          slsx:this.uFormModel.slsx,
+          slxx:this.uFormModel.slxx,
+          zsspbm:this.uFormModel.zsspbm,
+          zssl:this.uFormModel.zssl,
+          gwjid:this.uFormModel.gwjid,
+          sxje:this.uFormModel.sxje,
+          bssum:this.uFormModel.bssum,
+          cxzkl:this.uFormModel.cxzkl,
+          xspsl:this.uFormModel.xspsl,
+
+          cxzk1:this.uFormModel.cxzk1,
+          cxzk2:this.uFormModel.cxzk2,
+          cxzk3:this.uFormModel.cxzk3,
+          cxzk4:this.uFormModel.cxzk4,
+          cxzk5:this.uFormModel.cxzk5,
+          cxzk6:this.uFormModel.cxzk6,
+          cxzk7:this.uFormModel.cxzk7,
+
+
+
           allsmm: this.uFormModel.allsmm,//是否所有商品
           bcbl:this.uFormModel.bcbl,//补差比例
           checkcbj: this.uFormModel.checkcbj,//是否库存补差
