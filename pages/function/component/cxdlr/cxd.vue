@@ -563,17 +563,12 @@ export default {
         "is_selected":false
       })
     })
-    this.data2[0].is_selected=true
-
-
-    // let dmkdlxidlist=uni.getStorageSync('basic').KDFSINFO
-    // dmkdlxidlist.splice(0,0,{yjkdlxid:'NOT',yjkdlxm:'不设置新折扣'})
-    // dmkdlxidlist.forEach((item,i)=>{
-    //   this.dmkdlxidlist.push({
-    //     "value": dmkdlxidlist[i].yjkdlxid,
-    //     "text": `${dmkdlxidlist[i].yjkdlxid}-${dmkdlxidlist[i].yjkdlxm}`,
-    //   })
-    // })
+    this.data2.forEach((item,i)=>{
+      if(item.value==uni.getStorageSync('fdbh')){
+        this.data2[i].is_selected=true
+        this.fdlist=this.data2[i].value
+      }
+    })
 
   },
   onReady() {
