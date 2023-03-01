@@ -371,9 +371,9 @@ export default {
         cxjg: '',//促销价格
         dmkdlxid: '',//促扣类型
         dmnewkdl: '1',//新促扣率
-        dmpjjj: '',//特供进价
+        dmpjjj: '0',//特供进价
         dmsjbh: '',//特供商家编号
-        nsjg: '',//零售价格
+        nsjg: '0',//零售价格
         saveStatus: '',
         sjhtinfo: '',
         sjinfo: [{
@@ -566,14 +566,14 @@ export default {
     this.data2[0].is_selected=true
 
 
-    let dmkdlxidlist=uni.getStorageSync('basic').KDFSINFO
-    dmkdlxidlist.splice(0,0,{yjkdlxid:'NOT',yjkdlxm:'不设置新折扣'})
-    dmkdlxidlist.forEach((item,i)=>{
-      this.dmkdlxidlist.push({
-        "value": dmkdlxidlist[i].yjkdlxid,
-        "text": `${dmkdlxidlist[i].yjkdlxid}-${dmkdlxidlist[i].yjkdlxm}`,
-      })
-    })
+    // let dmkdlxidlist=uni.getStorageSync('basic').KDFSINFO
+    // dmkdlxidlist.splice(0,0,{yjkdlxid:'NOT',yjkdlxm:'不设置新折扣'})
+    // dmkdlxidlist.forEach((item,i)=>{
+    //   this.dmkdlxidlist.push({
+    //     "value": dmkdlxidlist[i].yjkdlxid,
+    //     "text": `${dmkdlxidlist[i].yjkdlxid}-${dmkdlxidlist[i].yjkdlxm}`,
+    //   })
+    // })
 
   },
   onReady() {
@@ -1237,22 +1237,22 @@ export default {
       this.$refs.uForm.validate().then(resf => {
         this.uploadarr = []
         this.uploadarr.push({
-          allsmm: true,//是否所有商品
-          bcbl: "1",//补差比例
-          checkcbj: false,//是否库存补差
+          allsmm: this.uFormModel.allsmm,//是否所有商品
+          bcbl:this.uFormModel.bcbl,//补差比例
+          checkcbj: this.uFormModel.checkcbj,//是否库存补差
           checkdm: this.uFormModel.checkdm,//是否特供
           cxjg:this.uFormModel.cxjg,//促销价格
           dmkdlxid:this.uFormModel.dmkdlxid,//促扣类型
-          dmnewkdl: '1',//新促扣率
+          dmnewkdl:this.uFormModel.dmnewkdl,//新促扣率
           dmpjjj: this.uFormModel.dmpjjj,//特供进价
           dmsjbh:this.uFormModel.sjbh,//特供商家编号
-          nsjg: this.uFormModel.spbm,//零售价格
+          nsjg: this.uFormModel.nsjg,//零售价格
           saveStatus: true,
           sjinfo: [{
             sjbh: this.uFormModel.sjinfo[0].sjbh,
             sjmc: this.uFormModel.sjinfo[0].sjmc
           }],
-          type: 'cxAdd',
+          type: this.uFormModel.type,
           "spbm": this.uFormModel.spbm,
           "spmc": this.uFormModel.spmc,
           "spsmm": this.uFormModel.spsmm,
