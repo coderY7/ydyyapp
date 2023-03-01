@@ -145,6 +145,40 @@
             <text class="inp-right-text" v-else></text>
           </u-form-item>
 
+          <u-form-item v-if="uFormTitle.cxlxid=='01'" label="数量下限" :labelWidth="74" prop="slxx" >
+            <u-input placeholder="请输入数量下限" type="text"  v-model="uFormModel.slxx"
+            >
+            </u-input>
+            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+                       :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
+            <text class="inp-right-text" v-else></text>
+          </u-form-item>
+
+          <u-form-item v-if="uFormTitle.cxlxid=='01'" label="数量上限" :labelWidth="74" prop="slsx" >
+            <u-input placeholder="请输入数量上限" type="text"  v-model="uFormModel.slsx"
+            >
+            </u-input>
+            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+                       :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
+            <text class="inp-right-text" v-else></text>
+          </u-form-item>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <u-form-item label="特供扣点" :labelWidth="74" prop="checkdm" v-show="doingindex>=2">
             <view>
               <switch  color="#FFCC33" style="transform:scale(0.7)" @change="ischeckdm"/>
@@ -1141,6 +1175,8 @@ console.log('当前商品需要的信息',this.uFormModel)
       })
     },
     setForm(data, isauto) {
+      this.myCollShow = false
+
       this.serchGoodsData = data
       this.uFormModel.spbm = data.spbm
       this.uFormModel.spsmm = data.spsmm
