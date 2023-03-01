@@ -145,24 +145,36 @@
             <text class="inp-right-text" v-else></text>
           </u-form-item>
 
-          <u-form-item v-if="uFormTitle.cxlxid=='01'" label="数量下限" :labelWidth="74" prop="slxx" >
-            <u-input placeholder="请输入数量下限" type="text"  v-model="uFormModel.slxx"
-            >
-            </u-input>
-            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
-                       :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
-            <text class="inp-right-text" v-else></text>
-          </u-form-item>
+<view  v-if="uFormTitle.cxlxid=='01'|| uFormTitle.cxlxid=='04'||uFormTitle.cxlxid=='05'">
+  <u-form-item  label="数量下限" :labelWidth="74" prop="slxx" style="margin-bottom: 10px">
+    <u-input placeholder="请输入数量下限" type="text"  v-model="uFormModel.slxx"
+    >
+    </u-input>
+    <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+               :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
+    <text class="inp-right-text" v-else></text>
+  </u-form-item>
 
-          <u-form-item v-if="uFormTitle.cxlxid=='01'" label="数量上限" :labelWidth="74" prop="slsx" >
-            <u-input placeholder="请输入数量上限" type="text"  v-model="uFormModel.slsx"
-            >
-            </u-input>
-            <uni-icons custom-prefix="iconfont" type="icon-yuyin"
-                       :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
-            <text class="inp-right-text" v-else></text>
-          </u-form-item>
+  <u-form-item  label="数量上限" :labelWidth="74" prop="slsx" >
+    <u-input placeholder="请输入数量上限" type="text"  v-model="uFormModel.slsx"
+    >
+    </u-input>
+    <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+               :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
+    <text class="inp-right-text" v-else></text>
+  </u-form-item>
+</view>
 
+<view v-if="uFormTitle.cxlxid=='03'||uFormTitle.cxlxid=='05'||uFormTitle.cxlxid=='19'||uFormTitle.cxlxid=='29'">
+  <u-form-item label="促销折扣率" :labelWidth="74" prop="cxzkl" v-show="doingindex>=1">
+    <u-input placeholder="请输入促销折扣率" type="text"  v-model="uFormModel.cxzkl"
+    >
+    </u-input>
+    <uni-icons custom-prefix="iconfont" type="icon-yuyin"
+               :color="doingId=='num'?'#358CC9':'#7A7A7A'" size="19" v-if="isVoiceMode"></uni-icons>
+    <text class="inp-right-text" v-else></text>
+  </u-form-item>
+</view>
 
 
 
