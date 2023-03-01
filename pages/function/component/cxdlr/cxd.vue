@@ -530,7 +530,7 @@ export default {
       this.uFormTitle.djbh = option.djbh
       this.uFormTitle.cxfs=option.cxfs
       this.uFormTitle.cxlxid=this.uFormTitle.cxfs.split(' ')[0]
-      console.log('单子信息',this.uFormTitle);
+      console.log('旧单子信息',this.uFormTitle);
       this.state = option.state
     }
 
@@ -541,8 +541,9 @@ export default {
       this.uFormTitle.djbh = option.djbh
       console.log(JSON.parse(option.cxlx))
       this.editTitleObj = option
-      this.uFormTitle.cxfs=`${JSON.parse(option.cxlx).id}-${JSON.parse(option.cxlx).name}`
-      this.uFormTitle.cxlxid=this.uFormTitle.cxfs.split('-')[0]
+      this.uFormTitle.cxfs=`${JSON.parse(option.cxlx).id} ${JSON.parse(option.cxlx).name}`
+      this.uFormTitle.cxlxid=this.uFormTitle.cxfs.split(' ')[0]
+      console.log('新单子信息',this.uFormTitle);
 
     } else if (option.state == "edit" || option.state == "look") {
       this.ifpage = true
@@ -578,6 +579,102 @@ export default {
     // #endif
   },
   onShow() {
+    //条件判断  this.uFormTitle.cxlxid
+    if(this.uFormTitle.cxlxid=='01'){
+      this.uFormModel.slxx=''
+      this.uFormModel.slsx=''
+      this.uFormModel.zsspbm=''
+      this.uFormModel.zssl=''
+    }
+    if(this.uFormTitle.cxlxid=='02'||this.uFormTitle.cxlxid=='18'||this.uFormTitle.cxlxid=='28'||this.uFormTitle.cxlxid=='07'||this.uFormTitle.cxlxid=='20'||this.uFormTitle.cxlxid=='30'){
+      this.uFormModel.cxjg=''
+    }
+    if(this.uFormTitle.cxlxid=='03'||this.uFormTitle.cxlxid=='19'||this.uFormTitle.cxlxid=='29'||this.uFormTitle.cxlxid=='06'||this.uFormTitle.cxlxid=='21'||this.uFormTitle.cxlxid=='31'){
+      this.uFormModel.cxzkl=''
+    }
+    if(this.uFormTitle.cxlxid=='04'){
+      this.uFormModel.slxx=''
+      this.uFormModel.slsx=''
+      this.uFormModel.cxjg=''
+    }
+    if(this.uFormTitle.cxlxid=='05'){
+      this.uFormModel.slxx=''
+      this.uFormModel.slsx=''
+      this.uFormModel.cxzkl=''
+    }
+    if(this.uFormTitle.cxlxid=='B1'){
+      this.uFormModel.slxx=''
+      this.uFormModel.slsx=''
+      this.uFormModel.cxjg=''
+    }
+    if(this.uFormTitle.cxlxid=='B2'){
+      this.uFormModel.slxx=''
+      this.uFormModel.slsx=''
+      this.uFormModel.cxzkl=''
+    }
+    if(this.uFormTitle.cxlxid=='08'){
+      this.uFormModel.cxjg=''
+      this.uFormModel.slsx=''
+    }
+    if(this.uFormTitle.cxlxid=='09'){
+      this.uFormModel.slsx=''
+      this.uFormModel.cxzkl=''
+    }
+    if(this.uFormTitle.cxlxid=='10'||this.uFormTitle.cxlxid=='11'){
+      this.uFormModel.cxzk1=''
+      this.uFormModel.cxzk2=''
+      this.uFormModel.cxzk3=''
+      this.uFormModel.cxzk4=''
+      this.uFormModel.cxzk5=''
+      this.uFormModel.cxzk6=''
+      this.uFormModel.cxzk7=''
+      this.uFormModel.xspsl=''
+    }
+    if(this.uFormTitle.cxlxid=='A0'){
+      this.uFormModel.mmje=''
+      this.uFormModel.cxjg=''
+      this.uFormModel.slsx=''
+      this.uFormModel.zssl=''
+    }
+    if(this.uFormTitle.cxlxid=='C1'){
+      this.uFormModel.cxzkl=''
+
+    }
+    if(this.uFormTitle.cxlxid=='A1'){
+      this.uFormModel.mmje=''
+      this.uFormModel.cxzkl=''
+    }
+    if(this.uFormTitle.cxlxid=='A2'){
+      this.uFormModel.mmje=''
+      this.uFormModel.cxjg=''
+      this.uFormModel.bssum=''
+
+    }
+    if(this.uFormTitle.cxlxid=='A3'){
+      this.uFormModel.mmje=''
+      this.uFormModel.cxjg=''
+      this.uFormModel.sxje=''
+
+    }
+    if(this.uFormTitle.cxlxid=='A4'){
+      this.uFormModel.mmje=''
+      this.uFormModel.cxjg=''
+      this.uFormModel.gwjid=''
+      this.uFormModel.bssum=''
+      this.uFormModel.zssl=''
+
+    }
+    if(this.uFormTitle.cxlxid=='A5'){
+      this.uFormModel.mmje=''
+      this.uFormModel.slsx=''
+      this.uFormModel.zssl=''
+    }
+    if(this.uFormTitle.cxlxid=='D0'){
+      this.uFormModel.zssl=''
+      this.uFormModel.cxjg=''
+      this.uFormModel.slsx=''
+    }
+
 
   },
   methods: {
